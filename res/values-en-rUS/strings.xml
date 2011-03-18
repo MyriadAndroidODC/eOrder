@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">eOrder</string>
-    <string name="welcome">Welcome to %s</string>
+    <string name="welcome">Welcome to</string>
     <string name="enter_button">Enter</string>
-    <string name="title_welcome">Welcome</string>
 </resources>

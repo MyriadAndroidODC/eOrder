@@ -8,11 +8,19 @@
     android:gravity="center" >
 
     <TextView
-        android:id="@+id/welcome"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
+        android:paddingRight="100dp"
         android:text="@string/welcome"
+        android:textSize="60sp" />
+
+    <TextView
+        android:id="@+id/hotel_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:paddingLeft="100dp"
         android:textSize="60sp" />
 
     <Button
