@@ -13,5 +13,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".TablesActivity"
+                  android:label="@string/title_tables">
+        </activity>
+
     </application>
 </manifest>
