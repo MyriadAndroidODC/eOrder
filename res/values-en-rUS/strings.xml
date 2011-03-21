@@ -3,5 +3,5 @@
     <string name="app_name">eOrder</string>
     <string name="welcome">Welcome to</string>
     <string name="enter_button">Enter</string>
-    <string name="title_tables">Tables</string>
+    <string name="title_tables">Select Table</string>
 </resources>

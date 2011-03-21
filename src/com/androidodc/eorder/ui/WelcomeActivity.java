@@ -27,7 +27,7 @@ public class WelcomeActivity extends Activity {
         Button enterButton = (Button) findViewById(R.id.enter_button);
         enterButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                startActivity(new Intent(WelcomeActivity.this, TablesActivity.class));
+                startActivity(new Intent(WelcomeActivity.this, SelectTableActivity.class));
                 finish();
             }
         });

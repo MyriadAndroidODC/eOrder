@@ -9,8 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:src="@drawable/custom_table_item"
-        android:scaleType="centerInside" />
+        android:src="@drawable/custom_table_item" />
 
     <TextView
         android:id="@+id/table_num"
