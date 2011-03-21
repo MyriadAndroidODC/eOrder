@@ -25,37 +25,43 @@ import android.os.Bundle;
 import android.os.Environment;
 
 public class RequestHelper {
-	public String doPost(String url, Bundle params) throws Exception{
+	public String doPost(String url, Bundle params) throws Exception {
         HttpPost httpRequest = new HttpPost(url);  
         List paramsList = new ArrayList();
         BasicNameValuePair paramPair;
+        
         for (String key : params.keySet()) {
             paramPair = new BasicNameValuePair(key, params.getString(key));
             paramsList.add(paramPair);
         }
-        try{ 
+        
+        try { 
             httpRequest.setEntity(new UrlEncodedFormEntity(paramsList, HTTP.UTF_8));
             HttpResponse httpResponse = new DefaultHttpClient().execute(httpRequest); 
-            if(httpResponse.getStatusLine().getStatusCode() == 200) { 
+            
+            if (httpResponse.getStatusLine().getStatusCode() == 200) { 
                 String strResult = EntityUtils.toString(httpResponse.getEntity());
                 return strResult;
-            }else{      
+            } else {      
                 return "Http response access status error!";
             }   
-        }catch (Exception e){ 
+        } catch (Exception e) { 
             throw e;
         } 
     }
-    public String doGet(String url, Bundle params) throws Exception{
-        if(params != null) {
+    public String doGet(String url, Bundle params) throws Exception {
+        if (params != null) {
             StringBuilder sb = new StringBuilder();
             boolean first = true;
+            
             for (String key : params.keySet()) {
-                if (first){
+                
+                if (first) {
                     first = false; 
-                }else{
+                } else {
                     sb.append("&");
                 }
+                
                 sb.append(URLEncoder.encode(key) + "=" +
                           URLEncoder.encode(params.getString(key)));
             }
@@ -63,61 +69,57 @@ public class RequestHelper {
         }
 
         HttpGet httpRequest = new HttpGet(url);
-        try{
-            HttpResponse httpResponse = new DefaultHttpClient().execute(httpRequest); 
-            if(httpResponse.getStatusLine().getStatusCode() == 200){  
+        try {
+            HttpResponse httpResponse = new DefaultHttpClient().execute(httpRequest);
+            
+            if (httpResponse.getStatusLine().getStatusCode() == 200) {  
                 String strResult = EntityUtils.toString(httpResponse.getEntity());  
-                return strResult;   
-            }else{   
+                return strResult;                 
+            } else {   
                 return "Http response access status error!";   
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             throw e;
         }
     }
-    public boolean getFileFromServer(String path, Bundle params, OutputStream fos){
+    public boolean getFileFromServer(String path, Bundle params, OutputStream fos) {
          byte[] bf = new byte[1024];
-         int current=0;
+         int current = 0;
+         
          try {
-             if(params != null) {
+             if (params != null) {
                  StringBuilder sb = new StringBuilder();
                  boolean first = true;
+                 
                  for (String key : params.keySet()) {
                      if (first){
                          first = false; 
-                     }else{
+                     } else {
                          sb.append("&");
                      }
+                     
                      sb.append(URLEncoder.encode(key) + "=" +
                                URLEncoder.encode(params.getString(key)));
                  }
                  path = path + "?" + sb.toString();
              }
-             //创建一个URL对象
-             URL url = new URL(path);//spec:资源连接地址
+             
+             URL url = new URL(path);
              HttpURLConnection connect = (HttpURLConnection)url.openConnection();
-             //从服务端下载Http资源，设置读取权限
              connect.setDoInput(true);
-             // //上传资源到服务端，设置写入权限
-             // connect.setDoOutput(true);
-             //设置连接服务器超时时间
              connect.setConnectTimeout(5 * 1000);
-             //设置从服务器读取数据超时时间
              connect.setReadTimeout(30 * 1000);
-             //获得网络连接状态码
              int code = connect.getResponseCode();
-             //判断是否连接成功（HttpURLConnection.HTTP_OK==200,0-200都属正常）
-             if(code == HttpURLConnection.HTTP_OK){
-             // //打开连接获取资源（不写也没关系，调用getInputStream()默认会打开连接
-              // connect.connect();
+             
+             if (code == HttpURLConnection.HTTP_OK) {
                  InputStream is = connect.getInputStream();
                  BufferedInputStream bis = new BufferedInputStream(is);
                  while((current = bis.read(bf)) != -1){
                      fos.write(bf, 0, current);
                  }
+                 
                  bis.close();
                  fos.close();
-                 //断开连接
                  connect.disconnect();
              }
              return true;
