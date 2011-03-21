@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+    <TextView
+        android:id="@+id/id_category_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="10dp"
+        />
+    <GridView
+        android:id="@+id/id_dish_grid"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        android:verticalSpacing="6dp"
+        android:columnWidth="120dp"
+        android:numColumns="auto_fit"
+        android:stretchMode="columnWidth"
+        android:overScrollMode="never"
+        />
+</LinearLayout>

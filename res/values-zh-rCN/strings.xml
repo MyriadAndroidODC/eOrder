@@ -4,4 +4,6 @@
     <string name="welcome">欢迎光临</string>
     <string name="enter_button">进 入</string>
     <string name="title_tables">选桌</string>
+    <string name="dish_title">菜单</string>
+    <string name="text_orderedlist_button">查看已点</string>
 </resources>
