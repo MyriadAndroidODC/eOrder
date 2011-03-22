@@ -15,7 +15,6 @@ import android.widget.CompoundButton;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -63,12 +62,14 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
     private void initUi() {
         // Set the title bar
         setTitle(R.string.dish_title);
+
+        setContentView(R.layout.main_list_activity);
+        LinearLayout galleryFrame = (LinearLayout) findViewById(R.id.gallery_frame);
+        Button buttonForOrderedList = (Button) findViewById(R.id.id_orderedlist_button);
+        buttonForOrderedList.setOnClickListener(this);
+
         // Inflate the main page from XML
         LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
-        RelativeLayout mainPage = (RelativeLayout) inflater.inflate(
-                R.layout.main_list_activity, null);
-        LinearLayout galleryFrame = (LinearLayout) mainPage.findViewById(R.id.gallery_frame);
-
         mCategoryGallery = new GridView[mCategoryNum];
         // Initial the grid view for every food category.
         for (int i = 0; i < mCategoryNum; i++) {
@@ -95,19 +96,12 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
 
             galleryFrame.addView(categoryLayout);
         }
-
-        // Set the oderedList button's click listener.
-        Button buttonForOrderedList = (Button) mainPage.findViewById(R.id.id_orderedlist_button);
-        buttonForOrderedList.setOnClickListener(this);
-
-        // Finish the initialization for UI
-        setContentView(mainPage);
     }
 
     /**
      * Adapter for galley, just in test stage.
      */
-    public class GridViewAdapter extends BaseAdapter implements OnCheckedChangeListener {
+    static class GridViewAdapter extends BaseAdapter implements OnCheckedChangeListener {
         final class ViewHolder {
             ImageView dishImageImageView;
             TextView dishNameTextView;
@@ -132,18 +126,22 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
             mInflater = LayoutInflater.from(mContext);
         }
 
+        @Override
         public int getCount() {
             return mThumbIds.length;
         }
 
+        @Override
         public Object getItem(int position) {
             return position;
         }
 
+        @Override
         public long getItemId(int position) {
             return position;
         }
 
+        @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder viewHolder;
             if (convertView == null) {
@@ -169,17 +167,17 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
          * Set check box's click listener.
          */
         private void setCheckBoxClickListener(CheckBox dishSelectCheckBox, int position,
-                int iGridViewId) {
+                int gridViewId) {
             // TODO Set check box's click listener
             dishSelectCheckBox.setId(position);
-            dishSelectCheckBox.setTag(Integer.valueOf(iGridViewId));
+            dishSelectCheckBox.setTag(gridViewId);
             dishSelectCheckBox.setOnCheckedChangeListener(this);
         }
 
         /**
          * Set dish's details(image, price and name).
          */
-        private void setDishDetails(ViewHolder viewHolder, int position, int iCategoryId) {
+        private void setDishDetails(ViewHolder viewHolder, int position, int categoryId) {
             // TODO use hard code for test
             /*
              * DishDetail dishDetail = mDbhelper.getDishDetail(iCategoryId,
@@ -196,15 +194,18 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
 
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            int iDishId = buttonView.getId();
-            int iCategoryId = (Integer) buttonView.getTag();
-            changeTheDishList(iCategoryId, iDishId, isChecked);
+            int dishId = buttonView.getId();
+            int categoryId = (Integer) buttonView.getTag();
+            changeTheDishList(categoryId, dishId, isChecked);
         }
 
         /**
          * Add or remove a dish from the dish list.
          */
-        private void changeTheDishList(int iCategoryId, int iDishId, boolean isChecked) {
+        private void changeTheDishList(
+                final int categoryId, 
+                final int dishId, 
+                final boolean isChecked) {
             // TODO
 
         }
@@ -215,7 +216,7 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
         switch (v.getId()) {
         case R.id.id_orderedlist_button:
             // Open the ordered list page
-            openOderedListPage();
+            openOrderedListPage();
             break;
 
         default:
@@ -225,24 +226,24 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
     }
 
     @Override
-    public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         // TODO Handle the galley's item click event
-        int iCategoryId = arg0.getId();
-        int iDishId = arg2;
-        openDetailPage(iCategoryId, iDishId);
+        int categoryId = parent.getId();
+        int dishId = position;
+        openDetailPage(categoryId, dishId);
     }
 
     /**
      * Open the ordered list page.
      */
-    private void openOderedListPage() {
+    private void openOrderedListPage() {
         // TODO Open the ordered list page
     }
 
     /**
      * Open the dish detail page.
      */
-    private void openDetailPage(int iCategoryId, int iDishId) {
+    private void openDetailPage(final int categoryId, final int dishId) {
         // TODO open the detail page
 
     }

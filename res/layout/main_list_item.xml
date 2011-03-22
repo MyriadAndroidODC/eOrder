@@ -19,8 +19,7 @@
         android:layout_marginLeft="6dp"
         android:layout_marginRight="6dp"
         android:verticalSpacing="6dp"
-        android:columnWidth="120dp"
-        android:numColumns="auto_fit"
+        android:numColumns="4"
         android:stretchMode="columnWidth"
         android:overScrollMode="never"
         />

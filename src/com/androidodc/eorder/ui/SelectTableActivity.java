@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -34,9 +35,9 @@ public class SelectTableActivity extends Activity {
         tablesView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 // TODO: the following code will be used, when MainListActivity is created.
-                // Intent intent = new Intent(TablesActivity.this, MainListActivity.class);
-                // intent.putExtra("TableNumber", selectedTableNum);
-                // startActivity(intent);
+                Intent intent = new Intent(SelectTableActivity.this, MainListActivity.class);
+                //intent.putExtra("TableNumber", selectedTableNum);
+                startActivity(intent);
                 finish();
             }
         });

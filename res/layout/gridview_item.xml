@@ -2,32 +2,29 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="120dp"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
     <ImageView
         android:id="@+id/id_food_image"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:layout_gravity="center_horizontal"
         />
     <TextView
         android:id="@+id/id_food_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
         android:textColor="@android:color/white"
         />
     <TextView
         android:id="@+id/id_food_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
         android:textColor="@android:color/white"
         />
     <CheckBox
         android:id="@+id/id_food_select"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
         android:duplicateParentState="true"
         android:focusable="false"
         android:button="@drawable/btn_check"
