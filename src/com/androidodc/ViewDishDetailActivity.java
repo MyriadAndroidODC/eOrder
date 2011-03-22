@@ -19,11 +19,11 @@ public class ViewDishDetailActivity extends Activity{
     private ImageView mDishImage;
 //    private Uri mDishUri;
 
-    public static final int CONTENT_ID_COLUMN = 0;
-    public static final int CONTENT_DISH_NAME_COLUMN = 1;
-    public static final int CONTENT_DISH_PRICE_COLUMN = 2;
-    public static final int CONTENT_DISH_DESCRIPTION_COLUMN = 3;
-    public static final int CONTENT_DISH_IMAGE_URI_COLUMN = 4;
+    private final int CONTENT_ID_COLUMN = 0;
+    private final int CONTENT_DISH_NAME_COLUMN = 1;
+    private final int CONTENT_DISH_PRICE_COLUMN = 2;
+    private final int CONTENT_DISH_DESCRIPTION_COLUMN = 3;
+    private final int CONTENT_DISH_IMAGE_URI_COLUMN = 4;
 
     public static final String[] CONTENT_PROJECTION = new String[] {
         DishColumns.ID,
