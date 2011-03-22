@@ -14,9 +14,9 @@ import com.androidodc.eorder.database.tables.ConfigTable;
 import com.androidodc.eorder.database.tables.DishCategoryTable;
 import com.androidodc.eorder.database.tables.DishTable;
 import com.androidodc.eorder.datatypes.Category;
+import com.androidodc.eorder.datatypes.Category.DishCategory;
 import com.androidodc.eorder.datatypes.Config;
 import com.androidodc.eorder.datatypes.Dish;
-import com.androidodc.eorder.datatypes.DishCategory;
 import com.androidodc.eorder.utils.LogUtils;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -154,12 +154,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Dish d = new Dish();
         d.setDishId(1);
         d.setName("”„œ„»‚Àø");
-        d.setPrice(12.00);
+        d.setPrice(1200);
         d.setDescription("”„œ„»‚Àøµƒ√Ë ˆ");
         d.setImageLocal("imageLocal");
         d.setImageServer("imageLocal");
-        d.setCreatedOn(new Date());
-        d.setUpdatedOn(null);
+        d.setCreateTime(new Date());
+        d.setUpdateTime(null);
         try {
             sDBHelper.addDish(d);
         } catch (Exception e) {
@@ -169,12 +169,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Dish d2 = new Dish();
         d2.setDishId(2);
         d2.setName("À‚ƒ‡∞◊»‚");
-        d2.setPrice(18.00);
+        d2.setPrice(1800);
         d2.setImageLocal("imageLocal2");
         d2.setImageServer("imageLocal2");
         d2.setDescription("À‚ƒ‡∞◊»‚µƒ√Ë ˆ");
-        d2.setCreatedOn(new Date());
-        d2.setUpdatedOn(null);
+        d2.setCreateTime(new Date());
+        d2.setUpdateTime(null);
         try {
             sDBHelper.addDish(d2);
         } catch (Exception e) {
@@ -184,12 +184,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Dish d3 = new Dish();
         d3.setDishId(3);
         d3.setName("¬È∆≈∂π∏Ø");
-        d3.setPrice(8.00);
+        d3.setPrice(800);
         d3.setImageLocal("imageLocal3");
         d3.setImageServer("imageLocal3");
         d3.setDescription("¬È∆≈∂π∏Øµƒ√Ë ˆ");
-        d3.setCreatedOn(new Date());
-        d3.setUpdatedOn(new Date());
+        d3.setCreateTime(new Date());
+        d3.setUpdateTime(new Date());
         try {
             sDBHelper.addDish(d3);
         } catch (Exception e) {
@@ -199,12 +199,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Dish d4 = new Dish();
         d4.setDishId(4);
         d4.setName("≤Ê…’±˝");
-        d4.setPrice(1.50);
+        d4.setPrice(150);
         d4.setImageLocal("imageLocal4");
         d4.setImageServer("imageLocal4");
         d4.setDescription("’˝◊⁄π„∂´≤Ó…’±˝");
-        d4.setCreatedOn(new Date());
-        d4.setUpdatedOn(new Date());
+        d4.setCreateTime(new Date());
+        d4.setUpdateTime(new Date());
         try {
             sDBHelper.addDish(d4);
         } catch (Exception e) {
@@ -214,19 +214,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Dish d5 = new Dish();
         d5.setDishId(5);
         d5.setName("π„Œ∂œ„≥¶");
-        d5.setPrice(38.00);
+        d5.setPrice(3800);
         d5.setImageLocal("imageLocal2");
         d5.setImageServer("imageLocal2");
         d5.setDescription("π„Œ∂œ„≥¶µƒ√Ë ˆ");
-        d5.setCreatedOn(new Date());
-        d5.setUpdatedOn(null);
+        d5.setCreateTime(new Date());
+        d5.setUpdateTime(null);
         try {
             sDBHelper.addDish(d5);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        DishCategory dc = new DishCategory();
+        DishCategory dc = c.new DishCategory();
         dc.setCategoryId(c.getCategoryId());
         dc.setDishId(d.getDishId());
         try {
@@ -234,7 +234,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        DishCategory dc2 = new DishCategory();
+        DishCategory dc2 = c.new DishCategory();
         dc2.setCategoryId(c.getCategoryId());
         dc2.setDishId(d2.getDishId());
         try {
@@ -242,7 +242,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        DishCategory dc3 = new DishCategory();
+        DishCategory dc3 = c.new DishCategory();
         dc3.setCategoryId(c.getCategoryId());
         dc3.setDishId(d3.getDishId());
         try {
@@ -250,7 +250,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        DishCategory dc4 = new DishCategory();
+        DishCategory dc4 = c.new DishCategory();
         dc4.setCategoryId(c2.getCategoryId());
         dc4.setDishId(d4.getDishId());
         try {
@@ -258,7 +258,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        DishCategory dc5 = new DishCategory();
+        DishCategory dc5 = c.new DishCategory();
         dc5.setCategoryId(c2.getCategoryId());
         dc5.setDishId(d5.getDishId());
         try {

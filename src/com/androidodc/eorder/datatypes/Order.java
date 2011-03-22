@@ -1,15 +1,17 @@
 package com.androidodc.eorder.datatypes;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Order {
+public class Order implements Serializable {
 
+    private static final long serialVersionUID = 542383610552166140L;
     private int mId;
     private int mOrderId;
     private int mStatus;
     private double mOrderTotal;
-    private Date mPaidOn;
-    private Date mCreatedOn;
+    private Date mPayTime;
+    private Date mCreateTime;
 
     public int getId() {
         return mId;
@@ -43,19 +45,19 @@ public class Order {
         mOrderTotal = orderTotal;
     }
 
-    public Date getPaidOn() {
-        return mPaidOn;
+    public Date getPayTime() {
+        return mPayTime;
     }
 
-    public void setPaidOn(Date paidOn) {
-        mPaidOn = paidOn;
+    public void setPayTime(Date payTime) {
+        mPayTime = payTime;
     }
 
-    public Date getCreatedOn() {
-        return mCreatedOn;
+    public Date getCreateTime() {
+        return mCreateTime;
     }
 
-    public void setCreatedOn(Date createdOn) {
-        mCreatedOn = createdOn;
+    public void setCreateTime(Date createdOn) {
+        mCreateTime = createdOn;
     }
 }

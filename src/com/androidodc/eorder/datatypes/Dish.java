@@ -1,18 +1,20 @@
 package com.androidodc.eorder.datatypes;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Dish {
+public class Dish implements Serializable {
 
+    private static final long serialVersionUID = 59028309245200797L;
     private int mId;
     private int mDishId;
     private String mName;
-    private double mPrice;
+    private int mPrice;
     private String mDescription;
     private String mImageLocal;
     private String mImageServer;
-    private Date mCreatedOn;
-    private Date mUpdatedOn;
+    private Date mCreateTime;
+    private Date mUpdateTime;
 
     public int getId() {
         return mId;
@@ -38,11 +40,11 @@ public class Dish {
         mName = name;
     }
 
-    public Double getPrice() {
+    public int getPrice() {
         return mPrice;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(int price) {
         mPrice = price;
     }
 
@@ -70,19 +72,19 @@ public class Dish {
         mImageServer = imageServer;
     }
 
-    public Date getCreatedOn() {
-        return mCreatedOn;
+    public Date getCreateTime() {
+        return mCreateTime;
     }
 
-    public void setCreatedOn(Date createdOn) {
-        mCreatedOn = createdOn;
+    public void setCreateTime(Date createTime) {
+        mCreateTime = createTime;
     }
 
-    public Date getUpdatedOn() {
-        return mUpdatedOn;
+    public Date getUpdateTime() {
+        return mUpdateTime;
     }
 
-    public void setUpdatedOn(Date updatedOn) {
-        mUpdatedOn = updatedOn;
+    public void setUpdateTime(Date updateTime) {
+        mUpdateTime = updateTime;
     }
 }

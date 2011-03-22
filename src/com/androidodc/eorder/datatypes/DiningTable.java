@@ -1,6 +1,10 @@
 package com.androidodc.eorder.datatypes;
 
-public class DiningTable {
+import java.io.Serializable;
+
+public class DiningTable implements Serializable {
+
+    private static final long serialVersionUID = 4477564220523201176L;
     private int mId;
     private int mDiningTableId;
     private String mName;

@@ -1,6 +1,7 @@
 package com.androidodc.eorder.ui;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -26,8 +27,7 @@ public class WelcomeActivity extends Activity {
         Button enterButton = (Button) findViewById(R.id.enter_button);
         enterButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                // TODO: The following code will be used, when TableAcitivity is created.
-                // startActivity(new Intent(WelcomeActivity.this, TablesActivity.class));
+                startActivity(new Intent(WelcomeActivity.this, SelectTableActivity.class));
                 finish();
             }
         });

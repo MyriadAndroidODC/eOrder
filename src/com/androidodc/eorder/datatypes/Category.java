@@ -1,7 +1,10 @@
 package com.androidodc.eorder.datatypes;
 
-public class Category {
+import java.io.Serializable;
 
+public class Category implements Serializable {
+
+    private static final long serialVersionUID = 3948922015270201885L;
     private int mId;
     private int mCategoryId;
     private String mName;
@@ -46,5 +49,26 @@ public class Category {
 
     public void setSortOrder(Integer sortOrder) {
         mSortOrder = sortOrder;
+    }
+
+    public class DishCategory {
+        private int mCategoryId;
+        private int mDishId;
+
+        public int getCategoryId() {
+            return mCategoryId;
+        }
+
+        public void setCategoryId(int categoryId) {
+            mCategoryId = categoryId;
+        }
+
+        public int getDishId() {
+            return mDishId;
+        }
+
+        public void setDishId(int dishId) {
+            mDishId = dishId;
+        }
     }
 }

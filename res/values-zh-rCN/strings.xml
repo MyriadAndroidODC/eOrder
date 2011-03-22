@@ -3,4 +3,5 @@
     <string name="app_name">电子订单</string>
     <string name="welcome">欢迎光临</string>
     <string name="enter_button">进 入</string>
+    <string name="title_tables">选桌</string>
 </resources>

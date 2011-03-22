@@ -27,8 +27,8 @@ public class DishTable {
     public static final String DESCRIPTION          = "description";
     public static final String IMAGE_LOCAL          = "image_local";
     public static final String IMAGE_SERVER         = "image_server";
-    public static final String CREATED_ON           = "created_on";
-    public static final String UPDATED_ON           = "updated_on";
+    public static final String CREATE_TIME           = "create_time";
+    public static final String UPDATE_TIME           = "update_time";
 
     /**
      * The foreign key used by other tables.
@@ -44,12 +44,12 @@ public class DishTable {
                 _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 DISH_ID + " INTEGER, " +
                 NAME + " TEXT, " +
-                PRICE + " REAL, " +
+                PRICE + " INTEGER, " +
                 DESCRIPTION + " TEXT, " +
                 IMAGE_LOCAL + " TEXT, " +
                 IMAGE_SERVER + " TEXT, " +
-                CREATED_ON + " NUMERIC, " +
-                UPDATED_ON + " NUMERIC " +
+                CREATE_TIME + " NUMERIC, " +
+                UPDATE_TIME + " NUMERIC " +
                 ");");
     }
 
@@ -68,11 +68,11 @@ public class DishTable {
         cv.put(DESCRIPTION, dish.getDescription());
         cv.put(IMAGE_LOCAL, dish.getImageLocal());
         cv.put(IMAGE_SERVER, dish.getImageServer());
-        if (dish.getCreatedOn() != null) {
-            cv.put(CREATED_ON, dish.getCreatedOn().getTime());
+        if (dish.getCreateTime() != null) {
+            cv.put(CREATE_TIME, dish.getCreateTime().getTime());
         }
-        if (dish.getUpdatedOn() != null) {
-            cv.put(UPDATED_ON, dish.getUpdatedOn().getTime());
+        if (dish.getUpdateTime() != null) {
+            cv.put(UPDATE_TIME, dish.getUpdateTime().getTime());
         }
         return db.insert(TABLE_NAME, _ID, cv);
     }
@@ -95,12 +95,12 @@ public class DishTable {
                     dish.setId(c.getInt(c.getColumnIndex(_ID)));
                     dish.setDishId(c.getInt(c.getColumnIndex(DISH_ID)));
                     dish.setName(c.getString(c.getColumnIndex(NAME)));
-                    dish.setPrice(c.getDouble(c.getColumnIndex(PRICE)));
+                    dish.setPrice(c.getInt(c.getColumnIndex(PRICE)));
                     dish.setDescription(c.getString(c.getColumnIndex(DESCRIPTION)));
                     dish.setImageLocal(c.getString(c.getColumnIndex(IMAGE_LOCAL)));
                     dish.setImageServer(c.getString(c.getColumnIndex(IMAGE_SERVER)));
-                    dish.setCreatedOn(new Date(c.getLong(c.getColumnIndex(CREATED_ON))));
-                    dish.setUpdatedOn(new Date(c.getLong(c.getColumnIndex(UPDATED_ON))));
+                    dish.setCreateTime(new Date(c.getLong(c.getColumnIndex(CREATE_TIME))));
+                    dish.setUpdateTime(new Date(c.getLong(c.getColumnIndex(UPDATE_TIME))));
                     return dish;
                 }
             } finally {
@@ -127,12 +127,12 @@ public class DishTable {
                     dish.setId(c.getInt(c.getColumnIndex(_ID)));
                     dish.setDishId(c.getInt(c.getColumnIndex(DISH_ID)));
                     dish.setName(c.getString(c.getColumnIndex(NAME)));
-                    dish.setPrice(c.getDouble(c.getColumnIndex(PRICE)));
+                    dish.setPrice(c.getInt(c.getColumnIndex(PRICE)));
                     dish.setDescription(c.getString(c.getColumnIndex(DESCRIPTION)));
                     dish.setImageLocal(c.getString(c.getColumnIndex(IMAGE_LOCAL)));
                     dish.setImageServer(c.getString(c.getColumnIndex(IMAGE_SERVER)));
-                    dish.setCreatedOn(new Date(c.getLong(c.getColumnIndex(CREATED_ON))));
-                    dish.setUpdatedOn(new Date(c.getLong(c.getColumnIndex(UPDATED_ON))));
+                    dish.setCreateTime(new Date(c.getLong(c.getColumnIndex(CREATE_TIME))));
+                    dish.setUpdateTime(new Date(c.getLong(c.getColumnIndex(UPDATE_TIME))));
                     list.add(dish);
                 }
             } finally {

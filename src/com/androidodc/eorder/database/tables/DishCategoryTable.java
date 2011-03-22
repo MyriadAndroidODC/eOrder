@@ -9,8 +9,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.androidodc.eorder.datatypes.Category.DishCategory;
 import com.androidodc.eorder.datatypes.Dish;
-import com.androidodc.eorder.datatypes.DishCategory;
 
 public class DishCategoryTable {
     /**
@@ -70,12 +70,12 @@ public class DishCategoryTable {
                     dish.setId(c.getInt(c.getColumnIndex(DishTable._ID)));
                     dish.setDishId(c.getInt(c.getColumnIndex(DishTable.DISH_ID)));
                     dish.setName(c.getString(c.getColumnIndex(DishTable.NAME)));
-                    dish.setPrice(c.getDouble(c.getColumnIndex(DishTable.PRICE)));
+                    dish.setPrice(c.getInt(c.getColumnIndex(DishTable.PRICE)));
                     dish.setDescription(c.getString(c.getColumnIndex(DishTable.DESCRIPTION)));
                     dish.setImageLocal(c.getString(c.getColumnIndex(DishTable.IMAGE_LOCAL)));
                     dish.setImageServer(c.getString(c.getColumnIndex(DishTable.IMAGE_SERVER)));
-                    dish.setCreatedOn(new Date(c.getLong(c.getColumnIndex(DishTable.CREATED_ON))));
-                    dish.setUpdatedOn(new Date(c.getLong(c.getColumnIndex(DishTable.UPDATED_ON))));
+                    dish.setCreateTime(new Date(c.getLong(c.getColumnIndex(DishTable.CREATE_TIME))));
+                    dish.setUpdateTime(new Date(c.getLong(c.getColumnIndex(DishTable.UPDATE_TIME))));
                     list.add(dish);
                 }
             } finally {
