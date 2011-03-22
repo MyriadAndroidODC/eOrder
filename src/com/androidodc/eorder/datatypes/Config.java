@@ -2,49 +2,49 @@ package com.androidodc.eorder.datatypes;
 
 public class Config {
 
-    private int id;
-    private int configId;
-    private String name;
-    private String value;
-    private String description;
+    private int mId;
+    private int mConfigId;
+    private String mName;
+    private String mValue;
+    private String mDescription;
 
     public int getId() {
-        return id;
+        return mId;
     }
 
     public void setId(int id) {
-        this.id = id;
+        mId = id;
     }
 
     public int getConfigId() {
-        return configId;
+        return mConfigId;
     }
 
     public void setConfigId(int configId) {
-        this.configId = configId;
+        mConfigId = configId;
     }
 
     public String getName() {
-        return name;
+        return mName;
     }
 
     public void setName(String name) {
-        this.name = name;
+        mName = name;
     }
 
     public String getValue() {
-        return value;
+        return mValue;
     }
 
     public void setValue(String value) {
-        this.value = value;
+        mValue = value;
     }
 
     public String getDescription() {
-        return description;
+        return mDescription;
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        mDescription = description;
     }
 }

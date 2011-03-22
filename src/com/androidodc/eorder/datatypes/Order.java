@@ -3,58 +3,59 @@ package com.androidodc.eorder.datatypes;
 import java.util.Date;
 
 public class Order {
-    private int id;
-    private int orderId;
-    private int status;
-    private double orderTotal;
-    private Date paidOn;
-    private Date createdOn;
+
+    private int mId;
+    private int mOrderId;
+    private int mStatus;
+    private double mOrderTotal;
+    private Date mPaidOn;
+    private Date mCreatedOn;
 
     public int getId() {
-        return id;
+        return mId;
     }
 
     public void setId(int id) {
-        this.id = id;
+        mId = id;
     }
 
     public int getOrderId() {
-        return orderId;
+        return mOrderId;
     }
 
     public void setOrderId(int orderId) {
-        this.orderId = orderId;
+        mOrderId = orderId;
     }
 
     public int getStatus() {
-        return status;
+        return mStatus;
     }
 
     public void setStatus(int status) {
-        this.status = status;
+        mStatus = status;
     }
 
     public double getOrderTotal() {
-        return orderTotal;
+        return mOrderTotal;
     }
 
     public void setOrderTotal(double orderTotal) {
-        this.orderTotal = orderTotal;
+        mOrderTotal = orderTotal;
     }
 
     public Date getPaidOn() {
-        return paidOn;
+        return mPaidOn;
     }
 
     public void setPaidOn(Date paidOn) {
-        this.paidOn = paidOn;
+        mPaidOn = paidOn;
     }
 
     public Date getCreatedOn() {
-        return createdOn;
+        return mCreatedOn;
     }
 
     public void setCreatedOn(Date createdOn) {
-        this.createdOn = createdOn;
+        mCreatedOn = createdOn;
     }
 }

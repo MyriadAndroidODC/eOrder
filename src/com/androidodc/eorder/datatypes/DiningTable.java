@@ -1,49 +1,49 @@
 package com.androidodc.eorder.datatypes;
 
 public class DiningTable {
-    private int id;
-    private int diningTableId;
-    private String name;
-    private int maxPeople;
-    private boolean isFree;
+    private int mId;
+    private int mDiningTableId;
+    private String mName;
+    private int mMaxPeople;
+    private boolean mIsFree;
 
     public int getId() {
-        return id;
+        return mId;
     }
 
     public void setId(int id) {
-        this.id = id;
+        mId = id;
     }
 
     public int getDiningTableId() {
-        return diningTableId;
+        return mDiningTableId;
     }
 
     public void setDiningTableId(int diningTableId) {
-        this.diningTableId = diningTableId;
+        mDiningTableId = diningTableId;
     }
 
     public String getName() {
-        return name;
+        return mName;
     }
 
     public void setName(String name) {
-        this.name = name;
+        mName = name;
     }
 
     public int getMaxPeople() {
-        return maxPeople;
+        return mMaxPeople;
     }
 
     public void setMaxPeople(int maxPeople) {
-        this.maxPeople = maxPeople;
+        mMaxPeople = maxPeople;
     }
 
     public boolean isFree() {
-        return isFree;
+        return mIsFree;
     }
 
     public void setFree(boolean isFree) {
-        this.isFree = isFree;
+        mIsFree = isFree;
     }
 }

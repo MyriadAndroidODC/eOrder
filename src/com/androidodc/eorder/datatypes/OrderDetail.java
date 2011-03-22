@@ -1,58 +1,59 @@
 package com.androidodc.eorder.datatypes;
 
 public class OrderDetail {
-    private int id;
-    private int orderDetailId;
-    private int orderId;
-    private int dishId;
-    private int tableId;
-    private int number;
+
+    private int mId;
+    private int mOrderDetailId;
+    private int mOrderId;
+    private int mDishId;
+    private int mTableId;
+    private int mNumber;
 
     public int getId() {
-        return id;
+        return mId;
     }
 
     public void setId(int id) {
-        this.id = id;
+        mId = id;
     }
 
     public int getOrderDetailId() {
-        return orderDetailId;
+        return mOrderDetailId;
     }
 
     public void setOrderDetailId(int orderDetailId) {
-        this.orderDetailId = orderDetailId;
+        mOrderDetailId = orderDetailId;
     }
 
     public int getOrderId() {
-        return orderId;
+        return mOrderId;
     }
 
     public void setOrderId(int orderId) {
-        this.orderId = orderId;
+        mOrderId = orderId;
     }
 
     public int getDishId() {
-        return dishId;
+        return mDishId;
     }
 
     public void setDishId(int dishId) {
-        this.dishId = dishId;
+        mDishId = dishId;
     }
 
     public int getTableId() {
-        return tableId;
+        return mTableId;
     }
 
     public void setTableId(int tableId) {
-        this.tableId = tableId;
+        mTableId = tableId;
     }
 
     public int getNumber() {
-        return number;
+        return mNumber;
     }
 
     public void setNumber(int number) {
-        this.number = number;
+        mNumber = number;
     }
 }

@@ -4,86 +4,85 @@ import java.util.Date;
 
 public class Dish {
 
-    private int id;
-    private int dishId;
-    private String name;
-    private double price;
-    private String description;
-    private String imageLocal;
-    private String imageServer;
-    private Date createdOn;
-    private Date updatedOn;
+    private int mId;
+    private int mDishId;
+    private String mName;
+    private double mPrice;
+    private String mDescription;
+    private String mImageLocal;
+    private String mImageServer;
+    private Date mCreatedOn;
+    private Date mUpdatedOn;
 
     public int getId() {
-        return id;
+        return mId;
     }
 
     public void setId(int id) {
-        this.id = id;
+        mId = id;
     }
 
     public int getDishId() {
-        return dishId;
+        return mDishId;
     }
 
     public void setDishId(int dishId) {
-        this.dishId = dishId;
+        mDishId = dishId;
     }
 
     public String getName() {
-        return name;
+        return mName;
     }
 
     public void setName(String name) {
-        this.name = name;
+        mName = name;
     }
 
     public Double getPrice() {
-        return price;
+        return mPrice;
     }
 
     public void setPrice(Double price) {
-        this.price = price;
+        mPrice = price;
     }
 
     public String getDescription() {
-        return description;
+        return mDescription;
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        mDescription = description;
     }
 
     public String getImageLocal() {
-        return imageLocal;
+        return mImageLocal;
     }
 
     public void setImageLocal(String imageLocal) {
-        this.imageLocal = imageLocal;
+        mImageLocal = imageLocal;
     }
 
     public String getImageServer() {
-        return imageServer;
+        return mImageServer;
     }
 
     public void setImageServer(String imageServer) {
-        this.imageServer = imageServer;
+        mImageServer = imageServer;
     }
 
     public Date getCreatedOn() {
-        return createdOn;
+        return mCreatedOn;
     }
 
     public void setCreatedOn(Date createdOn) {
-        this.createdOn = createdOn;
+        mCreatedOn = createdOn;
     }
 
     public Date getUpdatedOn() {
-        return updatedOn;
+        return mUpdatedOn;
     }
 
     public void setUpdatedOn(Date updatedOn) {
-        this.updatedOn = updatedOn;
+        mUpdatedOn = updatedOn;
     }
-
 }

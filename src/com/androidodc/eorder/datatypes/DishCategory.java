@@ -1,22 +1,22 @@
 package com.androidodc.eorder.datatypes;
 
 public class DishCategory {
-    private int categoryId;
-    private int dishId;
+    private int mCategoryId;
+    private int mDishId;
 
     public int getCategoryId() {
-        return categoryId;
+        return mCategoryId;
     }
 
     public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
+        mCategoryId = categoryId;
     }
 
     public int getDishId() {
-        return dishId;
+        return mDishId;
     }
 
     public void setDishId(int dishId) {
-        this.dishId = dishId;
+        mDishId = dishId;
     }
 }

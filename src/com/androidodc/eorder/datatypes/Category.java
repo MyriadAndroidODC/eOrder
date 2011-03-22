@@ -2,49 +2,49 @@ package com.androidodc.eorder.datatypes;
 
 public class Category {
 
-    private int id;
-    private int categoryId;
-    private String name;
-    private String description;
-    private int sortOrder;
-
-    public void setId(int id) {
-        this.id = id;
-    }
+    private int mId;
+    private int mCategoryId;
+    private String mName;
+    private String mDescription;
+    private int mSortOrder;
 
     public int getId() {
-        return id;
+        return mId;
+    }
+
+    public void setId(int id) {
+        mId = id;
     }
 
     public int getCategoryId() {
-        return categoryId;
+        return mCategoryId;
     }
 
     public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
+        mCategoryId = categoryId;
     }
 
     public String getName() {
-        return name;
+        return mName;
     }
 
     public void setName(String name) {
-        this.name = name;
+        mName = name;
     }
 
     public String getDescription() {
-        return description;
+        return mDescription;
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        mDescription = description;
     }
 
     public Integer getSortOrder() {
-        return sortOrder;
+        return mSortOrder;
     }
 
     public void setSortOrder(Integer sortOrder) {
-        this.sortOrder = sortOrder;
+        mSortOrder = sortOrder;
     }
 }
