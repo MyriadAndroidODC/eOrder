@@ -3,10 +3,10 @@ package com.androidodc.eorder.datatypes;
 public class Category {
 
     private int mId;
+    private int mSortOrder;
     private int mCategoryId;
     private String mName;
     private String mDescription;
-    private int mSortOrder;
 
     public void setId(int id) {
         mId = id;
@@ -40,7 +40,7 @@ public class Category {
         mDescription = description;
     }
 
-    public Integer getSortOrder() {
+    public int getSortOrder() {
         return mSortOrder;
     }
 
