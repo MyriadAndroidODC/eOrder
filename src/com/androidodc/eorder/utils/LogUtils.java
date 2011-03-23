@@ -16,7 +16,7 @@ package com.androidodc.eorder.utils;
 import android.util.Log;
 
 public class LogUtils {
-    private static final String TAG = "fb_media_update";
+    private static final String TAG = "e_order";
 
     public static void logI(String msg) {
         if (Log.isLoggable(TAG, Log.INFO)) {
