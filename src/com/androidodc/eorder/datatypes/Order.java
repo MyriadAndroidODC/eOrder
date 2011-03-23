@@ -2,7 +2,7 @@ package com.androidodc.eorder.datatypes;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
+import java.util.Map;
 
 public class Order implements Serializable {
 
@@ -13,7 +13,8 @@ public class Order implements Serializable {
     private int mOrderTotal;
     private Date mPayTime;
     private Date mCreateTime;
-    private List<Dish> dishes;
+    private int mTableId;
+    private Map<Dish, Integer> mDishes;
 
     public int getId() {
         return mId;
@@ -62,12 +63,20 @@ public class Order implements Serializable {
     public void setCreateTime(Date createdOn) {
         mCreateTime = createdOn;
     }
-    
-    public List<Dish> getDishes() {
-        return dishes;
+
+    public int getmTableId() {
+        return mTableId;
     }
 
-    public void setDishes(List<Dish> dishes) {
-        this.dishes = dishes;
+    public void setmTableId(int mTableId) {
+        this.mTableId = mTableId;
+    }
+
+    public Map<Dish, Integer> getmDishes() {
+        return mDishes;
+    }
+
+    public void setmDishes(Map<Dish, Integer> mDishes) {
+        this.mDishes = mDishes;
     }
 }
