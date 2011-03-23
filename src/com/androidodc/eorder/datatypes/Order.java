@@ -2,6 +2,7 @@ package com.androidodc.eorder.datatypes;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class Order implements Serializable {
 
@@ -12,6 +13,7 @@ public class Order implements Serializable {
     private int mOrderTotal;
     private Date mPayTime;
     private Date mCreateTime;
+    private List<Dish> dishes;
 
     public int getId() {
         return mId;
@@ -59,5 +61,13 @@ public class Order implements Serializable {
 
     public void setCreateTime(Date createdOn) {
         mCreateTime = createdOn;
+    }
+    
+    public List<Dish> getDishes() {
+        return dishes;
+    }
+
+    public void setDishes(List<Dish> dishes) {
+        this.dishes = dishes;
     }
 }
