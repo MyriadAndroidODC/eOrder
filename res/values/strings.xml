@@ -2,4 +2,9 @@
 <resources>
     <string name="app_name">eOrder</string>
     <string name="welcome">Welcome to our Restaurant!</string>
+    <string name="dish_name">Name: </string>
+    <string name="dish_price">Price: </string>
+    <string name="dish_introduction">Introduction: </string>
+    <string name="dish_return">Return</string>
+    <string name="app_dish_introduction">Dish Introduction</string>
 </resources>
