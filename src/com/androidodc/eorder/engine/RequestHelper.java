@@ -1,15 +1,6 @@
 package com.androidodc.eorder.engine;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
+import android.os.Bundle;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
@@ -21,18 +12,26 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
-
 import com.androidodc.eorder.utils.LogUtils;
-
-import android.os.Bundle;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RequestHelper {
     private static final int SUCCESS_STATUS = 200;
     private static final int FILE_END = -1;
-    private static final int CONNECTION_TIME_OUT = 2000;
+    private static final int CONNECTION_TIME_OUT = 5000;
     private static final int SOCKET_TIME_OUT = 3000;
+    private static final int FILE_BUFFER_SIZE = 1024;
     
-    public String doGet(String url, Bundle params) {
+    public static String doGet(String url, Bundle params) {
         if (params != null) {
             StringBuilder sb = new StringBuilder();
             boolean first = true;
@@ -71,7 +70,7 @@ public class RequestHelper {
         }
     }
         
-    public String doPost(String url, Bundle params) {
+    public static String doPost(String url, Bundle params) {
         HttpPost httpRequest = new HttpPost(url);  
         List paramsList = new ArrayList();
         BasicNameValuePair paramPair;
@@ -104,8 +103,8 @@ public class RequestHelper {
         } 
     }
 
-    public boolean getFileFromServer(String path, Bundle params, OutputStream fos) {
-         byte[] bf = new byte[1024];
+    public static boolean getFileFromServer(String path, Bundle params, OutputStream fos) {
+         byte[] bf = new byte[FILE_BUFFER_SIZE];
          int current = 0;
          
          try {
@@ -129,8 +128,8 @@ public class RequestHelper {
              URL url = new URL(path);
              HttpURLConnection connect = (HttpURLConnection)url.openConnection();
              connect.setDoInput(true);
-             connect.setConnectTimeout(5 * 1000);
-             connect.setReadTimeout(30 * 1000);
+             connect.setConnectTimeout(CONNECTION_TIME_OUT);
+             connect.setReadTimeout(SOCKET_TIME_OUT);
              int code = connect.getResponseCode();
              
              if (code == HttpURLConnection.HTTP_OK) {
