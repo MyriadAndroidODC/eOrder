@@ -24,13 +24,10 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
     private final static int DISHNUM_IN_ONEROW = 4;
     // The height of gridview's one row
     private final static int HEIGHT_ONEROW = 140;
-    // Test string
+    // TODO: Test string, this will be removed in the integration stage.
     private final static String CATEGORY_NAME = "»»≤À";
     private final static String DISH_NAME = "≤‚ ‘";
     private final static String DISH_PRICE = "88‘™";
-
-    // Every column is displayed by a gallery
-    private GridView[] mCategoryGallery;
 
     // The number of all the food category
     private int mCategoryNum;
@@ -51,7 +48,7 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
      * Initial all the data for UI.
      */
     private void initData() {
-        // All the bellow data should get from the database, hard code for test
+        // TODO All the bellow data should get from the database, hard code for test
         // mCategoryNum = mDbHelper.getCategoryNum();
         mCategoryNum = 10;
     }
@@ -65,34 +62,35 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
 
         setContentView(R.layout.main_list_activity);
         LinearLayout galleryFrame = (LinearLayout) findViewById(R.id.gallery_frame);
-        Button buttonForOrderedList = (Button) findViewById(R.id.id_orderedlist_button);
-        buttonForOrderedList.setOnClickListener(this);
+        Button orderListButton = (Button) findViewById(R.id.orderedlist_button);
+        orderListButton.setOnClickListener(this);
 
         // Inflate the main page from XML
         LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
-        mCategoryGallery = new GridView[mCategoryNum];
         // Initial the grid view for every food category.
         for (int i = 0; i < mCategoryNum; i++) {
             LinearLayout categoryLayout = (LinearLayout) inflater.inflate(
                     R.layout.main_list_item, null);
-            TextView cagegoryNameTextView = (TextView) categoryLayout.findViewById(
-                    R.id.id_category_name);
 
+            TextView cagegoryNameTextView = (TextView) categoryLayout.findViewById(
+                    R.id.category_name);
             cagegoryNameTextView.setText(CATEGORY_NAME); // Hard code for test
 
-            mCategoryGallery[i] = (GridView) categoryLayout.findViewById(R.id.id_dish_grid);
-            mCategoryGallery[i].setId(i);
-            mCategoryGallery[i].setAdapter(new GridViewAdapter(this));
-            mCategoryGallery[i].setOnItemClickListener(this);
+            GridView categoryView = (GridView) categoryLayout.findViewById(R.id.dish_grid);
+            // Because every GridView has the same ID:"id_dish_grid", 
+            // I should map this id with the category ID, So I set each a new ID.
+            categoryView.setId(i);
+            categoryView.setAdapter(new GridViewAdapter(this));
+            categoryView.setOnItemClickListener(this);
 
-            // hard code for no data.
+            //TODO: hard code for no data. Should get the data from data base.
             // int dishNumber = mDbHelper.getDishNumByCategory(i);
             int dishNumber = 9;
             // If dish number = 8, then row number = 2; If dish number = 9, then row number = 3
             // Every row should have 4 dishes.
             int rowNum = (dishNumber % DISHNUM_IN_ONEROW == 0) ? (dishNumber / DISHNUM_IN_ONEROW)
                     : (dishNumber / DISHNUM_IN_ONEROW + 1);
-            mCategoryGallery[i].getLayoutParams().height = rowNum * HEIGHT_ONEROW;
+            categoryView.getLayoutParams().height = rowNum * HEIGHT_ONEROW;
 
             galleryFrame.addView(categoryLayout);
         }
@@ -112,7 +110,7 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
         // context of the activity
         private Context mContext;
         private LayoutInflater mInflater;
-        // Dish image for test
+        //TODO Dish image for test, should get the data from database
         private Integer[] mThumbIds = { 
                 R.drawable.test,
                 R.drawable.test,
@@ -147,10 +145,10 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
             if (convertView == null) {
                 convertView = mInflater.inflate(R.layout.gridview_item, null);
                 viewHolder = new ViewHolder();
-                viewHolder.dishImageImageView = (ImageView) convertView.findViewById(R.id.id_food_image);
-                viewHolder.dishNameTextView = (TextView) convertView.findViewById(R.id.id_food_name);
-                viewHolder.dishPriceTextView = (TextView) convertView.findViewById(R.id.id_food_price);
-                viewHolder.dishSelectCheckBox = (CheckBox) convertView.findViewById(R.id.id_food_select);
+                viewHolder.dishImageImageView = (ImageView) convertView.findViewById(R.id.food_image);
+                viewHolder.dishNameTextView = (TextView) convertView.findViewById(R.id.food_name);
+                viewHolder.dishPriceTextView = (TextView) convertView.findViewById(R.id.food_price);
+                viewHolder.dishSelectCheckBox = (CheckBox) convertView.findViewById(R.id.food_select);
 
                 setCheckBoxClickListener(viewHolder.dishSelectCheckBox, position, parent.getId());
 
@@ -178,7 +176,7 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
          * Set dish's details(image, price and name).
          */
         private void setDishDetails(ViewHolder viewHolder, int position, int categoryId) {
-            // TODO use hard code for test
+            // TODO use hard code for test, should get data from database
             /*
              * DishDetail dishDetail = mDbhelper.getDishDetail(iCategoryId,
              * position)
@@ -195,15 +193,13 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             int dishId = buttonView.getId();
-            int categoryId = (Integer) buttonView.getTag();
-            changeTheDishList(categoryId, dishId, isChecked);
+            updateOrder(dishId, isChecked);
         }
 
         /**
          * Add or remove a dish from the dish list.
          */
-        private void changeTheDishList(
-                final int categoryId, 
+        private void updateOrder(
                 final int dishId, 
                 final boolean isChecked) {
             // TODO
@@ -214,7 +210,7 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-        case R.id.id_orderedlist_button:
+        case R.id.orderedlist_button:
             // Open the ordered list page
             openOrderedListPage();
             break;
@@ -230,7 +226,7 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
         // TODO Handle the galley's item click event
         int categoryId = parent.getId();
         int dishId = position;
-        openDetailPage(categoryId, dishId);
+        viewDishDetail(categoryId, dishId);
     }
 
     /**
@@ -243,7 +239,7 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
     /**
      * Open the dish detail page.
      */
-    private void openDetailPage(final int categoryId, final int dishId) {
+    private void viewDishDetail(final int categoryId, final int dishId) {
         // TODO open the detail page
 
     }

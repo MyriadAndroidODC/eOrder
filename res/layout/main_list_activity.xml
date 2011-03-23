@@ -4,7 +4,7 @@
     android:layout_height="fill_parent"
     android:background="@drawable/order_bg"
     >
-    <Button android:id="@+id/id_orderedlist_button"
+    <Button android:id="@+id/orderedlist_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -15,13 +15,12 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:scrollbars="none"
-        android:layout_above="@id/id_orderedlist_button"
+        android:layout_above="@id/orderedlist_button"
         android:measureAllChildren="true">
-        <LinearLayout
+        <LinearLayout android:id="@+id/gallery_frame"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:orientation="vertical"
-            android:id="@+id/gallery_frame"
             />
     </ScrollView>
 </RelativeLayout>
