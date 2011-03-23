@@ -14,9 +14,9 @@ import com.androidodc.eorder.database.tables.ConfigTable;
 import com.androidodc.eorder.database.tables.DishCategoryTable;
 import com.androidodc.eorder.database.tables.DishTable;
 import com.androidodc.eorder.datatypes.Category;
-import com.androidodc.eorder.datatypes.Category.DishCategory;
 import com.androidodc.eorder.datatypes.Config;
 import com.androidodc.eorder.datatypes.Dish;
+import com.androidodc.eorder.datatypes.DishCategory;
 import com.androidodc.eorder.utils.LogUtils;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -226,7 +226,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             e.printStackTrace();
         }
 
-        DishCategory dc = c.new DishCategory();
+        DishCategory dc = new DishCategory();
         dc.setCategoryId(c.getCategoryId());
         dc.setDishId(d.getDishId());
         try {
@@ -234,7 +234,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        DishCategory dc2 = c.new DishCategory();
+        DishCategory dc2 = new DishCategory();
         dc2.setCategoryId(c.getCategoryId());
         dc2.setDishId(d2.getDishId());
         try {
@@ -242,7 +242,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        DishCategory dc3 = c.new DishCategory();
+        DishCategory dc3 = new DishCategory();
         dc3.setCategoryId(c.getCategoryId());
         dc3.setDishId(d3.getDishId());
         try {
@@ -250,7 +250,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        DishCategory dc4 = c.new DishCategory();
+        DishCategory dc4 = new DishCategory();
         dc4.setCategoryId(c2.getCategoryId());
         dc4.setDishId(d4.getDishId());
         try {
@@ -258,7 +258,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        DishCategory dc5 = c.new DishCategory();
+        DishCategory dc5 = new DishCategory();
         dc5.setCategoryId(c2.getCategoryId());
         dc5.setDishId(d5.getDishId());
         try {
