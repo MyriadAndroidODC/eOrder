@@ -1,7 +1,10 @@
 package com.androidodc.eorder.datatypes;
 
-public class Config {
+import java.io.Serializable;
 
+public class Config implements Serializable {
+
+    private static final long serialVersionUID = -5628383841157128646L;
     private int mId;
     private int mConfigId;
     private String mName;
