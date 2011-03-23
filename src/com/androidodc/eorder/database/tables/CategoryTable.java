@@ -19,11 +19,11 @@ public class CategoryTable {
     /**
      * The columns of this table.
      */
-    public static final String _ID                  = "_id";
-    public static final String CATEGORY_ID          = "category_id";
-    public static final String NAME                 = "name";
-    public static final String DESCRIPTION          = "description";
-    public static final String SORT_ORDER           = "sort_order";
+    public static final String _ID = "_id";
+    public static final String CATEGORY_ID = "category_id";
+    public static final String NAME = "name";
+    public static final String DESCRIPTION = "description";
+    public static final String SORT_ORDER = "sort_order";
 
     /**
      * The foreign key used by other tables.
