@@ -1,10 +1,5 @@
 package com.androidodc.eorder.service;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.List;
-import org.json.JSONException;
 import android.os.Bundle;
 import android.os.Environment;
 import com.androidodc.eorder.datatypes.Category;
@@ -17,6 +12,11 @@ import com.androidodc.eorder.datatypes.OrderDetail;
 import com.androidodc.eorder.engine.ResponseParser;
 import com.androidodc.eorder.engine.RequestHelper;
 import com.androidodc.eorder.utils.LogUtils;
+import org.json.JSONException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.List;
 
 public class ServiceHelper {
     private static final String DEFAULT_URL = "http://10.15.5.237:8080/";
@@ -72,7 +72,7 @@ public class ServiceHelper {
         
         try {
             for (Dish dish : dishList) {
-                String imgUrl = DEFAULT_URL + dish.getImageServer();
+                String imgUrl = getRequestUrl(null, dish.getImageServer());
                 String imgName = dish.getImageServer().split("/", 2)[1];
                 String filePath = getLocalFileStorageUrl("", imgName);
                 OutputStream fos = new FileOutputStream(filePath);
@@ -94,6 +94,8 @@ public class ServiceHelper {
             tableList = reqParser.parseDiningTables(respStr);
         } catch (JSONException e) {
             LogUtils.logD(e.getMessage());
+        } catch (Exception e) {
+            LogUtils.logD(e.getMessage());
         }
         return tableList;
     }
@@ -106,6 +108,8 @@ public class ServiceHelper {
         try {
             categoryList = reqParser.parseCategories(respStr);
         } catch (JSONException e) {
+            LogUtils.logD(e.getMessage());
+        } catch (Exception e) {
             LogUtils.logD(e.getMessage());
         }
         return categoryList;
@@ -120,6 +124,8 @@ public class ServiceHelper {
             dishList = reqParser.parseDishes(respStr);
         } catch (JSONException e) {
             LogUtils.logD(e.getMessage());
+        } catch (Exception e) {
+            LogUtils.logD(e.getMessage());
         }
         return dishList;
     }
@@ -132,6 +138,8 @@ public class ServiceHelper {
         try {
             dishCategoryList = reqParser.parseDishCategory(respStr);
         } catch (JSONException e) {
+            LogUtils.logD(e.getMessage());
+        } catch (Exception e) {
             LogUtils.logD(e.getMessage());
         }
         return dishCategoryList;
@@ -146,6 +154,8 @@ public class ServiceHelper {
             orderList = reqParser.parseOrders(respStr);
         } catch (JSONException e) {
             LogUtils.logD(e.getMessage());
+        } catch (Exception e) {
+            LogUtils.logD(e.getMessage());
         }
         return orderList;
     }
@@ -159,6 +169,8 @@ public class ServiceHelper {
             orderDetailList = reqParser.parseOrderDetail(respStr);
         } catch (JSONException e) {
             LogUtils.logD(e.getMessage());
+        } catch (Exception e) {
+            LogUtils.logD(e.getMessage());
         }
         return orderDetailList;
     }
@@ -171,6 +183,8 @@ public class ServiceHelper {
         try {
             configList = reqParser.parseConfigs(respStr);
         } catch (JSONException e) {
+            LogUtils.logD(e.getMessage());
+        } catch (Exception e) {
             LogUtils.logD(e.getMessage());
         }
         return configList;

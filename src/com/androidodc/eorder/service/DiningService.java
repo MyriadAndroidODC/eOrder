@@ -1,10 +1,10 @@
 package com.androidodc.eorder.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import android.app.Service; 
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.IBinder;
 import com.androidodc.eorder.database.DatabaseHelper;
 import com.androidodc.eorder.datatypes.Category;
 import com.androidodc.eorder.datatypes.Config;
@@ -14,12 +14,9 @@ import com.androidodc.eorder.datatypes.DishCategory;
 import com.androidodc.eorder.datatypes.Order;
 import com.androidodc.eorder.datatypes.OrderDetail;
 import com.androidodc.eorder.utils.LogUtils;
-import android.app.Service; 
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.IBinder;
-import android.util.SparseArray;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class DiningService extends Service {    
     public static final String SYNC_DINING_TABLE = "com.androidodc.intent.SYNC_TABLES_STATUS";
@@ -114,14 +111,19 @@ public class DiningService extends Service {
             }
             
         } else if (commandType == COMMAND_SYNC_OTHER) {
-            if (dbHelper == null) {
-                DatabaseHelper.init(this.getApplicationContext());
-                dbHelper = DatabaseHelper.getInstance();
+            try{
+                if (dbHelper == null) {
+                    DatabaseHelper.init(this.getApplicationContext());
+                    dbHelper = DatabaseHelper.getInstance();
+                }            
+                opSymbol = (opSymbol == true ? synCategories() : false);
+                opSymbol = (opSymbol == true ? synDishCategory() : false);
+                opSymbol = (opSymbol == true ? synDishesAndImages() : false);
+                //opSymbol = (opSymbol == true ? synConfigs() : false); // TODO
+            } catch (Exception e) {
+                LogUtils.logD("Synchronize other information error! \n" + e.getMessage());
+                opSymbol = false;
             }
-            opSymbol = (opSymbol == true ? synCategories() : false);
-            opSymbol = (opSymbol == true ? synDishes() : false);
-            opSymbol = (opSymbol == true ? synDishCategory() : false);
-            //opSymbol = (opSymbol == true ? synConfigs() : false); // TODO
             sendMsg(null, opSymbol == true ? EXECUTE_OTHER_SUCCESS : EXECUTE_ERROR, null);
         } else if (commandType == COMMAND_SUBMIT_ORDER) {
             HashMap submitOrderMap = (HashMap)intent.getSerializableExtra(SUBMIT_KEY);
@@ -177,17 +179,27 @@ public class DiningService extends Service {
     private boolean synCategories() {
         boolean result = true;
         List<Category> categoryList = serviceHelper.getCategories();
-        for (Category category : categoryList) {
-            dbHelper.addCategory(category);
+        if (categoryList == null) {
+            result = false;
+        } else {
+            for (Category category : categoryList) {
+                dbHelper.addCategory(category);
+            }
         }
         return result;
     }
 
-    private boolean synDishes() {
+    private boolean synDishesAndImages() {
         boolean result = true;
         List<Dish> dishList = serviceHelper.getDishes();
-        for (Dish dish : dishList) {
-            dbHelper.addDish(dish);
+        if (dishList == null) {
+            result = false;
+        } else {
+            for (Dish dish : dishList) {
+                dbHelper.addDish(dish);
+            }
+            
+            result = serviceHelper.syncDishImage(dishList);//synchronize the image
         }
         return result;
     }
@@ -195,8 +207,12 @@ public class DiningService extends Service {
     private boolean synDishCategory() {
         boolean result = true;
         List<DishCategory> dishCategoryList = serviceHelper.getDishCategory();
-        for (DishCategory dishCategory : dishCategoryList) {
-            dbHelper.addDishCategory(dishCategory);
+        if (dishCategoryList == null) {
+            result = false;
+        } else {
+            for (DishCategory dishCategory : dishCategoryList) {
+                dbHelper.addDishCategory(dishCategory);
+            }
         }
         return result;
     }
@@ -204,8 +220,12 @@ public class DiningService extends Service {
     private boolean synConfigs() {
         boolean result = true;
         List<Config> configList = serviceHelper.getConfigs();
-        for (Config config : configList) {
-            dbHelper.addConfig(config);
+        if (configList == null) {
+            result = false;
+        } else {
+            for (Config config : configList) {
+                dbHelper.addConfig(config);
+            }
         }
         return result;
     }
