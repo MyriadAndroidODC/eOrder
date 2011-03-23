@@ -9,8 +9,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.androidodc.eorder.datatypes.Category.DishCategory;
 import com.androidodc.eorder.datatypes.Dish;
+import com.androidodc.eorder.datatypes.DishCategory;
 
 public class DishCategoryTable {
     /**
