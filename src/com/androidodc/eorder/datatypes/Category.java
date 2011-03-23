@@ -43,7 +43,7 @@ public class Category implements Serializable {
         mDescription = description;
     }
 
-    public Integer getSortOrder() {
+    public int getSortOrder() {
         return mSortOrder;
     }
 
