@@ -9,7 +9,7 @@ public class Order implements Serializable {
     private int mId;
     private int mOrderId;
     private int mStatus;
-    private double mOrderTotal;
+    private int mOrderTotal;
     private Date mPayTime;
     private Date mCreateTime;
 
@@ -37,11 +37,11 @@ public class Order implements Serializable {
         mStatus = status;
     }
 
-    public double getOrderTotal() {
+    public int getOrderTotal() {
         return mOrderTotal;
     }
 
-    public void setOrderTotal(double orderTotal) {
+    public void setOrderTotal(int orderTotal) {
         mOrderTotal = orderTotal;
     }
 
