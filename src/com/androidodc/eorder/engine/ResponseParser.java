@@ -14,47 +14,50 @@ import com.androidodc.eorder.datatypes.DishCategory;
 import com.androidodc.eorder.datatypes.Order;
 import com.androidodc.eorder.datatypes.OrderDetail;
 
-public class ParseHelper {
-    public List<Dish> parseDishsResp(String dishsRespStr)
-        throws JSONException {
-        
+public class ResponseParser {
+    public List<Dish> parseDishes(String dishesRespStr) throws JSONException {
         List<Dish> resultList = null;
-        JSONObject dishs = new JSONObject(dishsRespStr);
+        JSONObject dishes = new JSONObject(dishesRespStr);
         resultList = new ArrayList<Dish>();
         
-        int i;
         Dish tempDish = null;
-        JSONArray dishArray = dishs.getJSONArray("dishs");
+        JSONArray dishArray = dishes.getJSONArray("dishes");
         
-        for (i = 0; i < dishArray.length(); i++) {
+        for (int i = 0; i < dishArray.length(); i++) {
             tempDish = new Dish();
             JSONObject dishObj = dishArray.getJSONObject(i);
-            tempDish.setId(Integer.parseInt(dishObj.getString("id")));
+            tempDish.setId(Integer.parseInt(dishObj.getString("_id")));
             tempDish.setName(dishObj.getString("name"));
-            tempDish.setPrice(Double.parseDouble(dishObj.getString("price")));
+            tempDish.setPrice(Integer.parseInt(dishObj.getString("price")));
             tempDish.setDescription(dishObj.getString("description"));
-            tempDish.setImageServer(dishObj.getString("image"));
-            tempDish.setCreatedOn(new Date(dishObj.getString("created_on")));
-            tempDish.setUpdatedOn(new Date(dishObj.getString("updated_on")));
+            tempDish.setImageServer(dishObj.getString("image_url"));
+            
+            long createTimeValue = Long.parseLong(dishObj.getString("create_time"));
+            long updateTimeValue = Long.parseLong(dishObj.getString("update_time"));
+            Date createTime = new Date();
+            Date updateTime = new Date();
+            createTime.setTime(createTimeValue);
+            updateTime.setTime(updateTimeValue);
+            
+            tempDish.setCreateTime(createTime);
+            tempDish.setUpdateTime(updateTime);
             resultList.add(tempDish);
         }
         return resultList;
     }
     
-    public List<Category> parseCategorysResp(String categoryRespStr)
-        throws JSONException {
+    public List<Category> parseCategories(String categoryRespStr) throws JSONException {
         List<Category> resultList = null; 
-        JSONObject dishs = new JSONObject(categoryRespStr);
+        JSONObject categories = new JSONObject(categoryRespStr);
         resultList = new ArrayList<Category>();
         
-        int i;
         Category tempCategory = null;
-        JSONArray dishArray = dishs.getJSONArray("categories");
+        JSONArray dishArray = categories.getJSONArray("categories");
         
-        for (i = 0; i < dishArray.length(); i++) {
+        for (int i = 0; i < dishArray.length(); i++) {
             tempCategory = new Category();
             JSONObject dishObj = dishArray.getJSONObject(i);
-            tempCategory.setId(Integer.parseInt(dishObj.getString("id")));
+            tempCategory.setId(Integer.parseInt(dishObj.getString("_id")));
             tempCategory.setName(dishObj.getString("name"));
             tempCategory.setDescription(dishObj.getString("description"));
             tempCategory.setSortOrder(Integer.parseInt(dishObj.getString("sort_order")));
@@ -63,18 +66,15 @@ public class ParseHelper {
         return resultList;
     }
 
-    public List<DishCategory> parseDishCategorysResp(String dishCategoryRespStr)
-        throws JSONException {
-        
+    public List<DishCategory> parseDishCategory(String dishCategoryRespStr) throws JSONException {
         List<DishCategory> resultList = null;
-        JSONObject dishs = new JSONObject(dishCategoryRespStr);
+        JSONObject dishCategory = new JSONObject(dishCategoryRespStr);
         resultList = new ArrayList<DishCategory>();
         
-        int i;
         DishCategory tempDishCategory = null;
-        JSONArray dishArray = dishs.getJSONArray("dish_categories");
+        JSONArray dishArray = dishCategory.getJSONArray("dish_category");
         
-        for (i = 0; i < dishArray.length(); i++) {
+        for (int i = 0; i < dishArray.length(); i++) {
             tempDishCategory = new DishCategory();
             JSONObject dishObj = dishArray.getJSONObject(i);
             tempDishCategory.setDishId(Integer.parseInt(dishObj.getString("dish_id")));
@@ -84,48 +84,48 @@ public class ParseHelper {
         return resultList;
     }
 
-    public List<Order> parseOrdersResp(String orderRespStr)
-        throws JSONException {
-        
+    public List<Order> parseOrders(String orderRespStr) throws JSONException {
         List<Order> resultList = null;
-        JSONObject dishs = new JSONObject(orderRespStr);
+        JSONObject orders = new JSONObject(orderRespStr);
         resultList = new ArrayList<Order>();
         
-        int i;
         Order tempOrder = null;
-        JSONArray dishArray = dishs.getJSONArray("orders");
+        JSONArray dishArray = orders.getJSONArray("orders");
         
-        for (i = 0; i < dishArray.length(); i ++) {
+        for (int i = 0; i < dishArray.length(); i ++) {
             tempOrder = new Order();
             JSONObject dishObj = dishArray.getJSONObject(i);
             tempOrder.setId(Integer.parseInt(dishObj.getString("_id")));
-            tempOrder.setTableId(Integer.parseInt(dishObj.getString("table_id")));
             tempOrder.setStatus(Integer.parseInt(dishObj.getString("status")));
-            tempOrder.setOrderTotal(Double.parseDouble(dishObj.getString("order_total")));
-            tempOrder.setPaidOn(new Date(dishObj.getString("paid_on")));
-            tempOrder.setCreatedOn(new Date(dishObj.getString("created_on")));
+            tempOrder.setOrderTotal(Integer.parseInt(dishObj.getString("sum")));
+
+            long createTimeValue = Long.parseLong(dishObj.getString("create_time"));
+            long payTimeValue = Long.parseLong(dishObj.getString("pay_time"));
+            Date createTime = new Date();
+            Date payTime = new Date();
+            createTime.setTime(createTimeValue);
+            payTime.setTime(payTimeValue);
+            tempOrder.setCreateTime(createTime);
+            tempOrder.setPayTime(payTime);
             resultList.add(tempOrder);
         }
         return resultList;
     }
 
-    public List<OrderDetail> parseOrderDetailsResp(String orderDetailRespStr)
-        throws JSONException {
-        
+    public List<OrderDetail> parseOrderDetail(String orderDetailRespStr) throws JSONException {
         List<OrderDetail> resultList = null;
-        JSONObject dishs = new JSONObject(orderDetailRespStr);
+        JSONObject orderDetail = new JSONObject(orderDetailRespStr);
         resultList = new ArrayList<OrderDetail>();
         
-        int i;
         OrderDetail tempOrderDetail = null;
-        JSONArray dishArray = dishs.getJSONArray("order_details");
+        JSONArray dishArray = orderDetail.getJSONArray("order_detail");
         
-        for (i = 0; i < dishArray.length(); i++) {
+        for (int i = 0; i < dishArray.length(); i++) {
             tempOrderDetail = new OrderDetail();
             JSONObject dishObj = dishArray.getJSONObject(i);
             tempOrderDetail.setId(Integer.parseInt(dishObj.getString("_id")));
             tempOrderDetail.setOrderId(Integer.parseInt(dishObj.getString("order_id")));
-            tempOrderDetail.setOrderDetailId(Integer.parseInt(dishObj.getString("order_id")));
+            tempOrderDetail.setTableId(Integer.parseInt(dishObj.getString("dining_table_id")));
             tempOrderDetail.setDishId(Integer.parseInt(dishObj.getString("dish_id")));
             tempOrderDetail.setNumber(Integer.parseInt(dishObj.getString("number")));
             resultList.add(tempOrderDetail);
@@ -133,23 +133,20 @@ public class ParseHelper {
         return resultList;
     }
 
-    public List<DiningTable> parseDiningTablesResp(String diningTablesRespStr)
-        throws JSONException {
-        
+    public List<DiningTable> parseDiningTables(String diningTablesRespStr) throws JSONException {
         List<DiningTable> resultList = null;
-        JSONObject dishs = new JSONObject(diningTablesRespStr);
+        JSONObject diningTables = new JSONObject(diningTablesRespStr);
         resultList = new ArrayList<DiningTable>();
         
-        int i;
         DiningTable tempDiningTable = null;
-        JSONArray dishArray = dishs.getJSONArray("dining_tables");
+        JSONArray dishArray = diningTables.getJSONArray("dining_tables");
         
-        for (i = 0; i < dishArray.length(); i++) {
+        for (int i = 0; i < dishArray.length(); i++) {
             tempDiningTable = new DiningTable();
             JSONObject dishObj = dishArray.getJSONObject(i);
             tempDiningTable.setId(Integer.parseInt(dishObj.getString("_id")));
             tempDiningTable.setName(dishObj.getString("name"));
-            tempDiningTable.setMaxPeople(Integer.parseInt(dishObj.getString("max_people")));
+            tempDiningTable.setMaxPeople(Integer.parseInt(dishObj.getString("capacity")));
             int free = Integer.parseInt(dishObj.getString("status"));            
             tempDiningTable.setFree(free == 0 ? true : false);
             resultList.add(tempDiningTable);
@@ -157,18 +154,16 @@ public class ParseHelper {
         return resultList;
     }
 
-    public List<Config> parseConfigsResp(String configsRespStr)
-        throws JSONException {
+    public List<Config> parseConfigs(String configsRespStr) throws JSONException {
         
         List<Config> resultList = null;
-        JSONObject dishs = new JSONObject(configsRespStr);
+        JSONObject configs = new JSONObject(configsRespStr);
         resultList = new ArrayList<Config>();
         
-        int i;
         Config tempConfig = null;
-        JSONArray dishArray = dishs.getJSONArray("configs");
+        JSONArray dishArray = configs.getJSONArray("configs");
         
-        for (i = 0; i < dishArray.length(); i++) {
+        for (int i = 0; i < dishArray.length(); i++) {
             tempConfig = new Config();
             JSONObject dishObj = dishArray.getJSONObject(i);
             tempConfig.setId(Integer.parseInt(dishObj.getString("_id")));
