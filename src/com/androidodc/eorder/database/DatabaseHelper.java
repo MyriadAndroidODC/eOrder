@@ -1,6 +1,5 @@
 package com.androidodc.eorder.database;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Observable;
 
@@ -124,5 +123,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void addConfig(final Config config) {
         ConfigTable.add(getWritableDatabase(), config);
+    }
+
+    public long getDishCategoryId(long dishId){
+        return DishCategoryTable.getDishCategoryId(getReadableDatabase(), dishId);
     }
 }

@@ -38,6 +38,13 @@ public class DishCategoryTable {
     }
 
     /**
+     * Drops the entire table, any data in it will be erased.
+     */
+    public static void drop(final SQLiteDatabase db) {
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+    }
+
+    /**
      * Add a new dish to DishTable.
      *
      * @param db the writable db
@@ -87,9 +94,23 @@ public class DishCategoryTable {
     }
 
     /**
-     * Drops the entire table, any data in it will be erased.
+     * get category id of the current dish category.
+     * @param db
+     * @param dishId
+     * @return categoryId, or -1 if not found relational category
      */
-    public static void drop(final SQLiteDatabase db) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+    public static long getDishCategoryId(final SQLiteDatabase db, final long dishId) {
+        final Cursor c = db.rawQuery("SELECT " + CATEGORY_ID + " FROM " + TABLE_NAME + " WHERE " + DISH_ID + " =?",
+                new String[] { String.valueOf(dishId) });
+      if (c != null) {
+            try {
+                if(c.moveToFirst()) {
+                   return c.getLong(c.getColumnIndex(CATEGORY_ID));
+                }
+            } finally {
+                c.close();
+            }
+        }
+        return -1;
     }
 }
