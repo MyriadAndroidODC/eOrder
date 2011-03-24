@@ -94,7 +94,7 @@ public class DishCategoryTable {
     }
 
     /**
-     * get category id of the current dish category.
+     * Get category id of the current dish category.
      * @param db
      * @param dishId
      * @return categoryId, or -1 if not found relational category
@@ -112,5 +112,30 @@ public class DishCategoryTable {
             }
         }
         return -1;
+    }
+
+    /**
+     * Get sequenced dish_ids list
+     * This list was ordered by Table Category' sort_order and category_id ASC, Table DishCategory dish_id ASC
+     * @param db
+     * @return
+     */
+    public static List<Long> getSequencedDishIds(final SQLiteDatabase db) {
+        final Cursor c = db.rawQuery("SELECT dc." + DISH_ID + " FROM " + TABLE_NAME + " dc, "
+                + CategoryTable.TABLE_NAME + " c WHERE dc." + CATEGORY_ID + " = c."
+                + CategoryTable.CATEGORY_ID + " ORDER BY c." + CategoryTable.SORT_ORDER + ", c."
+                + CategoryTable.CATEGORY_ID + ", " + DISH_ID, null);
+        if (c != null) {
+            try {
+                List<Long> list = new ArrayList<Long>();
+                while (c.moveToNext()) {
+                    list.add(c.getLong(c.getColumnIndex(DISH_ID)));
+                }
+                return list;
+            } finally {
+                c.close();
+            }
+        }
+        return Collections.emptyList();
     }
 }
