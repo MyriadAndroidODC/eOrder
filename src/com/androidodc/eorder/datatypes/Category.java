@@ -5,25 +5,25 @@ import java.io.Serializable;
 public class Category implements Serializable {
 
     private static final long serialVersionUID = 3948922015270201885L;
-    private int mId;
-    private int mCategoryId;
+    private long mId;
+    private long mCategoryId;
     private String mName;
     private String mDescription;
     private int mSortOrder;
 
-    public int getId() {
+    public long getId() {
         return mId;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         mId = id;
     }
 
-    public int getCategoryId() {
+    public long getCategoryId() {
         return mCategoryId;
     }
 
-    public void setCategoryId(int categoryId) {
+    public void setCategoryId(long categoryId) {
         mCategoryId = categoryId;
     }
 
@@ -49,26 +49,5 @@ public class Category implements Serializable {
 
     public void setSortOrder(Integer sortOrder) {
         mSortOrder = sortOrder;
-    }
-
-    public class DishCategory {
-        private int mCategoryId;
-        private int mDishId;
-
-        public int getCategoryId() {
-            return mCategoryId;
-        }
-
-        public void setCategoryId(int categoryId) {
-            mCategoryId = categoryId;
-        }
-
-        public int getDishId() {
-            return mDishId;
-        }
-
-        public void setDishId(int dishId) {
-            mDishId = dishId;
-        }
     }
 }

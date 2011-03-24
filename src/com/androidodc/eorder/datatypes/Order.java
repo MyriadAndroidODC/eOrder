@@ -2,29 +2,29 @@ package com.androidodc.eorder.datatypes;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Map;
+import java.util.List;
 
 public class Order implements Serializable {
 
     private static final long serialVersionUID = 542383610552166140L;
-    private int mId;
-    private int mOrderId;
+    private long mId;
+    private long mOrderId;
     private int mStatus;
     private int mOrderTotal;
     private Date mPayTime;
     private Date mCreateTime;
-    private int mTableId;
-    private Map<Dish, Integer> mDishes;
+    private long mTableId;
+    private List<OrderItem> mOrderItems;
 
-    public int getId() {
+    public long getId() {
         return mId;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         mId = id;
     }
 
-    public int getOrderId() {
+    public long getOrderId() {
         return mOrderId;
     }
 
@@ -64,19 +64,19 @@ public class Order implements Serializable {
         mCreateTime = createdOn;
     }
 
-    public int getmTableId() {
+    public long getTableId() {
         return mTableId;
     }
 
-    public void setmTableId(int mTableId) {
-        this.mTableId = mTableId;
+    public void setTableId(long tableId) {
+        mTableId = tableId;
     }
 
-    public Map<Dish, Integer> getmDishes() {
-        return mDishes;
+    public List<OrderItem> getOrderItems() {
+        return mOrderItems;
     }
 
-    public void setmDishes(Map<Dish, Integer> mDishes) {
-        this.mDishes = mDishes;
+    public void setOrderItems(List<OrderItem> orderItems) {
+        mOrderItems = orderItems;
     }
 }
