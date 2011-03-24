@@ -6,8 +6,8 @@ import java.util.Date;
 public class Dish implements Serializable {
 
     private static final long serialVersionUID = 59028309245200797L;
-    private int mId;
-    private int mDishId;
+    private long mId;
+    private long mDishId;
     private String mName;
     private int mPrice;
     private String mDescription;
@@ -16,19 +16,19 @@ public class Dish implements Serializable {
     private Date mCreateTime;
     private Date mUpdateTime;
 
-    public int getId() {
+    public long getId() {
         return mId;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         mId = id;
     }
 
-    public int getDishId() {
+    public long getDishId() {
         return mDishId;
     }
 
-    public void setDishId(int dishId) {
+    public void setDishId(long dishId) {
         mDishId = dishId;
     }
 

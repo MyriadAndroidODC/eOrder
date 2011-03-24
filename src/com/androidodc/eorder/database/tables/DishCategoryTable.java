@@ -58,7 +58,7 @@ public class DishCategoryTable {
      * @param categoryId the categoryId
      * @return Dish objects of specified category.
      */
-    public static List<Dish> getDishsByCategory(final SQLiteDatabase db, final int categoryId) {
+    public static List<Dish> getDishsByCategory(final SQLiteDatabase db, final long categoryId) {
         final Cursor c = db.rawQuery("SELECT d.* FROM " + DishTable.TABLE_NAME + " d, "
                 + TABLE_NAME + " dc WHERE dc." + CATEGORY_ID + " =? AND d."+DishTable._ID + " = dc." + DISH_ID
                 + " ORDER BY d." + DishTable._ID, new String[] { String.valueOf(categoryId) });
@@ -67,8 +67,8 @@ public class DishCategoryTable {
             try {
                 while(c.moveToNext()) {
                     Dish dish = new Dish();
-                    dish.setId(c.getInt(c.getColumnIndex(DishTable._ID)));
-                    dish.setDishId(c.getInt(c.getColumnIndex(DishTable.DISH_ID)));
+                    dish.setId(c.getLong(c.getColumnIndex(DishTable._ID)));
+                    dish.setDishId(c.getLong(c.getColumnIndex(DishTable.DISH_ID)));
                     dish.setName(c.getString(c.getColumnIndex(DishTable.NAME)));
                     dish.setPrice(c.getInt(c.getColumnIndex(DishTable.PRICE)));
                     dish.setDescription(c.getString(c.getColumnIndex(DishTable.DESCRIPTION)));

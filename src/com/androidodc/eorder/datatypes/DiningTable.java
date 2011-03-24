@@ -5,25 +5,25 @@ import java.io.Serializable;
 public class DiningTable implements Serializable {
 
     private static final long serialVersionUID = 4477564220523201176L;
-    private int mId;
-    private int mDiningTableId;
+    private long mId;
+    private long mDiningTableId;
     private String mName;
     private int mMaxPeople;
     private boolean mIsFree;
 
-    public int getId() {
+    public long getId() {
         return mId;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         mId = id;
     }
 
-    public int getDiningTableId() {
+    public long getDiningTableId() {
         return mDiningTableId;
     }
 
-    public void setDiningTableId(int diningTableId) {
+    public void setDiningTableId(long diningTableId) {
         mDiningTableId = diningTableId;
     }
 

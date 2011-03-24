@@ -5,25 +5,25 @@ import java.io.Serializable;
 public class Config implements Serializable {
 
     private static final long serialVersionUID = -5628383841157128646L;
-    private int mId;
-    private int mConfigId;
+    private long mId;
+    private long mConfigId;
     private String mName;
     private String mValue;
     private String mDescription;
 
-    public int getId() {
+    public long getId() {
         return mId;
     }
 
-    public void setId(int id) {
-        mId = id;
+    public void setId(long id) {
+        this.mId = id;
     }
 
-    public int getConfigId() {
+    public long getConfigId() {
         return mConfigId;
     }
 
-    public void setConfigId(int configId) {
+    public void setConfigId(long configId) {
         mConfigId = configId;
     }
 

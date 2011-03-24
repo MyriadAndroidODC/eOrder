@@ -1,5 +1,7 @@
 package com.androidodc.eorder.ui;
 
+import com.androidodc.eorder.database.DatabaseHelper;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,7 +19,7 @@ public class WelcomeActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.welcome);
-
+        DatabaseHelper.init(this);
         View welcomeLayout = findViewById(R.id.layout_welcome);
         welcomeLayout.getBackground().setAlpha(BACKGROUND_ALPHA);
 

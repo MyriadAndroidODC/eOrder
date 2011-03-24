@@ -84,7 +84,7 @@ public class DishTable {
      * @param dishId the dishId from server
      * @return the Dish object of this dish.
      */
-    public static Dish getDish(final SQLiteDatabase db, final int dishId) {
+    public static Dish getDish(final SQLiteDatabase db, final long dishId) {
         final Cursor c = db.rawQuery("SELECT  * FROM " + TABLE_NAME + " WHERE " + DISH_ID + " =? ",
                 new String[] { String.valueOf(dishId) });
 
@@ -92,8 +92,8 @@ public class DishTable {
             try {
                 if (c.moveToFirst()) {
                     final Dish dish = new Dish();
-                    dish.setId(c.getInt(c.getColumnIndex(_ID)));
-                    dish.setDishId(c.getInt(c.getColumnIndex(DISH_ID)));
+                    dish.setId(c.getLong(c.getColumnIndex(_ID)));
+                    dish.setDishId(c.getLong(c.getColumnIndex(DISH_ID)));
                     dish.setName(c.getString(c.getColumnIndex(NAME)));
                     dish.setPrice(c.getInt(c.getColumnIndex(PRICE)));
                     dish.setDescription(c.getString(c.getColumnIndex(DESCRIPTION)));
@@ -124,8 +124,8 @@ public class DishTable {
             try {
                 while(c.moveToNext()) {
                     final Dish dish = new Dish();
-                    dish.setId(c.getInt(c.getColumnIndex(_ID)));
-                    dish.setDishId(c.getInt(c.getColumnIndex(DISH_ID)));
+                    dish.setId(c.getLong(c.getColumnIndex(_ID)));
+                    dish.setDishId(c.getLong(c.getColumnIndex(DISH_ID)));
                     dish.setName(c.getString(c.getColumnIndex(NAME)));
                     dish.setPrice(c.getInt(c.getColumnIndex(PRICE)));
                     dish.setDescription(c.getString(c.getColumnIndex(DESCRIPTION)));
@@ -158,7 +158,7 @@ public class DishTable {
      * @param dishId
      * @param imageLocal
      */
-    public static void updateDishImageLocalByDishId(final SQLiteDatabase db, final int dishId,
+    public static void updateDishImageLocalByDishId(final SQLiteDatabase db, final long dishId,
             String imageLocal) {
         db.execSQL("UPDATE " + DishTable.TABLE_NAME + " SET " + DishTable.IMAGE_LOCAL + "="
                 + imageLocal + " WHERE " + DishTable.DISH_ID + " = " + dishId);

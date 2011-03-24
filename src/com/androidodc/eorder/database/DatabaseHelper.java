@@ -98,7 +98,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return CategoryTable.getAllCategorys(getReadableDatabase());
     }
 
-    public List<Dish> getDishsByCategory(int categoryId) {
+    public List<Dish> getDishsByCategory(long categoryId) {
         return DishCategoryTable.getDishsByCategory(getReadableDatabase(), categoryId);
     }
 

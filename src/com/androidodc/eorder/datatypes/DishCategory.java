@@ -4,22 +4,22 @@ import java.io.Serializable;
 
 public class DishCategory  implements Serializable{
     private static final long serialVersionUID = -9016781387510962160L;
-    private int mCategoryId;
-    private int mDishId;
+    private long mCategoryId;
+    private long mDishId;
 
-    public int getCategoryId() {
+    public long getCategoryId() {
         return mCategoryId;
     }
 
-    public void setCategoryId(int categoryId) {
+    public void setCategoryId(long categoryId) {
         mCategoryId = categoryId;
     }
 
-    public int getDishId() {
+    public long getDishId() {
         return mDishId;
     }
 
-    public void setDishId(int dishId) {
+    public void setDishId(long dishId) {
         mDishId = dishId;
     }
 }

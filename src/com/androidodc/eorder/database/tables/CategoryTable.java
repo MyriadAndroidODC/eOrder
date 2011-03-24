@@ -67,7 +67,7 @@ public class CategoryTable {
      * @param id the category row id
      * @return the Category object of this category.
      */
-    public static Category getCategory(final SQLiteDatabase db, final int id) {
+    public static Category getCategory(final SQLiteDatabase db, final long id) {
         final Cursor c = db.rawQuery("SELECT  * FROM " + TABLE_NAME + " WHERE " + _ID + " =? ",
                 new String[] { String.valueOf(id) });
 
@@ -75,8 +75,8 @@ public class CategoryTable {
             try {
                 if (c.moveToFirst()) {
                     final Category category = new Category();
-                    category.setId(c.getInt(c.getColumnIndex(_ID)));
-                    category.setCategoryId(c.getInt(c.getColumnIndex(CATEGORY_ID)));
+                    category.setId(c.getLong(c.getColumnIndex(_ID)));
+                    category.setCategoryId(c.getLong(c.getColumnIndex(CATEGORY_ID)));
                     category.setName(c.getString(c.getColumnIndex(NAME)));
                     category.setDescription(c.getString(c.getColumnIndex(DESCRIPTION)));
                     category.setSortOrder(c.getInt(c.getColumnIndex(SORT_ORDER)));
@@ -95,15 +95,16 @@ public class CategoryTable {
      * @return
      */
     public static List<Category> getAllCategorys(final SQLiteDatabase db) {
-        final Cursor c = db.rawQuery("SELECT  * FROM " + TABLE_NAME , null);
+        final Cursor c = db.rawQuery("SELECT  * FROM " + TABLE_NAME + " ORDER BY " + SORT_ORDER
+                + ", " + CATEGORY_ID, null);
 
         if (c != null) {
             List<Category> list = new ArrayList<Category>();
             try {
                 while(c.moveToNext()){
                     final Category category = new Category();
-                    category.setId(c.getInt(c.getColumnIndex(_ID)));
-                    category.setCategoryId(c.getInt(c.getColumnIndex(CATEGORY_ID)));
+                    category.setId(c.getLong(c.getColumnIndex(_ID)));
+                    category.setCategoryId(c.getLong(c.getColumnIndex(CATEGORY_ID)));
                     category.setName(c.getString(c.getColumnIndex(NAME)));
                     category.setDescription(c.getString(c.getColumnIndex(DESCRIPTION)));
                     category.setSortOrder(c.getInt(c.getColumnIndex(SORT_ORDER)));
