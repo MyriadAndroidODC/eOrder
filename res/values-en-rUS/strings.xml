@@ -4,4 +4,17 @@
     <string name="welcome">Welcome to</string>
     <string name="enter_button">Enter</string>
     <string name="title_tables">Select Table</string>
+    <string name="OK">OK</string>
+    <string name="check">Check</string>
+    <string name="tablename">TableName</string>
+    <string name="total"></string>
+    <string name="totalprice"></string>
+    <string name="category1"></string>
+    <string name="category2"></string>
+    <string name="category3"></string>
+    <string name="category4"></string>
+    <string name="dishcount1"></string>
+    <string name="dishcount2"></string>
+    <string name="dishcount3"></string>
+    <string name="dishcount4"></string>
 </resources>

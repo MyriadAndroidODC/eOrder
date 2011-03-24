@@ -4,4 +4,17 @@
     <string name="welcome">欢迎光临</string>
     <string name="enter_button">进 入</string>
     <string name="title_tables">选桌</string>
+    <string name="OK">生成菜单</string>
+    <string name="check">添加菜品</string>
+    <string name="tablename">菜单</string>
+    <string name="total"></string>
+    <string name="totalprice"></string>
+    <string name="category1"></string>
+    <string name="category2"></string>
+    <string name="category3"></string>
+    <string name="category4"></string>
+    <string name="dishcount1"></string>
+    <string name="dishcount2"></string>
+    <string name="dishcount3"></string>
+    <string name="dishcount4"></string>
 </resources>
