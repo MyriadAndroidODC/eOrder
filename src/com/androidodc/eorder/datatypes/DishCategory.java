@@ -2,7 +2,7 @@ package com.androidodc.eorder.datatypes;
 
 import java.io.Serializable;
 
-public class DishCategory  implements Serializable{
+public class DishCategory implements Serializable{
     private static final long serialVersionUID = -9016781387510962160L;
     private long mCategoryId;
     private long mDishId;
