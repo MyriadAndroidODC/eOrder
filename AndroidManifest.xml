@@ -17,5 +17,9 @@
                   android:label="@string/title_tables">
         </activity>
 
+        <activity android:name=".MainListActivity"
+                  android:label="@string/dish_title">
+        </activity>
+
     </application>
 </manifest>

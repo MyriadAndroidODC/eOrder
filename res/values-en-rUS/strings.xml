@@ -4,4 +4,6 @@
     <string name="welcome">Welcome to</string>
     <string name="enter_button">Enter</string>
     <string name="title_tables">Select Table</string>
+    <string name="dish_title">Menu</string>
+    <string name="text_orderedlist_button">Check Order</string>
 </resources>
