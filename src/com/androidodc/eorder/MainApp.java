@@ -5,12 +5,17 @@ import android.os.StrictMode;
 
 public class MainApp extends Application {
 
+    public static boolean DEBUG = true;
+
     public void onCreate() {
+
+        if (DEBUG) {
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
             .detectDiskReads()
             .detectDiskWrites()
             .detectNetwork()
             .penaltyLog().build());
+        }
 
         super.onCreate();
     }
