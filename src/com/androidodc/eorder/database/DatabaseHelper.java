@@ -106,7 +106,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return DishTable.getAllDishs(getReadableDatabase());
     }
 
-    public Dish getDishById(int dishId) {
+    public Dish getDishById(long dishId) {
         return DishTable.getDish(getReadableDatabase(), dishId);
     }
 
