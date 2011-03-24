@@ -36,7 +36,6 @@ public class SelectTableActivity extends Activity {
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 // TODO: the following code will be used, when MainListActivity is created.
                 Intent intent = new Intent(SelectTableActivity.this, MainListActivity.class);
-                //intent.putExtra("TableNumber", selectedTableNum);
                 startActivity(intent);
                 finish();
             }
