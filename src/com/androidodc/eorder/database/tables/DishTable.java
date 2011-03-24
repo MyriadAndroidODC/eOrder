@@ -27,8 +27,8 @@ public class DishTable {
     public static final String DESCRIPTION          = "description";
     public static final String IMAGE_LOCAL          = "image_local";
     public static final String IMAGE_SERVER         = "image_server";
-    public static final String CREATE_TIME           = "create_time";
-    public static final String UPDATE_TIME           = "update_time";
+    public static final String CREATE_TIME          = "create_time";
+    public static final String UPDATE_TIME          = "update_time";
 
     /**
      * The foreign key used by other tables.

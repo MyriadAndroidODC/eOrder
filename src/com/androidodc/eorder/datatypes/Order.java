@@ -28,7 +28,7 @@ public class Order implements Serializable {
         return mOrderId;
     }
 
-    public void setOrderId(int orderId) {
+    public void setOrderId(long orderId) {
         mOrderId = orderId;
     }
 

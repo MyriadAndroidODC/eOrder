@@ -21,7 +21,7 @@ public class DishCategoryTable {
     /**
      * The columns of this table.
      */
-    public static final String _ID                       ="_id";
+    public static final String _ID                      ="_id";
     public static final String DISH_ID                  = "dish_id";
     public static final String CATEGORY_ID              = "category_id";
 
