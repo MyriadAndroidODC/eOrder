@@ -12,7 +12,8 @@ import com.androidodc.eorder.datatypes.DiningTable;
 import com.androidodc.eorder.datatypes.Dish;
 import com.androidodc.eorder.datatypes.DishCategory;
 import com.androidodc.eorder.datatypes.Order;
-import com.androidodc.eorder.datatypes.OrderDetail;
+import com.androidodc.eorder.datatypes.OrderItem;
+import com.androidodc.eorder.engine.OrderDetail;
 import com.androidodc.eorder.utils.LogUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -73,6 +74,14 @@ public class DiningService extends Service {
     }
     
     private void executeCommand(int commandType, Intent intent) {
+        try{
+            if (dbHelper == null) {
+                DatabaseHelper.init(this.getApplicationContext());
+                dbHelper = DatabaseHelper.getInstance();
+            }
+        } catch (Exception e) {
+            LogUtils.logD("Database initialize error! \n" + e.getMessage());
+        }
         boolean opSymbol = true;
         if (commandType == COMMAND_SYNC_DINING_TABLE) {
             HashMap diningTableMap = new HashMap();
@@ -85,25 +94,60 @@ public class DiningService extends Service {
             }
             
         } else if (commandType == COMMAND_SYNC_ORDER) {
-            List<Order> orderList = serviceHelper.getOrders();
-            List<OrderDetail> detailList = serviceHelper.getOrderDetail();
+            if (dbHelper == null) {
+                sendMsg(SYNC_HISTORY_ORDER, EXECUTE_ERROR, null);
+                return;
+            }
+            List<Order> orderList = serviceHelper.getFreeOrders();
+            StringBuffer orderIdBuffer = new StringBuffer("");
+            for (Order order : orderList) {
+                orderIdBuffer.append(order.getOrderId() + ",");
+            }
+            orderIdBuffer.deleteCharAt(orderIdBuffer.length() - 1); //delete the last character
+            List<OrderDetail> orderDetailList = serviceHelper.getOrderDetailByOrderIds(orderIdBuffer.toString());
             
-            if (orderList != null && detailList != null) {
+            if (orderList != null && orderDetailList != null) {
                 HashMap orderMap = new HashMap();
+                HashMap orderTableMap = new HashMap();
                 orderMap.put(ORDER_KEY, orderList);
                 
-                for (OrderDetail orderDetail : detailList) {
-                    int orderId = orderDetail.getOrderId();
+                for (OrderDetail orderDetail : orderDetailList) {
+                    long orderId = orderDetail.getOrderId();
+                    long dishId = orderDetail.getDishId();
+                    long tableId = orderDetail.getTableId();
+                    int number = orderDetail.getNumber();
                     String key = "" + orderId;
-                    List eachDetailList = (List)orderMap.get(key);
+                    List eachOrderItemList = (List)orderMap.get(key);
                     
-                    if (null == eachDetailList) {
-                        eachDetailList = new ArrayList();
-                        eachDetailList.add(orderDetail);
-                        orderMap.put(key, eachDetailList);
+                    OrderItem orderItem = new OrderItem();
+                    orderItem.setAmount(number);
+                    orderItem.setDish(dbHelper.getDishById(dishId));
+                    if (null == eachOrderItemList) {
+                        eachOrderItemList = new ArrayList();
+                        eachOrderItemList.add(orderItem);
+                        orderMap.put(key, eachOrderItemList);
                     } else {
-                        eachDetailList.add(orderDetail);
+                        eachOrderItemList.add(orderItem);
                     }
+                    
+                    String tableKey = "" + tableId;
+                    if (orderTableMap.get(tableKey) == null) {
+                        orderTableMap.put(key, tableKey);
+                    }
+                }
+                
+                for (Order order : orderList) {
+                    long orderId = order.getOrderId();
+                    String key = "" + orderId;
+                    List<OrderItem> eachOrderItemList = (List<OrderItem>)orderMap.get(key);
+                    order.setOrderItems(eachOrderItemList);
+
+                    String tableIdStr = (String)orderTableMap.get(key);
+                    if (tableIdStr != null) {
+                        Long tableId = Long.parseLong(tableIdStr);
+                        order.setTableId(tableId);
+                    }
+                    
                 }
                 sendMsg(SYNC_HISTORY_ORDER, EXECUTE_ORDER_SUCCESS, orderMap);
             } else {
@@ -111,11 +155,11 @@ public class DiningService extends Service {
             }
             
         } else if (commandType == COMMAND_SYNC_OTHER) {
-            try{
-                if (dbHelper == null) {
-                    DatabaseHelper.init(this.getApplicationContext());
-                    dbHelper = DatabaseHelper.getInstance();
-                }            
+            if (dbHelper == null) {
+                sendMsg(null, EXECUTE_ERROR, null);
+                return;
+            }
+            try{            
                 opSymbol = (opSymbol == true ? synCategories() : false);
                 opSymbol = (opSymbol == true ? synDishCategory() : false);
                 opSymbol = (opSymbol == true ? synDishesAndImages() : false);
@@ -156,6 +200,15 @@ public class DiningService extends Service {
             Order order = (Order)orderMap.get(SUBMIT_ORDER_KEY);
             List<OrderDetail> orderDetailList = (List<OrderDetail>)orderMap.get(SUBMIT_ORDER_DETAIL_KEY);
             
+            /*List<OrderItem> orderItemList = order.getOrderItems();
+            for (OrderItem orderItem : orderItemList) {
+                submitStr.append("{");                
+                submitStr.append("\"dining_table_id\":" + order.getTableId() + ",");
+                submitStr.append("\"dish_id\":" + orderItem.getDish().getDishId() + ",");
+                submitStr.append("\"number\":" + orderItem.getAmount());
+                submitStr.append("},");
+            }*/
+            
             submitStr.append("{\"sum\":");
             submitStr.append(order.getOrderTotal() + ",");
             submitStr.append("\"order_detail\":[");
@@ -163,7 +216,7 @@ public class DiningService extends Service {
                 submitStr.append("{");                
                 submitStr.append("\"dining_table_id\":" + eachOrderDetail.getTableId() + ",");
                 submitStr.append("\"dish_id\":" + eachOrderDetail.getDishId() + ",");
-                submitStr.append("\"number\":" + eachOrderDetail.getDishId());
+                submitStr.append("\"number\":" + eachOrderDetail.getNumber());
                 submitStr.append("},");
             }
             submitStr.deleteCharAt(submitStr.length() - 1);
@@ -194,12 +247,12 @@ public class DiningService extends Service {
         List<Dish> dishList = serviceHelper.getDishes();
         if (dishList == null) {
             result = false;
-        } else {
+        } else {            
+            //synchronize the image and update the local file path
+            result = serviceHelper.syncDishImage(dishList);
             for (Dish dish : dishList) {
                 dbHelper.addDish(dish);
             }
-            
-            result = serviceHelper.syncDishImage(dishList);//synchronize the image
         }
         return result;
     }

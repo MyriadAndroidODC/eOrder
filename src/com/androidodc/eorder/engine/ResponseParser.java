@@ -9,188 +9,175 @@ import com.androidodc.eorder.datatypes.DiningTable;
 import com.androidodc.eorder.datatypes.Dish;
 import com.androidodc.eorder.datatypes.DishCategory;
 import com.androidodc.eorder.datatypes.Order;
-import com.androidodc.eorder.datatypes.OrderDetail;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class ResponseParser {
-    public static List<Dish> parseDishes(String dishesRespStr) throws JSONException {
+    public static ArrayList<Dish> parseDishes(String dishesRespStr) throws JSONException {
         if (dishesRespStr == null) {
             return null;
         }
-        List<Dish> resultList = null;
+        ArrayList<Dish> resultList = null;
         JSONObject dishes = new JSONObject(dishesRespStr);
         resultList = new ArrayList<Dish>();
         
-        Dish tempDish = null;
         JSONArray dishArray = dishes.getJSONArray("dishes");
-        
-        for (int i = 0; i < dishArray.length(); i++) {
-            tempDish = new Dish();
+        int length = dishArray.length();
+        for (int i = 0; i < length; i++) {
+            Dish dish = new Dish();
             JSONObject dishObj = dishArray.getJSONObject(i);
-            tempDish.setId(dishObj.getInt("_id"));
-            tempDish.setName(dishObj.getString("name"));
-            tempDish.setPrice(dishObj.getInt("price"));
-            tempDish.setDescription(dishObj.getString("description"));
-            tempDish.setImageServer(dishObj.getString("image_url"));
+            dish.setDishId(dishObj.getLong("_id"));
+            dish.setName(dishObj.getString("name"));
+            dish.setPrice(dishObj.getInt("price"));
+            dish.setDescription(dishObj.getString("description"));
+            dish.setImageServer(dishObj.getString("image_url"));
             
             long createTimeValue = dishObj.getLong("create_time");
             long updateTimeValue = dishObj.getLong("update_time");
-            Date createTime = new Date();
-            Date updateTime = new Date();
-            createTime.setTime(createTimeValue);
-            updateTime.setTime(updateTimeValue);
+            Date createTime = new Date(createTimeValue);
+            Date updateTime = new Date(updateTimeValue);
             
-            tempDish.setCreateTime(createTime);
-            tempDish.setUpdateTime(updateTime);
-            resultList.add(tempDish);
+            dish.setCreateTime(createTime);
+            dish.setUpdateTime(updateTime);
+            resultList.add(dish);
         }
         return resultList;
     }
     
-    public static List<Category> parseCategories(String categoryRespStr) throws JSONException {
+    public static ArrayList<Category> parseCategories(String categoryRespStr) throws JSONException {
         if (categoryRespStr == null) {
             return null;
         }
-        List<Category> resultList = null; 
+        ArrayList<Category> resultList = null; 
         JSONObject categories = new JSONObject(categoryRespStr);
         resultList = new ArrayList<Category>();
         
-        Category tempCategory = null;
-        JSONArray dishArray = categories.getJSONArray("categories");
-        
-        for (int i = 0; i < dishArray.length(); i++) {
-            tempCategory = new Category();
-            JSONObject dishObj = dishArray.getJSONObject(i);
-            tempCategory.setId(dishObj.getInt("_id"));
-            tempCategory.setName(dishObj.getString("name"));
-            tempCategory.setDescription(dishObj.getString("description"));
-            tempCategory.setSortOrder(dishObj.getInt("sort_order"));
-            resultList.add(tempCategory);
+        JSONArray categoryArray = categories.getJSONArray("categories");
+        int length = categoryArray.length();
+        for (int i = 0; i < length; i++) {
+            Category category = new Category();
+            JSONObject categoryObj = categoryArray.getJSONObject(i);
+            category.setCategoryId(categoryObj.getLong("_id"));
+            category.setName(categoryObj.getString("name"));
+            category.setDescription(categoryObj.getString("description"));
+            category.setSortOrder(categoryObj.getInt("sort_order"));
+            resultList.add(category);
         }
         return resultList;
     }
 
-    public static List<DishCategory> parseDishCategory(String dishCategoryRespStr) throws JSONException {
+    public static ArrayList<DishCategory> parseDishCategory(String dishCategoryRespStr) throws JSONException {
         if (dishCategoryRespStr == null) {
             return null;
         }
-        List<DishCategory> resultList = null;
-        JSONObject dishCategory = new JSONObject(dishCategoryRespStr);
+        ArrayList<DishCategory> resultList = null;
+        JSONObject dishCategories = new JSONObject(dishCategoryRespStr);
         resultList = new ArrayList<DishCategory>();
         
-        DishCategory tempDishCategory = null;
-        JSONArray dishArray = dishCategory.getJSONArray("dish_category");
-        
-        for (int i = 0; i < dishArray.length(); i++) {
-            tempDishCategory = new DishCategory();
-            JSONObject dishObj = dishArray.getJSONObject(i);
-            tempDishCategory.setDishId(dishObj.getInt("dish_id"));
-            tempDishCategory.setCategoryId(dishObj.getInt("category_id"));
-            resultList.add(tempDishCategory);
+        JSONArray dishCategoryArray = dishCategories.getJSONArray("dish_category");
+        int length = dishCategoryArray.length();
+        for (int i = 0; i < length; i++) {
+            DishCategory dishCategory = new DishCategory();
+            JSONObject dishCategoryObj = dishCategoryArray.getJSONObject(i);
+            dishCategory.setDishId(dishCategoryObj.getLong("dish_id"));
+            dishCategory.setCategoryId(dishCategoryObj.getLong("category_id"));
+            resultList.add(dishCategory);
         }
         return resultList;
     }
 
-    public static List<Order> parseOrders(String orderRespStr) throws JSONException {
+    public static ArrayList<Order> parseOrders(String orderRespStr) throws JSONException {
         if (orderRespStr == null) {
             return null;
         }
-        List<Order> resultList = null;
+        ArrayList<Order> resultList = null;
         JSONObject orders = new JSONObject(orderRespStr);
         resultList = new ArrayList<Order>();
         
-        Order tempOrder = null;
-        JSONArray dishArray = orders.getJSONArray("orders");
-        
-        for (int i = 0; i < dishArray.length(); i ++) {
-            tempOrder = new Order();
-            JSONObject dishObj = dishArray.getJSONObject(i);
-            tempOrder.setId(dishObj.getInt("_id"));
-            tempOrder.setStatus(dishObj.getInt("status"));
-            tempOrder.setOrderTotal(dishObj.getInt("sum"));
+        JSONArray orderArray = orders.getJSONArray("orders");
+        int length = orderArray.length();
+        for (int i = 0; i < length; i ++) {
+            Order order = new Order();
+            JSONObject orderObj = orderArray.getJSONObject(i);
+            order.setOrderId(orderObj.getLong("_id"));
+            order.setStatus(orderObj.getInt("status"));
+            order.setOrderTotal(orderObj.getInt("sum"));
 
-            long createTimeValue = dishObj.getLong("create_time");
-            long payTimeValue = dishObj.getLong("pay_time");
-            Date createTime = new Date();
-            Date payTime = new Date();
-            createTime.setTime(createTimeValue);
-            payTime.setTime(payTimeValue);
-            tempOrder.setCreateTime(createTime);
-            tempOrder.setPayTime(payTime);
-            resultList.add(tempOrder);
+            long createTimeValue = orderObj.getLong("create_time");
+            long payTimeValue = orderObj.getLong("pay_time");
+            Date createTime = new Date(createTimeValue);
+            Date payTime = new Date(payTimeValue);
+            order.setCreateTime(createTime);
+            order.setPayTime(payTime);
+            resultList.add(order);
         }
         return resultList;
     }
 
-    public static List<OrderDetail> parseOrderDetail(String orderDetailRespStr) throws JSONException {
+    public static ArrayList<OrderDetail> parseOrderDetail(String orderDetailRespStr) throws JSONException {
         if (orderDetailRespStr == null) {
             return null;
         }
-        List<OrderDetail> resultList = null;
-        JSONObject orderDetail = new JSONObject(orderDetailRespStr);
+        ArrayList<OrderDetail> resultList = null;
+        JSONObject orderDetails = new JSONObject(orderDetailRespStr);
         resultList = new ArrayList<OrderDetail>();
         
-        OrderDetail tempOrderDetail = null;
-        JSONArray dishArray = orderDetail.getJSONArray("order_detail");
-        
-        for (int i = 0; i < dishArray.length(); i++) {
-            tempOrderDetail = new OrderDetail();
-            JSONObject dishObj = dishArray.getJSONObject(i);
-            tempOrderDetail.setId(dishObj.getInt("_id"));
-            tempOrderDetail.setOrderId(dishObj.getInt("order_id"));
-            tempOrderDetail.setTableId(dishObj.getInt("dining_table_id"));
-            tempOrderDetail.setDishId(dishObj.getInt("dish_id"));
-            tempOrderDetail.setNumber(dishObj.getInt("number"));
-            resultList.add(tempOrderDetail);
+        JSONArray orderDetailArray = orderDetails.getJSONArray("order_detail");
+        int length = orderDetailArray.length();
+        for (int i = 0; i < length; i++) {
+            OrderDetail orderDetail = new OrderDetail();
+            JSONObject orderDetailObj = orderDetailArray.getJSONObject(i);
+            orderDetail.setOrderItemId(orderDetailObj.getLong("_id"));
+            orderDetail.setOrderId(orderDetailObj.getLong("order_id"));
+            orderDetail.setTableId(orderDetailObj.getLong("dining_table_id"));
+            orderDetail.setDishId(orderDetailObj.getLong("dish_id"));
+            orderDetail.setNumber(orderDetailObj.getInt("number"));
+            resultList.add(orderDetail);
         }
         return resultList;
     }
 
-    public static List<DiningTable> parseDiningTables(String diningTablesRespStr) throws JSONException {
+    public static ArrayList<DiningTable> parseDiningTables(String diningTablesRespStr) throws JSONException {
         if (diningTablesRespStr == null) {
             return null;
         }
-        List<DiningTable> resultList = null;
+        ArrayList<DiningTable> resultList = null;
         JSONObject diningTables = new JSONObject(diningTablesRespStr);
         resultList = new ArrayList<DiningTable>();
         
-        DiningTable tempDiningTable = null;
-        JSONArray dishArray = diningTables.getJSONArray("dining_tables");
-        
-        for (int i = 0; i < dishArray.length(); i++) {
-            tempDiningTable = new DiningTable();
-            JSONObject dishObj = dishArray.getJSONObject(i);
-            tempDiningTable.setId(dishObj.getInt("_id"));
-            tempDiningTable.setName(dishObj.getString("name"));
-            tempDiningTable.setMaxPeople(dishObj.getInt("capacity"));
-            int free = dishObj.getInt("status");            
-            tempDiningTable.setFree(free == 0 ? true : false);
-            resultList.add(tempDiningTable);
+        JSONArray diningArray = diningTables.getJSONArray("dining_tables");
+        int length = diningArray.length();
+        for (int i = 0; i < length; i++) {
+            DiningTable diningTable = new DiningTable();
+            JSONObject diningTableObj = diningArray.getJSONObject(i);
+            diningTable.setDiningTableId(diningTableObj.getLong("_id"));
+            diningTable.setName(diningTableObj.getString("name"));
+            diningTable.setMaxPeople(diningTableObj.getInt("capacity"));
+            int free = diningTableObj.getInt("status");            
+            diningTable.setFree(free == 0 ? true : false);
+            resultList.add(diningTable);
         }
         return resultList;
     }
 
-    public static List<Config> parseConfigs(String configsRespStr) throws JSONException {
+    public static ArrayList<Config> parseConfigs(String configsRespStr) throws JSONException {
         if (configsRespStr == null) {
             return null;
         }
-        List<Config> resultList = null;
+        ArrayList<Config> resultList = null;
         JSONObject configs = new JSONObject(configsRespStr);
         resultList = new ArrayList<Config>();
         
-        Config tempConfig = null;
-        JSONArray dishArray = configs.getJSONArray("configs");
-        
-        for (int i = 0; i < dishArray.length(); i++) {
-            tempConfig = new Config();
-            JSONObject dishObj = dishArray.getJSONObject(i);
-            tempConfig.setId(dishObj.getInt("_id"));
-            tempConfig.setName(dishObj.getString("name"));
-            tempConfig.setValue(dishObj.getString("value"));
-            tempConfig.setDescription(dishObj.getString("description"));
-            resultList.add(tempConfig);
+        JSONArray configArray = configs.getJSONArray("configs");
+        int length = configArray.length();
+        for (int i = 0; i < length; i++) {
+            Config config = new Config();
+            JSONObject configObj = configArray.getJSONObject(i);
+            config.setConfigId(configObj.getLong("_id"));
+            config.setName(configObj.getString("name"));
+            config.setValue(configObj.getString("value"));
+            config.setDescription(configObj.getString("description"));
+            resultList.add(config);
         }
         return resultList;
     }

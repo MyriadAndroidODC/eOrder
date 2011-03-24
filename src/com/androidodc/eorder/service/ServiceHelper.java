@@ -8,7 +8,7 @@ import com.androidodc.eorder.datatypes.DiningTable;
 import com.androidodc.eorder.datatypes.Dish;
 import com.androidodc.eorder.datatypes.DishCategory;
 import com.androidodc.eorder.datatypes.Order;
-import com.androidodc.eorder.datatypes.OrderDetail;
+import com.androidodc.eorder.engine.OrderDetail;
 import com.androidodc.eorder.engine.ResponseParser;
 import com.androidodc.eorder.engine.RequestHelper;
 import com.androidodc.eorder.utils.LogUtils;
@@ -30,6 +30,10 @@ public class ServiceHelper {
     private static final String CONFIG_PAGE = "configs.jsp";
     private static final String SUBMIT_PAGE = "submit_order.jsp";
     private static final String STATUS_SUCCESS = "success";
+    
+    private static final String ORDER_QUERY_KEY = "status";
+    private static final String ORDER_STATUS_FREE = "0";
+    private static final String ORDER_ITEM_QUERY_KEY = "order_id";
     
     private RequestHelper reqHelper = null;
     private ResponseParser reqParser = null;    
@@ -77,6 +81,7 @@ public class ServiceHelper {
                 String filePath = getLocalFileStorageUrl("", imgName);
                 OutputStream fos = new FileOutputStream(filePath);
                 reqHelper.getFileFromServer(imgUrl, null, fos);
+                dish.setImageLocal(filePath);
             }
         } catch (IOException e) {
             LogUtils.logD("Save image error!");
@@ -145,6 +150,24 @@ public class ServiceHelper {
         return dishCategoryList;
     }
 
+
+    public List<Order> getFreeOrders() {
+        List<Order> orderList = null;
+        String reqUrl = getRequestUrl(null, ORDER_PAGE);
+        
+        Bundle params = new Bundle();
+        params.putString(ORDER_QUERY_KEY, ORDER_STATUS_FREE);
+        String respStr = reqHelper.doPost(reqUrl, params);
+        try {
+            orderList = reqParser.parseOrders(respStr);
+        } catch (JSONException e) {
+            LogUtils.logD(e.getMessage());
+        } catch (Exception e) {
+            LogUtils.logD(e.getMessage());
+        }
+        return orderList;
+    }
+    
     public List<Order> getOrders() {
         List<Order> orderList = null;
         String reqUrl = getRequestUrl(null, ORDER_PAGE);
@@ -175,6 +198,24 @@ public class ServiceHelper {
         return orderDetailList;
     }
 
+
+    public List<OrderDetail> getOrderDetailByOrderIds(String orderIds) {
+        List<OrderDetail> orderDetailList = null;
+        String reqUrl = getRequestUrl(null, ORDER_DETAIL_PAGE);
+
+        Bundle params = new Bundle();
+        params.putString(ORDER_ITEM_QUERY_KEY, orderIds);
+        String respStr = reqHelper.doPost(reqUrl, null);
+        try {
+            orderDetailList = reqParser.parseOrderDetail(respStr);
+        } catch (JSONException e) {
+            LogUtils.logD(e.getMessage());
+        } catch (Exception e) {
+            LogUtils.logD(e.getMessage());
+        }
+        return orderDetailList;
+    }
+    
     public List<Config> getConfigs() {
         List<Config> configList = null;
         String reqUrl = getRequestUrl(null, CONFIG_PAGE);
@@ -197,7 +238,7 @@ public class ServiceHelper {
                 return null;
             }
             
-            if (dir == null) {
+            if (dir == null || dir.equals("")) {
                 dir = "";
             } else {
                 dir = dir + "/";
