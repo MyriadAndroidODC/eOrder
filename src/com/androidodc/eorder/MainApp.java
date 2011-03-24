@@ -10,11 +10,11 @@ public class MainApp extends Application {
     public void onCreate() {
 
         if (DEBUG) {
-        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-            .detectDiskReads()
-            .detectDiskWrites()
-            .detectNetwork()
-            .penaltyLog().build());
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                .detectDiskReads()
+                .detectDiskWrites()
+                .detectNetwork()
+                .penaltyLog().build());
         }
 
         super.onCreate();
