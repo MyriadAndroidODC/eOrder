@@ -16,7 +16,7 @@ import org.json.JSONException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.List;
+import java.util.ArrayList;
 
 public class ServiceHelper {
     private static final String DEFAULT_URL = "http://10.15.5.237:8080/";
@@ -28,24 +28,24 @@ public class ServiceHelper {
     private static final String ORDER_DETAIL_PAGE = "order_detail.jsp";
     private static final String DINING_TABLE_PAGE = "dining_tables.jsp";
     private static final String CONFIG_PAGE = "configs.jsp";
-    private static final String SUBMIT_PAGE = "submit_order.jsp";
+    private static final String SUBMIT_PAGE = "post_order.jsp";
     private static final String STATUS_SUCCESS = "success";
     
     private static final String ORDER_QUERY_KEY = "status";
     private static final String ORDER_STATUS_FREE = "0";
     private static final String ORDER_ITEM_QUERY_KEY = "order_id";
     
-    private RequestHelper reqHelper = null;
-    private ResponseParser reqParser = null;    
+    //private RequestHelper reqHelper = null;
+    //private ResponseParser reqParser = null;    
     
     private static ServiceHelper instance = new ServiceHelper();
     
     private ServiceHelper() {
-        reqHelper = new RequestHelper();
-        reqParser = new ResponseParser();
+        //reqHelper = new RequestHelper();
+        //reqParser = new ResponseParser();
     }
     
-    public static ServiceHelper getInstance() {
+    public static synchronized ServiceHelper getInstance() {
         return instance;
     }
     
@@ -61,14 +61,14 @@ public class ServiceHelper {
         String submitUrl = getRequestUrl(null, SUBMIT_PAGE);
         Bundle params = new Bundle();
         params.putString("orders", orderInfo);
-        String resultStr = reqHelper.doPost(submitUrl, params);
+        String resultStr = RequestHelper.doPost(submitUrl, params);
         if (resultStr == null || !resultStr.equals(STATUS_SUCCESS)) {
             result = false;
         }
         return result;
     }
     
-    public boolean syncDishImage(List<Dish> dishList) {
+    public boolean syncDishImage(ArrayList<Dish> dishList) {
         boolean result = true;
         if (dishList == null) {
             return result;
@@ -80,7 +80,7 @@ public class ServiceHelper {
                 String imgName = dish.getImageServer().split("/", 2)[1];
                 String filePath = getLocalFileStorageUrl("", imgName);
                 OutputStream fos = new FileOutputStream(filePath);
-                reqHelper.getFileFromServer(imgUrl, null, fos);
+                RequestHelper.getFileFromServer(imgUrl, null, fos);
                 dish.setImageLocal(filePath);
             }
         } catch (IOException e) {
@@ -90,13 +90,13 @@ public class ServiceHelper {
         return result;
     }
     
-    public List<DiningTable> getDiningTables() {
-        List<DiningTable> tableList = null;
+    public ArrayList<DiningTable> getDiningTables() {
+    	ArrayList<DiningTable> tableList = null;
         String reqUrl = getRequestUrl(null, DINING_TABLE_PAGE);
         
-        String respStr = reqHelper.doPost(reqUrl, null);
+        String respStr = RequestHelper.doPost(reqUrl, null);
         try {
-            tableList = reqParser.parseDiningTables(respStr);
+            tableList = ResponseParser.parseDiningTables(respStr);
         } catch (JSONException e) {
             LogUtils.logD(e.getMessage());
         } catch (Exception e) {
@@ -105,13 +105,13 @@ public class ServiceHelper {
         return tableList;
     }
 
-    public List<Category> getCategories() {
-        List<Category> categoryList = null;
+    public ArrayList<Category> getCategories() {
+    	ArrayList<Category> categoryList = null;
         String reqUrl = getRequestUrl(null, CATEGORY_PAGE);
         
-        String respStr = reqHelper.doPost(reqUrl, null);
+        String respStr = RequestHelper.doPost(reqUrl, null);
         try {
-            categoryList = reqParser.parseCategories(respStr);
+            categoryList = ResponseParser.parseCategories(respStr);
         } catch (JSONException e) {
             LogUtils.logD(e.getMessage());
         } catch (Exception e) {
@@ -120,13 +120,13 @@ public class ServiceHelper {
         return categoryList;
     }
 
-    public List<Dish> getDishes() {
-        List<Dish> dishList = null;
+    public ArrayList<Dish> getDishes() {
+    	ArrayList<Dish> dishList = null;
         String reqUrl = getRequestUrl(null, DISH_PAGE);
         
-        String respStr = reqHelper.doPost(reqUrl, null);
+        String respStr = RequestHelper.doPost(reqUrl, null);
         try {
-            dishList = reqParser.parseDishes(respStr);
+            dishList = ResponseParser.parseDishes(respStr);
         } catch (JSONException e) {
             LogUtils.logD(e.getMessage());
         } catch (Exception e) {
@@ -135,13 +135,13 @@ public class ServiceHelper {
         return dishList;
     }
 
-    public List<DishCategory> getDishCategory() {
-        List<DishCategory> dishCategoryList = null;
+    public ArrayList<DishCategory> getDishCategory() {
+    	ArrayList<DishCategory> dishCategoryList = null;
         String reqUrl = getRequestUrl(null, DISH_CATEGORY_PAGE);
         
-        String respStr = reqHelper.doPost(reqUrl, null);
+        String respStr = RequestHelper.doPost(reqUrl, null);
         try {
-            dishCategoryList = reqParser.parseDishCategory(respStr);
+            dishCategoryList = ResponseParser.parseDishCategory(respStr);
         } catch (JSONException e) {
             LogUtils.logD(e.getMessage());
         } catch (Exception e) {
@@ -151,15 +151,15 @@ public class ServiceHelper {
     }
 
 
-    public List<Order> getFreeOrders() {
-        List<Order> orderList = null;
+    public ArrayList<Order> getFreeOrders() {
+        ArrayList<Order> orderList = null;
         String reqUrl = getRequestUrl(null, ORDER_PAGE);
         
         Bundle params = new Bundle();
         params.putString(ORDER_QUERY_KEY, ORDER_STATUS_FREE);
-        String respStr = reqHelper.doPost(reqUrl, params);
+        String respStr = RequestHelper.doPost(reqUrl, params);
         try {
-            orderList = reqParser.parseOrders(respStr);
+            orderList = ResponseParser.parseOrders(respStr);
         } catch (JSONException e) {
             LogUtils.logD(e.getMessage());
         } catch (Exception e) {
@@ -168,13 +168,13 @@ public class ServiceHelper {
         return orderList;
     }
     
-    public List<Order> getOrders() {
-        List<Order> orderList = null;
+    public ArrayList<Order> getOrders() {
+    	ArrayList<Order> orderList = null;
         String reqUrl = getRequestUrl(null, ORDER_PAGE);
         
-        String respStr = reqHelper.doPost(reqUrl, null);
+        String respStr = RequestHelper.doPost(reqUrl, null);
         try {
-            orderList = reqParser.parseOrders(respStr);
+            orderList = ResponseParser.parseOrders(respStr);
         } catch (JSONException e) {
             LogUtils.logD(e.getMessage());
         } catch (Exception e) {
@@ -183,13 +183,13 @@ public class ServiceHelper {
         return orderList;
     }
 
-    public List<OrderDetail> getOrderDetail() {
-        List<OrderDetail> orderDetailList = null;
+    public ArrayList<OrderDetail> getOrderDetail() {
+    	ArrayList<OrderDetail> orderDetailList = null;
         String reqUrl = getRequestUrl(null, ORDER_DETAIL_PAGE);
         
-        String respStr = reqHelper.doPost(reqUrl, null);
+        String respStr = RequestHelper.doPost(reqUrl, null);
         try {
-            orderDetailList = reqParser.parseOrderDetail(respStr);
+            orderDetailList = ResponseParser.parseOrderDetail(respStr);
         } catch (JSONException e) {
             LogUtils.logD(e.getMessage());
         } catch (Exception e) {
@@ -199,15 +199,15 @@ public class ServiceHelper {
     }
 
 
-    public List<OrderDetail> getOrderDetailByOrderIds(String orderIds) {
-        List<OrderDetail> orderDetailList = null;
+    public ArrayList<OrderDetail> getOrderDetailByOrderIds(String orderIds) {
+    	ArrayList<OrderDetail> orderDetailList = null;
         String reqUrl = getRequestUrl(null, ORDER_DETAIL_PAGE);
 
         Bundle params = new Bundle();
         params.putString(ORDER_ITEM_QUERY_KEY, orderIds);
-        String respStr = reqHelper.doPost(reqUrl, null);
+        String respStr = RequestHelper.doPost(reqUrl, null);
         try {
-            orderDetailList = reqParser.parseOrderDetail(respStr);
+            orderDetailList = ResponseParser.parseOrderDetail(respStr);
         } catch (JSONException e) {
             LogUtils.logD(e.getMessage());
         } catch (Exception e) {
@@ -216,13 +216,13 @@ public class ServiceHelper {
         return orderDetailList;
     }
     
-    public List<Config> getConfigs() {
-        List<Config> configList = null;
+    public ArrayList<Config> getConfigs() {
+    	ArrayList<Config> configList = null;
         String reqUrl = getRequestUrl(null, CONFIG_PAGE);
         
-        String respStr = reqHelper.doPost(reqUrl, null);
+        String respStr = RequestHelper.doPost(reqUrl, null);
         try {
-            configList = reqParser.parseConfigs(respStr);
+            configList = ResponseParser.parseConfigs(respStr);
         } catch (JSONException e) {
             LogUtils.logD(e.getMessage());
         } catch (Exception e) {

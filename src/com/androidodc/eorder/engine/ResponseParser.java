@@ -17,9 +17,8 @@ public class ResponseParser {
         if (dishesRespStr == null) {
             return null;
         }
-        ArrayList<Dish> resultList = null;
+        ArrayList<Dish> resultList = new ArrayList<Dish>();
         JSONObject dishes = new JSONObject(dishesRespStr);
-        resultList = new ArrayList<Dish>();
         
         JSONArray dishArray = dishes.getJSONArray("dishes");
         int length = dishArray.length();
@@ -48,9 +47,8 @@ public class ResponseParser {
         if (categoryRespStr == null) {
             return null;
         }
-        ArrayList<Category> resultList = null; 
+        ArrayList<Category> resultList = new ArrayList<Category>(); 
         JSONObject categories = new JSONObject(categoryRespStr);
-        resultList = new ArrayList<Category>();
         
         JSONArray categoryArray = categories.getJSONArray("categories");
         int length = categoryArray.length();
@@ -70,9 +68,8 @@ public class ResponseParser {
         if (dishCategoryRespStr == null) {
             return null;
         }
-        ArrayList<DishCategory> resultList = null;
+        ArrayList<DishCategory> resultList = new ArrayList<DishCategory>();
         JSONObject dishCategories = new JSONObject(dishCategoryRespStr);
-        resultList = new ArrayList<DishCategory>();
         
         JSONArray dishCategoryArray = dishCategories.getJSONArray("dish_category");
         int length = dishCategoryArray.length();
@@ -90,9 +87,8 @@ public class ResponseParser {
         if (orderRespStr == null) {
             return null;
         }
-        ArrayList<Order> resultList = null;
+        ArrayList<Order> resultList = new ArrayList<Order>();
         JSONObject orders = new JSONObject(orderRespStr);
-        resultList = new ArrayList<Order>();
         
         JSONArray orderArray = orders.getJSONArray("orders");
         int length = orderArray.length();
@@ -118,9 +114,8 @@ public class ResponseParser {
         if (orderDetailRespStr == null) {
             return null;
         }
-        ArrayList<OrderDetail> resultList = null;
+        ArrayList<OrderDetail> resultList = new ArrayList<OrderDetail>();
         JSONObject orderDetails = new JSONObject(orderDetailRespStr);
-        resultList = new ArrayList<OrderDetail>();
         
         JSONArray orderDetailArray = orderDetails.getJSONArray("order_detail");
         int length = orderDetailArray.length();
@@ -141,9 +136,8 @@ public class ResponseParser {
         if (diningTablesRespStr == null) {
             return null;
         }
-        ArrayList<DiningTable> resultList = null;
+        ArrayList<DiningTable> resultList = new ArrayList<DiningTable>();
         JSONObject diningTables = new JSONObject(diningTablesRespStr);
-        resultList = new ArrayList<DiningTable>();
         
         JSONArray diningArray = diningTables.getJSONArray("dining_tables");
         int length = diningArray.length();
@@ -164,9 +158,8 @@ public class ResponseParser {
         if (configsRespStr == null) {
             return null;
         }
-        ArrayList<Config> resultList = null;
+        ArrayList<Config> resultList = new ArrayList<Config>();
         JSONObject configs = new JSONObject(configsRespStr);
-        resultList = new ArrayList<Config>();
         
         JSONArray configArray = configs.getJSONArray("configs");
         int length = configArray.length();
