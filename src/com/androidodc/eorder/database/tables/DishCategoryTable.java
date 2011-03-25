@@ -161,4 +161,13 @@ public class DishCategoryTable {
         }
         return Collections.emptyList();
     }
+
+    /**
+     * Remove all data in table dish_category
+     *
+     * @param db
+     */
+    public static void deleteAll(final SQLiteDatabase db) {
+        db.execSQL("DELETE FROM " + TABLE_NAME);
+    }
 }

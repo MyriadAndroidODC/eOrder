@@ -108,4 +108,13 @@ public class ConfigTable {
         }
         return null;
     }
+
+    /**
+     * Remove all data in table config
+     *
+     * @param db
+     */
+    public static void deleteAll(final SQLiteDatabase db) {
+        db.execSQL("DELETE FROM " + TABLE_NAME);
+    }
 }

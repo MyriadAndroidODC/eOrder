@@ -123,4 +123,13 @@ public class CategoryTable {
     public static void drop(final SQLiteDatabase db) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
     }
+
+    /**
+     * Remove all data in table category
+     *
+     * @param db
+     */
+    public static void deleteAll(final SQLiteDatabase db) {
+        db.execSQL("DELETE FROM " + TABLE_NAME);
+    }
 }

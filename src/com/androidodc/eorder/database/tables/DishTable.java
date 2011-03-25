@@ -163,4 +163,13 @@ public class DishTable {
         db.execSQL("UPDATE " + DishTable.TABLE_NAME + " SET " + DishTable.IMAGE_LOCAL + "="
                 + imageLocal + " WHERE " + DishTable.DISH_ID + " = " + dishId);
     }
+
+    /**
+     * Remove all data in table dish
+     *
+     * @param db
+     */
+    public static void deleteAll(final SQLiteDatabase db) {
+        db.execSQL("DELETE FROM " + TABLE_NAME);
+    }
 }

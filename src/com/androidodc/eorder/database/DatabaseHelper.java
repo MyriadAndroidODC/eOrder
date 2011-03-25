@@ -136,4 +136,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<Long> getSequencedDishIds(){
         return DishCategoryTable.getSequencedDishIds(getReadableDatabase());
     }
+
+    public void deleteAllTableDatas(){
+        final SQLiteDatabase db = getWritableDatabase();
+        ConfigTable.deleteAll(db);
+        DishCategoryTable.deleteAll(db);
+        DishTable.deleteAll(db);
+        CategoryTable.deleteAll(db);
+    }
 }
