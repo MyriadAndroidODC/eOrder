@@ -14,4 +14,6 @@
     <string name="info_sync_failture">Sync Data Failed</string>
     <string name="dish_title">Menu</string>
     <string name="text_orderedlist_button">Check Order</string>
+    <string name="history_order_item">%1$d:  bill of table %2$d is %3$d Yuan</string>
+    <string name="history_orders_title">History Orders</string>
 </resources>

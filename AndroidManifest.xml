@@ -33,7 +33,7 @@
         </activity>
 
         <activity android:name=".CheckHistoryOrdersActivity"
-                  android:label="">
+                  android:label="@string/history_orders_title">
             <intent-filter>
                 <action android:name="com.androidodc.intent.SYNC_HISTORY_ORDER" />
             </intent-filter>
