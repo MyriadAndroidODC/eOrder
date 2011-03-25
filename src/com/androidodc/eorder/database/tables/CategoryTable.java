@@ -8,6 +8,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.androidodc.eorder.database.DatabaseUtils;
 import com.androidodc.eorder.datatypes.Category;
 
 public class CategoryTable {
@@ -117,11 +118,12 @@ public class CategoryTable {
         }
         return Collections.emptyList();
     }
+
     /**
      * Drops the entire table, any data in it will be erased.
      */
     public static void drop(final SQLiteDatabase db) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        DatabaseUtils.drop(db, TABLE_NAME);
     }
 
     /**
@@ -130,6 +132,6 @@ public class CategoryTable {
      * @param db
      */
     public static void deleteAll(final SQLiteDatabase db) {
-        db.execSQL("DELETE FROM " + TABLE_NAME);
+        DatabaseUtils.truncate(db, TABLE_NAME);
     }
 }

@@ -9,6 +9,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.androidodc.eorder.database.DatabaseUtils;
 import com.androidodc.eorder.datatypes.Dish;
 import com.androidodc.eorder.datatypes.DishCategory;
 
@@ -24,7 +25,7 @@ public class DishCategoryTable {
     public static final String _ID                      ="_id";
     public static final String DISH_ID                  = "dish_id";
     public static final String CATEGORY_ID              = "category_id";
-
+    public static final long NO_DATA                    = -1;
     /**
      * Create table.
      * @param db writable database
@@ -41,7 +42,7 @@ public class DishCategoryTable {
      * Drops the entire table, any data in it will be erased.
      */
     public static void drop(final SQLiteDatabase db) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        DatabaseUtils.drop(db, TABLE_NAME);
     }
 
     /**
@@ -100,18 +101,11 @@ public class DishCategoryTable {
      * @return categoryId, or -1 if not found relational category
      */
     public static long getDishCategoryId(final SQLiteDatabase db, final long dishId) {
-        final Cursor c = db.rawQuery("SELECT " + CATEGORY_ID + " FROM " + TABLE_NAME + " WHERE " + DISH_ID + " =?",
-                new String[] { String.valueOf(dishId) });
-      if (c != null) {
-            try {
-                if(c.moveToFirst()) {
-                   return c.getLong(c.getColumnIndex(CATEGORY_ID));
-                }
-            } finally {
-                c.close();
-            }
+        List<Long> list = getDishCategoryIds(db, dishId);
+        for (Long l : list) {
+            return l;
         }
-        return -1;
+        return NO_DATA;
     }
 
     /**
@@ -151,7 +145,7 @@ public class DishCategoryTable {
         if (c != null) {
             List<Long> list = new ArrayList<Long>();
             try {
-                if (c.moveToFirst()) {
+                while (c.moveToNext()) {
                     list.add(c.getLong(c.getColumnIndex(CATEGORY_ID)));
                 }
             } finally {
@@ -168,6 +162,6 @@ public class DishCategoryTable {
      * @param db
      */
     public static void deleteAll(final SQLiteDatabase db) {
-        db.execSQL("DELETE FROM " + TABLE_NAME);
+        DatabaseUtils.truncate(db, TABLE_NAME);
     }
 }
