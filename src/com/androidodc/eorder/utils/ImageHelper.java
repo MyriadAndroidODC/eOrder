@@ -16,15 +16,20 @@ public class ImageHelper {
     public static Bitmap getImage(String imageLocation) {
         Bitmap _image;
         if (mEnableCache) {
-            _image = mCache.get(imageLocation);
-            if (_image == null) {
-                _image = BitmapFactory.decodeFile(imageLocation);
-                if (_image != null) {
-                    mCache.put(imageLocation, _image);
-                }
-            }
+            _image = getImageFromCache(imageLocation);
         } else {
             _image = BitmapFactory.decodeFile(imageLocation);
+        }
+        return _image;
+    }
+
+    private static Bitmap getImageFromCache(String imageLocation) {
+        Bitmap _image = mCache.get(imageLocation);
+        if (_image == null) {
+            _image = BitmapFactory.decodeFile(imageLocation);
+            if (_image != null) {
+                mCache.put(imageLocation, _image);
+            }
         }
         return _image;
     }
