@@ -14,24 +14,24 @@ public class ImageHelper {
     private static boolean mEnableCache = true;
 
     public static Bitmap getImage(String imageLocation) {
-        Bitmap _image;
+        Bitmap image = null;
         if (mEnableCache) {
-            _image = getImageFromCache(imageLocation);
+            image = getImageFromCache(imageLocation);
         } else {
-            _image = BitmapFactory.decodeFile(imageLocation);
+            image = BitmapFactory.decodeFile(imageLocation);
         }
-        return _image;
+        return image;
     }
 
     private static Bitmap getImageFromCache(String imageLocation) {
-        Bitmap _image = mCache.get(imageLocation);
-        if (_image == null) {
-            _image = BitmapFactory.decodeFile(imageLocation);
-            if (_image != null) {
-                mCache.put(imageLocation, _image);
+        Bitmap image = mCache.get(imageLocation);
+        if (image == null) {
+            image = BitmapFactory.decodeFile(imageLocation);
+            if (image != null) {
+                mCache.put(imageLocation, image);
             }
         }
-        return _image;
+        return image;
     }
 
     public static void enableCache() {
