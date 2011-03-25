@@ -47,7 +47,7 @@ public class DiningService extends Service {
     public static final int EXECUTE_ERROR = 99999;
     
     private ServiceHelper serviceHelper = ServiceHelper.getInstance();
-    private DatabaseHelper dbHelper = null;
+    private DatabaseHelper dbHelper = DatabaseHelper.getInstance();
 
     @Override  
     public void onCreate() {  
@@ -74,14 +74,14 @@ public class DiningService extends Service {
     }
     
     private void executeCommand(int commandType, Intent intent) {
-        try{
+        /*try{
             if (dbHelper == null) {
                 DatabaseHelper.init(this.getApplicationContext());
                 dbHelper = DatabaseHelper.getInstance();
             }
         } catch (Exception e) {
             LogUtils.logD("Database initialize error! \n" + e.getMessage());
-        }
+        }*/
         boolean opSymbol = true;
         if (commandType == COMMAND_SYNC_DINING_TABLE) {
             HashMap diningTableMap = new HashMap();
@@ -94,10 +94,10 @@ public class DiningService extends Service {
             }
             
         } else if (commandType == COMMAND_SYNC_ORDER) {
-            if (dbHelper == null) {
+            /*if (dbHelper == null) {
                 sendMsg(SYNC_HISTORY_ORDER, EXECUTE_ERROR, null);
                 return;
-            }
+            }*/
             List<Order> orderList = serviceHelper.getFreeOrders();
             StringBuffer orderIdBuffer = new StringBuffer("");
             for (Order order : orderList) {
@@ -155,10 +155,10 @@ public class DiningService extends Service {
             }
             
         } else if (commandType == COMMAND_SYNC_OTHER) {
-            if (dbHelper == null) {
+            /*if (dbHelper == null) {
                 sendMsg(null, EXECUTE_ERROR, null);
                 return;
-            }
+            }*/
             try{            
                 opSymbol = (opSymbol == true ? synCategories() : false);
                 opSymbol = (opSymbol == true ? synDishCategory() : false);
