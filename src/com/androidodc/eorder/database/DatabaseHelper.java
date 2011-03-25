@@ -129,6 +129,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return DishCategoryTable.getDishCategoryId(getReadableDatabase(), dishId);
     }
 
+    public List<Long> getDishCategoryIds(long dishId){
+        return DishCategoryTable.getDishCategoryIds(getReadableDatabase(), dishId);
+    }
+
     public List<Long> getSequencedDishIds(){
         return DishCategoryTable.getSequencedDishIds(getReadableDatabase());
     }

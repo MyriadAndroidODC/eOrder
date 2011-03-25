@@ -67,8 +67,8 @@ public class DishCategoryTable {
      */
     public static List<Dish> getDishsByCategory(final SQLiteDatabase db, final long categoryId) {
         final Cursor c = db.rawQuery("SELECT d.* FROM " + DishTable.TABLE_NAME + " d, "
-                + TABLE_NAME + " dc WHERE dc." + CATEGORY_ID + " =? AND d."+DishTable._ID + " = dc." + DISH_ID
-                + " ORDER BY d." + DishTable._ID, new String[] { String.valueOf(categoryId) });
+                + TABLE_NAME + " dc WHERE dc." + CATEGORY_ID + " =? AND d."+DishTable.DISH_ID + " = dc." + DISH_ID
+                + " ORDER BY d." + DishTable.DISH_ID, new String[] { String.valueOf(categoryId) });
         if (c != null) {
             List<Dish> list = new ArrayList<Dish>();
             try {
@@ -135,6 +135,29 @@ public class DishCategoryTable {
             } finally {
                 c.close();
             }
+        }
+        return Collections.emptyList();
+    }
+
+    /**
+     * Get all category ids of the current dish's categories.
+     * @param db
+     * @param dishId
+     * @return List<categoryId>, or empty List<Long>
+     */
+    public static List<Long> getDishCategoryIds(final SQLiteDatabase db, final long dishId) {
+        final Cursor c = db.rawQuery("SELECT " + CATEGORY_ID + " FROM " + TABLE_NAME + " WHERE "
+                + DISH_ID + " =?", new String[] { String.valueOf(dishId) });
+        if (c != null) {
+            List<Long> list = new ArrayList<Long>();
+            try {
+                if (c.moveToFirst()) {
+                    list.add(c.getLong(c.getColumnIndex(CATEGORY_ID)));
+                }
+            } finally {
+                c.close();
+            }
+            return list;
         }
         return Collections.emptyList();
     }
