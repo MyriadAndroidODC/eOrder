@@ -3,7 +3,15 @@
     <string name="app_name">电子订单</string>
     <string name="welcome">欢迎光临</string>
     <string name="enter_button">进 入</string>
+    <string name="return_button">返回</string>
     <string name="title_tables">选桌</string>
+    <string name="sync_info">正在加载数据，请等待...</string>
+    <string name="menu_view_history_orders">查看历史订单</string>
+    <string name="menu_sync_tables_status">更新餐桌状态</string>
+    <string name="menu_sync_all_data">更新所有数据</string>
+    <string name="title_context_menu">查看和更新</string>
+    <string name="info_sync_success">更新数据成功</string>
+    <string name="info_sync_failture">更新数据失败</string>
     <string name="dish_title">菜单</string>
     <string name="text_orderedlist_button">查看已点</string>
 </resources>
