@@ -13,19 +13,14 @@ public class MainApp extends Application {
     public void onCreate() {
 
         if (DEBUG) {
-            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-                .detectDiskReads()
-                .detectDiskWrites()
-                .detectNetwork()
-                .penaltyLog().build());
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads().detectDiskWrites().detectNetwork().penaltyLog().build());
         }
-        
         super.onCreate();
         
         try{
-            DatabaseHelper.init(this.getApplicationContext());
+            DatabaseHelper.init(this);
         } catch (Exception e) {
-            LogUtils.logD("Database initialize error! \n" + e.getMessage());
+            LogUtils.logD("Database initialize error! " + e.getMessage());
         }
     }
 }

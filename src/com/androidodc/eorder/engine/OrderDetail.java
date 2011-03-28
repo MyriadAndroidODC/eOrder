@@ -1,16 +1,17 @@
 package com.androidodc.eorder.engine;
 
 public class OrderDetail {
-    private long orderItemId;
+    private long mOrderItemId;
     private long orderId;
     private long tableId;
     private long dishId;
     private int number;
+    
     public long getOrderItemId() {
-        return orderItemId;
+        return mOrderItemId;
     }
     public void setOrderItemId(long orderItemId) {
-        this.orderItemId = orderItemId;
+        this.mOrderItemId = orderItemId;
     }
     public long getOrderId() {
         return orderId;
@@ -35,6 +36,5 @@ public class OrderDetail {
     }
     public void setNumber(int number) {
         this.number = number;
-    }
-    
+    }    
 }

@@ -72,7 +72,7 @@ public class RequestHelper {
         
     public static String doPost(String url, Bundle params) {
         HttpPost httpRequest = new HttpPost(url);  
-        List paramsList = new ArrayList();
+        ArrayList<BasicNameValuePair> paramsList = new ArrayList<BasicNameValuePair>();
         BasicNameValuePair paramPair;
         
         if (params != null) {
