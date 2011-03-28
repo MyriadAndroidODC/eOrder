@@ -19,19 +19,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class DiningService extends Service {    
-    public static final String SYNC_DINING_TABLE = "com.androidodc.intent.SYNC_TABLES_STATUS";
-    public static final String SYNC_HISTORY_ORDER = "com.androidodc.intent.SYNC_HISTORY_ORDER";
-    public static final String SUBMIT_ORDER = "com.androidodc.intent.SUBMIT_ORDER";
+    public static final String SYNC_DINING_TABLE = "com.androidodc.intent.SYNC_TABLES_STATUS"; // For the receiver to handle the dining table status  
+    public static final String SYNC_HISTORY_ORDER = "com.androidodc.intent.SYNC_HISTORY_ORDER"; // For the receiver to handle the history orders  
+    public static final String SUBMIT_ORDER = "com.androidodc.intent.SUBMIT_ORDER"; // For the receiver to get the submit result.
     
-    public static final String BROADCAST_RESULT_KEY = "broadcast_result";
-    public static final String BROADCAST_RESOURCE_KEY = "broadcast_resource";
-    public static final String DINING_TABLE_KEY = "dining_tables";
-    public static final String ORDER_KEY = "dining_tables";
-    public static final String SERVICE_COMMAND_KEY = "command_type";
-    public static final String SUBMIT_KEY = "submit_info";
-    public static final String SUBMIT_ORDER_KEY = "submit_order";
-    public static final String SUBMIT_ORDER_DETAIL_KEY = "submit_order_detail";
-    public static final String PARAM_INTENT_KEY = "param_intent";
+    public static final String BROADCAST_RESULT_KEY = "broadcast_result"; //broadcast parameter key for return the operation status
+    public static final String BROADCAST_RESOURCE_KEY = "broadcast_resource"; //broadcast parameter key for return the result object to receiver
+    public static final String DINING_TABLE_KEY = "dining_tables"; //Service operation key to return the dining table objects. 
+    public static final String ORDER_KEY = "orders"; //Service operation key to return the dining table objects.
+    public static final String SERVICE_COMMAND_KEY = "command_type"; //Service operation key to get the operation command type.
+    public static final String SUBMIT_KEY = "submit_info"; //Service operation key to get the submit information objects. 
+    public static final String SUBMIT_ORDER_KEY = "submit_order"; //Service operation key to get the submit orders.
+    public static final String SUBMIT_ORDER_DETAIL_KEY = "submit_order_detail"; //Service operation key to get the submit orders details.
+    public static final String PARAM_INTENT_KEY = "param_intent"; //Service operation key to transfer the intent to asynctask.
     
     public static final int COMMAND_BLANK = 0;
     public static final int COMMAND_SYNC_DINING_TABLE = 1;
@@ -57,18 +57,15 @@ public class DiningService extends Service {
     @Override  
     public void onStart(Intent intent, int startId) {
         super.onStart(intent, startId);
-        //final int commandType = intent.getIntExtra(SERVICE_COMMAND_KEY, COMMAND_BLANK);
-        //final Intent executeParamIntent = intent;
-
         Bundle taskParams = new Bundle();
-        //taskParams.putInt(SERVICE_COMMAND_KEY, commandType);
         taskParams.putParcelable(PARAM_INTENT_KEY, intent);
+        
         new AsyncTask<Bundle, Void, Void>(){
             @Override
             protected Void doInBackground(Bundle... objs) {
                 try {
-                	int commandType = objs[0].getInt(SERVICE_COMMAND_KEY);
                 	Intent executeParamIntent = objs[0].getParcelable(PARAM_INTENT_KEY);
+                	int commandType = executeParamIntent.getIntExtra(SERVICE_COMMAND_KEY, COMMAND_BLANK);
                     executeCommand(commandType, executeParamIntent);
                 } catch (Exception e) {
                     LogUtils.logD(e.getMessage());

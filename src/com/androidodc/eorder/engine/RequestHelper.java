@@ -25,13 +25,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RequestHelper {
-    private static final int SUCCESS_STATUS = 200;
-    private static final int FILE_END = -1;
-    private static final int CONNECTION_TIME_OUT = 5000;
-    private static final int SOCKET_TIME_OUT = 3000;
-    private static final int FILE_BUFFER_SIZE = 1024;
+    private static final int SUCCESS_STATUS = 200; //
+    private static final int FILE_END = -1; //Read the EOF file character. It represents the end of the file.
+    private static final int CONNECTION_TIME_OUT = 5000; //It can not connect server exceed 5000 millisecond
+    private static final int SOCKET_TIME_OUT = 3000; //It can not make a socket connection exceed 3000 millisecond
+    private static final int FILE_BUFFER_SIZE = 1024; //Define the storage size about operating file input stream. 
     
-    public static String doGet(String url, Bundle params) {
+    public static String doRequestGet(String url, Bundle params) {
         if (params != null) {
             StringBuilder sb = new StringBuilder();
             boolean first = true;
@@ -49,12 +49,12 @@ public class RequestHelper {
             url = url + "?" + sb.toString();
         }
 
-        HttpGet httpRequest = new HttpGet(url);
         HttpParams httpParameters = new BasicHttpParams(); 
         HttpConnectionParams.setConnectionTimeout(httpParameters, CONNECTION_TIME_OUT); 
         HttpConnectionParams.setSoTimeout(httpParameters, SOCKET_TIME_OUT); 
       
         try {
+            HttpGet httpRequest = new HttpGet(url);
             HttpResponse httpResponse = new DefaultHttpClient(httpParameters).execute(httpRequest);
             
             if (httpResponse.getStatusLine().getStatusCode() == SUCCESS_STATUS) {  
@@ -70,8 +70,7 @@ public class RequestHelper {
         }
     }
         
-    public static String doPost(String url, Bundle params) {
-        HttpPost httpRequest = new HttpPost(url);  
+    public static String doRequestPost(String url, Bundle params) {
         ArrayList<BasicNameValuePair> paramsList = new ArrayList<BasicNameValuePair>();
         BasicNameValuePair paramPair;
         
@@ -87,6 +86,7 @@ public class RequestHelper {
         HttpConnectionParams.setSoTimeout(httpParameters, SOCKET_TIME_OUT); 
         
         try { 
+            HttpPost httpRequest = new HttpPost(url);  
             httpRequest.setEntity(new UrlEncodedFormEntity(paramsList, HTTP.UTF_8));
             HttpResponse httpResponse = new DefaultHttpClient(httpParameters).execute(httpRequest); 
             

@@ -61,7 +61,7 @@ public class ServiceHelper {
         String submitUrl = getRequestUrl(null, SUBMIT_PAGE);
         Bundle params = new Bundle();
         params.putString("orders", orderInfo);
-        String resultStr = RequestHelper.doPost(submitUrl, params);
+        String resultStr = RequestHelper.doRequestPost(submitUrl, params);
         if (resultStr == null || !resultStr.equals(STATUS_SUCCESS)) {
             result = false;
         }
@@ -94,7 +94,7 @@ public class ServiceHelper {
     	ArrayList<DiningTable> tableList = null;
         String reqUrl = getRequestUrl(null, DINING_TABLE_PAGE);
         
-        String respStr = RequestHelper.doPost(reqUrl, null);
+        String respStr = RequestHelper.doRequestPost(reqUrl, null);
         try {
             tableList = ResponseParser.parseDiningTables(respStr);
         } catch (JSONException e) {
@@ -109,7 +109,7 @@ public class ServiceHelper {
     	ArrayList<Category> categoryList = null;
         String reqUrl = getRequestUrl(null, CATEGORY_PAGE);
         
-        String respStr = RequestHelper.doPost(reqUrl, null);
+        String respStr = RequestHelper.doRequestPost(reqUrl, null);
         try {
             categoryList = ResponseParser.parseCategories(respStr);
         } catch (JSONException e) {
@@ -124,7 +124,7 @@ public class ServiceHelper {
     	ArrayList<Dish> dishList = null;
         String reqUrl = getRequestUrl(null, DISH_PAGE);
         
-        String respStr = RequestHelper.doPost(reqUrl, null);
+        String respStr = RequestHelper.doRequestPost(reqUrl, null);
         try {
             dishList = ResponseParser.parseDishes(respStr);
         } catch (JSONException e) {
@@ -139,7 +139,7 @@ public class ServiceHelper {
     	ArrayList<DishCategory> dishCategoryList = null;
         String reqUrl = getRequestUrl(null, DISH_CATEGORY_PAGE);
         
-        String respStr = RequestHelper.doPost(reqUrl, null);
+        String respStr = RequestHelper.doRequestPost(reqUrl, null);
         try {
             dishCategoryList = ResponseParser.parseDishCategory(respStr);
         } catch (JSONException e) {
@@ -157,7 +157,7 @@ public class ServiceHelper {
         
         Bundle params = new Bundle();
         params.putString(ORDER_QUERY_KEY, ORDER_STATUS_FREE);
-        String respStr = RequestHelper.doPost(reqUrl, params);
+        String respStr = RequestHelper.doRequestPost(reqUrl, params);
         try {
             orderList = ResponseParser.parseOrders(respStr);
         } catch (JSONException e) {
@@ -172,7 +172,7 @@ public class ServiceHelper {
     	ArrayList<Order> orderList = null;
         String reqUrl = getRequestUrl(null, ORDER_PAGE);
         
-        String respStr = RequestHelper.doPost(reqUrl, null);
+        String respStr = RequestHelper.doRequestPost(reqUrl, null);
         try {
             orderList = ResponseParser.parseOrders(respStr);
         } catch (JSONException e) {
@@ -187,7 +187,7 @@ public class ServiceHelper {
     	ArrayList<OrderDetail> orderDetailList = null;
         String reqUrl = getRequestUrl(null, ORDER_DETAIL_PAGE);
         
-        String respStr = RequestHelper.doPost(reqUrl, null);
+        String respStr = RequestHelper.doRequestPost(reqUrl, null);
         try {
             orderDetailList = ResponseParser.parseOrderDetail(respStr);
         } catch (JSONException e) {
@@ -205,7 +205,7 @@ public class ServiceHelper {
 
         Bundle params = new Bundle();
         params.putString(ORDER_ITEM_QUERY_KEY, orderIds);
-        String respStr = RequestHelper.doPost(reqUrl, null);
+        String respStr = RequestHelper.doRequestPost(reqUrl, null);
         try {
             orderDetailList = ResponseParser.parseOrderDetail(respStr);
         } catch (JSONException e) {
@@ -220,7 +220,7 @@ public class ServiceHelper {
     	ArrayList<Config> configList = null;
         String reqUrl = getRequestUrl(null, CONFIG_PAGE);
         
-        String respStr = RequestHelper.doPost(reqUrl, null);
+        String respStr = RequestHelper.doRequestPost(reqUrl, null);
         try {
             configList = ResponseParser.parseConfigs(respStr);
         } catch (JSONException e) {
