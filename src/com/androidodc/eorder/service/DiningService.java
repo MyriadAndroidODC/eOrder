@@ -57,16 +57,18 @@ public class DiningService extends Service {
     @Override  
     public void onStart(Intent intent, int startId) {
         super.onStart(intent, startId);
-        final int commandType = intent.getIntExtra(SERVICE_COMMAND_KEY, COMMAND_BLANK);
-        final Intent executeParamIntent = intent;
+        //final int commandType = intent.getIntExtra(SERVICE_COMMAND_KEY, COMMAND_BLANK);
+        //final Intent executeParamIntent = intent;
 
         Bundle taskParams = new Bundle();
-        taskParams.putInt(SERVICE_COMMAND_KEY, commandType);
-        taskParams.putParcelable(PARAM_INTENT_KEY, executeParamIntent);
+        //taskParams.putInt(SERVICE_COMMAND_KEY, commandType);
+        taskParams.putParcelable(PARAM_INTENT_KEY, intent);
         new AsyncTask<Bundle, Void, Void>(){
             @Override
             protected Void doInBackground(Bundle... objs) {
                 try {
+                	int commandType = objs[0].getInt(SERVICE_COMMAND_KEY);
+                	Intent executeParamIntent = objs[0].getParcelable(PARAM_INTENT_KEY);
                     executeCommand(commandType, executeParamIntent);
                 } catch (Exception e) {
                     LogUtils.logD(e.getMessage());
@@ -162,7 +164,7 @@ public class DiningService extends Service {
                 sendMsg(null, EXECUTE_ERROR, null);
                 return;
             }*/
-            try{            
+            try{     
                 opSymbol = (opSymbol == true ? synCategories() : false);
                 opSymbol = (opSymbol == true ? synDishCategory() : false);
                 opSymbol = (opSymbol == true ? synDishesAndImages() : false);
