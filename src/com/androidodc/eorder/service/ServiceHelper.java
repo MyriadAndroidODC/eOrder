@@ -34,15 +34,10 @@ public class ServiceHelper {
     private static final String ORDER_QUERY_KEY = "status";
     private static final String ORDER_STATUS_FREE = "0";
     private static final String ORDER_ITEM_QUERY_KEY = "order_id";
-    
-    //private RequestHelper reqHelper = null;
-    //private ResponseParser reqParser = null;    
-    
+   
     private static ServiceHelper instance = new ServiceHelper();
     
     private ServiceHelper() {
-        //reqHelper = new RequestHelper();
-        //reqParser = new ResponseParser();
     }
     
     public static synchronized ServiceHelper getInstance() {

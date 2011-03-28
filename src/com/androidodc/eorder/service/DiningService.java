@@ -76,14 +76,6 @@ public class DiningService extends Service {
     }
     
     private void executeCommand(int commandType, Intent intent) {
-        /*try{
-            if (dbHelper == null) {
-                DatabaseHelper.init(this.getApplicationContext());
-                dbHelper = DatabaseHelper.getInstance();
-            }
-        } catch (Exception e) {
-            LogUtils.logD("Database initialize error! \n" + e.getMessage());
-        }*/
         boolean opSymbol = true;
         if (commandType == COMMAND_SYNC_DINING_TABLE) {
             HashMap diningTableMap = new HashMap();
@@ -96,10 +88,6 @@ public class DiningService extends Service {
             }
             
         } else if (commandType == COMMAND_SYNC_ORDER) {
-            /*if (dbHelper == null) {
-                sendMsg(SYNC_HISTORY_ORDER, EXECUTE_ERROR, null);
-                return;
-            }*/
         	ArrayList<Order> orderList = serviceHelper.getFreeOrders();
             StringBuffer orderIdBuffer = new StringBuffer("");
             for (Order order : orderList) {
@@ -157,14 +145,10 @@ public class DiningService extends Service {
             }
             
         } else if (commandType == COMMAND_SYNC_OTHER) {
-            /*if (dbHelper == null) {
-                sendMsg(null, EXECUTE_ERROR, null);
-                return;
-            }*/
             try{     
-                opSymbol = (opSymbol == true ? synCategories() : false);
-                opSymbol = (opSymbol == true ? synDishCategory() : false);
-                opSymbol = (opSymbol == true ? synDishesAndImages() : false);
+                opSymbol = (opSymbol == true ? syncCategories() : false);
+                opSymbol = (opSymbol == true ? syncDishCategory() : false);
+                opSymbol = (opSymbol == true ? syncDishesAndImages() : false);
                 //opSymbol = (opSymbol == true ? synConfigs() : false); // TODO
             } catch (Exception e) {
                 LogUtils.logD("Synchronize other information error! \n" + e.getMessage());
@@ -201,16 +185,7 @@ public class DiningService extends Service {
             StringBuffer submitStr = new StringBuffer("");
             Order order = (Order)orderMap.get(SUBMIT_ORDER_KEY);
             ArrayList<OrderDetail> orderDetailList = (ArrayList<OrderDetail>)orderMap.get(SUBMIT_ORDER_DETAIL_KEY);
-            
-            /*List<OrderItem> orderItemList = order.getOrderItems();
-            for (OrderItem orderItem : orderItemList) {
-                submitStr.append("{");                
-                submitStr.append("\"dining_table_id\":" + order.getTableId() + ",");
-                submitStr.append("\"dish_id\":" + orderItem.getDish().getDishId() + ",");
-                submitStr.append("\"number\":" + orderItem.getAmount());
-                submitStr.append("},");
-            }*/
-            
+           
             submitStr.append("{\"sum\":");
             submitStr.append(order.getOrderTotal() + ",");
             submitStr.append("\"order_detail\":[");
@@ -231,7 +206,7 @@ public class DiningService extends Service {
         return result;
     }
     
-    private boolean synCategories() {
+    private boolean syncCategories() {
         boolean result = true;
         ArrayList<Category> categoryList = serviceHelper.getCategories();
         if (categoryList == null) {
@@ -244,7 +219,7 @@ public class DiningService extends Service {
         return result;
     }
 
-    private boolean synDishesAndImages() {
+    private boolean syncDishesAndImages() {
         boolean result = true;
         ArrayList<Dish> dishList = serviceHelper.getDishes();
         if (dishList == null) {
@@ -259,7 +234,7 @@ public class DiningService extends Service {
         return result;
     }
     
-    private boolean synDishCategory() {
+    private boolean syncDishCategory() {
         boolean result = true;
         ArrayList<DishCategory> dishCategoryList = serviceHelper.getDishCategory();
         if (dishCategoryList == null) {
@@ -272,7 +247,7 @@ public class DiningService extends Service {
         return result;
     }
 
-    private boolean synConfigs() {
+    private boolean syncConfigs() {
         boolean result = true;
         ArrayList<Config> configList = serviceHelper.getConfigs();
         if (configList == null) {
