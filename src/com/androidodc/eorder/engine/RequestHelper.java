@@ -146,10 +146,18 @@ public class RequestHelper {
              return false;
          }finally {
              try{
-                 if (is != null) is.close();
-                 if (fos != null) fos.close();
-                 if (connect != null) connect.disconnect();
-                 if (bis != null) bis.close();
+                 if (is != null) {
+                     is.close();
+                 }
+                 if (fos != null) {
+                     fos.close();
+                 }
+                 if (connect != null) {
+                     connect.disconnect();
+                 }
+                 if (bis != null) {
+                     bis.close();
+                 }
              } catch (Exception e){
                  LogUtils.logD(e.getMessage());
              }
