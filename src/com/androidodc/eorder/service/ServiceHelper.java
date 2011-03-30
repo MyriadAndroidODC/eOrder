@@ -34,24 +34,15 @@ public class ServiceHelper {
     private static final String ORDER_QUERY_KEY = "status";
     private static final String ORDER_STATUS_FREE = "0";
     private static final String ORDER_ITEM_QUERY_KEY = "order_id";
-   
-    private static ServiceHelper instance = new ServiceHelper();
     
-    private ServiceHelper() {
-    }
-    
-    public static synchronized ServiceHelper getInstance() {
-        return instance;
-    }
-    
-    public String getRequestUrl(String reqContext, String page) {
+    public static String getRequestUrl(String reqContext, String page) {
         if (reqContext == null) {
             reqContext = DEFAULT_URL + DEFAULT_APP;
         }
         return reqContext + "/" + page;
     }
     
-    public boolean submitOrderToServer(String orderInfo) {
+    public static boolean submitOrderToServer(String orderInfo) {
         boolean result = true;        
         String submitUrl = getRequestUrl(null, SUBMIT_PAGE);
         Bundle params = new Bundle();
@@ -63,7 +54,7 @@ public class ServiceHelper {
         return result;
     }
     
-    public boolean syncDishImage(ArrayList<Dish> dishList) {
+    public static boolean syncDishImage(ArrayList<Dish> dishList) {
         boolean result = true;
         if (dishList == null) {
             return result;
@@ -85,7 +76,7 @@ public class ServiceHelper {
         return result;
     }
     
-    public ArrayList<DiningTable> getDiningTables() {
+    public static ArrayList<DiningTable> getDiningTables() {
     	ArrayList<DiningTable> tableList = null;
         String reqUrl = getRequestUrl(null, DINING_TABLE_PAGE);
         
@@ -100,7 +91,7 @@ public class ServiceHelper {
         return tableList;
     }
 
-    public ArrayList<Category> getCategories() {
+    public static ArrayList<Category> getCategories() {
     	ArrayList<Category> categoryList = null;
         String reqUrl = getRequestUrl(null, CATEGORY_PAGE);
         
@@ -115,7 +106,7 @@ public class ServiceHelper {
         return categoryList;
     }
 
-    public ArrayList<Dish> getDishes() {
+    public static ArrayList<Dish> getDishes() {
     	ArrayList<Dish> dishList = null;
         String reqUrl = getRequestUrl(null, DISH_PAGE);
         
@@ -130,7 +121,7 @@ public class ServiceHelper {
         return dishList;
     }
 
-    public ArrayList<DishCategory> getDishCategory() {
+    public static ArrayList<DishCategory> getDishCategory() {
     	ArrayList<DishCategory> dishCategoryList = null;
         String reqUrl = getRequestUrl(null, DISH_CATEGORY_PAGE);
         
@@ -146,7 +137,7 @@ public class ServiceHelper {
     }
 
 
-    public ArrayList<Order> getFreeOrders() {
+    public static ArrayList<Order> getFreeOrders() {
         ArrayList<Order> orderList = null;
         String reqUrl = getRequestUrl(null, ORDER_PAGE);
         
@@ -163,7 +154,7 @@ public class ServiceHelper {
         return orderList;
     }
     
-    public ArrayList<Order> getOrders() {
+    public static ArrayList<Order> getOrders() {
     	ArrayList<Order> orderList = null;
         String reqUrl = getRequestUrl(null, ORDER_PAGE);
         
@@ -178,7 +169,7 @@ public class ServiceHelper {
         return orderList;
     }
 
-    public ArrayList<OrderDetail> getOrderDetail() {
+    public static ArrayList<OrderDetail> getOrderDetail() {
     	ArrayList<OrderDetail> orderDetailList = null;
         String reqUrl = getRequestUrl(null, ORDER_DETAIL_PAGE);
         
@@ -194,7 +185,7 @@ public class ServiceHelper {
     }
 
 
-    public ArrayList<OrderDetail> getOrderDetailByOrderIds(String orderIds) {
+    public static ArrayList<OrderDetail> getOrderDetailByOrderIds(String orderIds) {
     	ArrayList<OrderDetail> orderDetailList = null;
         String reqUrl = getRequestUrl(null, ORDER_DETAIL_PAGE);
 
@@ -211,7 +202,7 @@ public class ServiceHelper {
         return orderDetailList;
     }
     
-    public ArrayList<Config> getConfigs() {
+    public static ArrayList<Config> getConfigs() {
     	ArrayList<Config> configList = null;
         String reqUrl = getRequestUrl(null, CONFIG_PAGE);
         
@@ -226,7 +217,7 @@ public class ServiceHelper {
         return configList;
     }
     
-    public String getLocalFileStorageUrl(String dir, String fileName) {
+    public static String getLocalFileStorageUrl(String dir, String fileName) {
         String url = null;
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             if (fileName == null) {

@@ -46,7 +46,6 @@ public class DiningService extends Service {
     public static final int EXECUTE_SUBMIT_ORDER_SUCCESS = 4;
     public static final int EXECUTE_ERROR = 99999;
     
-    private ServiceHelper serviceHelper = ServiceHelper.getInstance();
     private DatabaseHelper dbHelper = DatabaseHelper.getInstance();
 
     @Override  
@@ -75,11 +74,11 @@ public class DiningService extends Service {
         }.execute(new Bundle[]{taskParams});
     }
     
-    private void executeCommand(int commandType, Intent intent) {
+    void executeCommand(int commandType, Intent intent) {
         boolean opSymbol = true;
         if (commandType == COMMAND_SYNC_DINING_TABLE) {
             HashMap diningTableMap = new HashMap();
-            ArrayList<DiningTable> diningTableList = serviceHelper.getDiningTables();
+            ArrayList<DiningTable> diningTableList = ServiceHelper.getDiningTables();
             if (diningTableList != null) {
                 diningTableMap.put(DINING_TABLE_KEY, diningTableList);
                 sendMsg(SYNC_DINING_TABLE, EXECUTE_DINING_TABLE_SUCCESS, diningTableMap);
@@ -88,13 +87,13 @@ public class DiningService extends Service {
             }
             
         } else if (commandType == COMMAND_SYNC_ORDER) {
-        	ArrayList<Order> orderList = serviceHelper.getFreeOrders();
+        	ArrayList<Order> orderList = ServiceHelper.getFreeOrders();
             StringBuffer orderIdBuffer = new StringBuffer("");
             for (Order order : orderList) {
                 orderIdBuffer.append(order.getOrderId() + ",");
             }
             orderIdBuffer.deleteCharAt(orderIdBuffer.length() - 1); //delete the last character
-            ArrayList<OrderDetail> orderDetailList = serviceHelper.getOrderDetailByOrderIds(orderIdBuffer.toString());
+            ArrayList<OrderDetail> orderDetailList = ServiceHelper.getOrderDetailByOrderIds(orderIdBuffer.toString());
             
             if (orderList != null && orderDetailList != null) {
                 HashMap orderMap = new HashMap();
@@ -198,7 +197,7 @@ public class DiningService extends Service {
             }
             submitStr.deleteCharAt(submitStr.length() - 1);
             submitStr.append("]}");
-            serviceHelper.submitOrderToServer(submitStr.toString());
+            ServiceHelper.submitOrderToServer(submitStr.toString());
         } catch (Exception e) {
             LogUtils.logD("Submit order error! \n" + e.getMessage());
             result = false;
@@ -208,7 +207,7 @@ public class DiningService extends Service {
     
     private boolean syncCategories() {
         boolean result = true;
-        ArrayList<Category> categoryList = serviceHelper.getCategories();
+        ArrayList<Category> categoryList = ServiceHelper.getCategories();
         if (categoryList == null) {
             result = false;
         } else {
@@ -221,12 +220,12 @@ public class DiningService extends Service {
 
     private boolean syncDishesAndImages() {
         boolean result = true;
-        ArrayList<Dish> dishList = serviceHelper.getDishes();
+        ArrayList<Dish> dishList = ServiceHelper.getDishes();
         if (dishList == null) {
             result = false;
         } else {            
             //synchronize the image and update the local file path
-            result = serviceHelper.syncDishImage(dishList);
+            result = ServiceHelper.syncDishImage(dishList);
             for (Dish dish : dishList) {
                 dbHelper.addDish(dish);
             }
@@ -236,7 +235,7 @@ public class DiningService extends Service {
     
     private boolean syncDishCategory() {
         boolean result = true;
-        ArrayList<DishCategory> dishCategoryList = serviceHelper.getDishCategory();
+        ArrayList<DishCategory> dishCategoryList = ServiceHelper.getDishCategory();
         if (dishCategoryList == null) {
             result = false;
         } else {
@@ -249,7 +248,7 @@ public class DiningService extends Service {
 
     private boolean syncConfigs() {
         boolean result = true;
-        ArrayList<Config> configList = serviceHelper.getConfigs();
+        ArrayList<Config> configList = ServiceHelper.getConfigs();
         if (configList == null) {
             result = false;
         } else {
