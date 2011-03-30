@@ -101,6 +101,9 @@ public class RequestHelper {
     public static boolean getFileFromServer(String path, Bundle params, OutputStream fos) {
          byte[] bf = new byte[FILE_BUFFER_SIZE];
          int current = 0;
+         InputStream is = null;
+         HttpURLConnection connect = null;
+         BufferedInputStream bis = null;
 
          try {
              if (params != null) {
@@ -118,22 +121,18 @@ public class RequestHelper {
              }
 
              URL url = new URL(path);
-             HttpURLConnection connect = (HttpURLConnection)url.openConnection();
+             connect = (HttpURLConnection)url.openConnection();
              connect.setDoInput(true);
              connect.setConnectTimeout(CONNECTION_TIME_OUT);
              connect.setReadTimeout(SOCKET_TIME_OUT);
              int code = connect.getResponseCode();
 
              if (code == HttpURLConnection.HTTP_OK) {
-                 InputStream is = connect.getInputStream();
-                 BufferedInputStream bis = new BufferedInputStream(is);
+                 is = connect.getInputStream();
+                 bis = new BufferedInputStream(is);
                  while((current = bis.read(bf)) != FILE_END){
                      fos.write(bf, 0, current);
                  }
-
-                 bis.close();
-                 fos.close();
-                 connect.disconnect();
              }
              return true;
          } catch (MalformedURLException e) {
@@ -142,6 +141,18 @@ public class RequestHelper {
          } catch (IOException e) {
              LogUtils.logD(e.getMessage());
              return false;
+         } catch (Exception e) {
+             LogUtils.logD(e.getMessage());
+             return false;
+         }finally {
+             try{
+                 if (is != null) is.close();
+                 if (fos != null) fos.close();
+                 if (connect != null) connect.disconnect();
+                 if (bis != null) bis.close();
+             } catch (Exception e){
+                 LogUtils.logD(e.getMessage());
+             }
          }
     }
 }

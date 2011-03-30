@@ -180,7 +180,7 @@ public class DiningService extends Service {
     private boolean submitOrder(HashMap orderMap) {
         boolean result = true;
         try{
-            StringBuffer submitStr = new StringBuffer("");
+            StringBuilder submitStr = new StringBuilder("");
             Order order = (Order)orderMap.get(SUBMIT_ORDER_KEY);
             ArrayList<OrderDetail> orderDetailList = (ArrayList<OrderDetail>)orderMap.get(SUBMIT_ORDER_DETAIL_KEY);
 
