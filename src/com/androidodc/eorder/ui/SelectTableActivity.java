@@ -167,21 +167,12 @@ public class SelectTableActivity extends Activity {
 
     /* The operation will last long, and no answer from server. */
     private void syncOtherData() {
-        IntentFilter filter = new IntentFilter(SyncReceiver.SYNC_OTHER);
-        if (mReceiver == null) {
-            mReceiver = new SyncReceiver();
-        }
-        registerReceiver(mReceiver, filter);
-
         Intent service = new Intent(SelectTableActivity.this, DiningService.class);
         service.putExtra(DiningService.SERVICE_COMMAND_KEY, DiningService.COMMAND_SYNC_OTHER);
         startService(service);
     }
 
     class SyncReceiver extends BroadcastReceiver {
-
-        private static final String SYNC_OTHER = "com.androidodc.intent.SYNC_OTHER";
-
         @Override
         public void onReceive(Context arg0, Intent arg1) {
             String action = arg1.getAction();
