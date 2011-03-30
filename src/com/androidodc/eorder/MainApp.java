@@ -14,13 +14,13 @@ public class MainApp extends Application {
 
         if (DEBUG) {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-            	.detectDiskReads()
-            	.detectDiskWrites()
-            	.detectNetwork()
-            	.penaltyLog().build());
+                .detectDiskReads()
+                .detectDiskWrites()
+                .detectNetwork()
+                .penaltyLog().build());
         }
         super.onCreate();
-        
+
         try{
             DatabaseHelper.init(this);
         } catch (Exception e) {

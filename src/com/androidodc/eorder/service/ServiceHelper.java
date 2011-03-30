@@ -30,20 +30,20 @@ public class ServiceHelper {
     private static final String CONFIG_PAGE = "configs.jsp";
     private static final String SUBMIT_PAGE = "post_order.jsp";
     private static final String STATUS_SUCCESS = "success";
-    
+
     private static final String ORDER_QUERY_KEY = "status";
     private static final String ORDER_STATUS_FREE = "0";
     private static final String ORDER_ITEM_QUERY_KEY = "order_id";
-    
+
     public static String getRequestUrl(String reqContext, String page) {
         if (reqContext == null) {
             reqContext = DEFAULT_URL + DEFAULT_APP;
         }
         return reqContext + "/" + page;
     }
-    
+
     public static boolean submitOrderToServer(String orderInfo) {
-        boolean result = true;        
+        boolean result = true;
         String submitUrl = getRequestUrl(null, SUBMIT_PAGE);
         Bundle params = new Bundle();
         params.putString("orders", orderInfo);
@@ -53,13 +53,12 @@ public class ServiceHelper {
         }
         return result;
     }
-    
+
     public static boolean syncDishImage(ArrayList<Dish> dishList) {
         boolean result = true;
         if (dishList == null) {
             return result;
         }
-        
         try {
             for (Dish dish : dishList) {
                 String imgUrl = getRequestUrl(null, dish.getImageServer());
@@ -72,14 +71,13 @@ public class ServiceHelper {
         } catch (IOException e) {
             LogUtils.logD("Save image error!");
             result = false;
-        }        
+        }
         return result;
     }
-    
+
     public static ArrayList<DiningTable> getDiningTables() {
-    	ArrayList<DiningTable> tableList = null;
+        ArrayList<DiningTable> tableList = null;
         String reqUrl = getRequestUrl(null, DINING_TABLE_PAGE);
-        
         String respStr = RequestHelper.doRequestPost(reqUrl, null);
         try {
             tableList = ResponseParser.parseDiningTables(respStr);
@@ -92,9 +90,8 @@ public class ServiceHelper {
     }
 
     public static ArrayList<Category> getCategories() {
-    	ArrayList<Category> categoryList = null;
-        String reqUrl = getRequestUrl(null, CATEGORY_PAGE);
-        
+        ArrayList<Category> categoryList = null;
+        String reqUrl = getRequestUrl(null, CATEGORY_PAGE);        
         String respStr = RequestHelper.doRequestPost(reqUrl, null);
         try {
             categoryList = ResponseParser.parseCategories(respStr);
@@ -107,9 +104,8 @@ public class ServiceHelper {
     }
 
     public static ArrayList<Dish> getDishes() {
-    	ArrayList<Dish> dishList = null;
+        ArrayList<Dish> dishList = null;
         String reqUrl = getRequestUrl(null, DISH_PAGE);
-        
         String respStr = RequestHelper.doRequestPost(reqUrl, null);
         try {
             dishList = ResponseParser.parseDishes(respStr);
@@ -122,9 +118,8 @@ public class ServiceHelper {
     }
 
     public static ArrayList<DishCategory> getDishCategory() {
-    	ArrayList<DishCategory> dishCategoryList = null;
+        ArrayList<DishCategory> dishCategoryList = null;
         String reqUrl = getRequestUrl(null, DISH_CATEGORY_PAGE);
-        
         String respStr = RequestHelper.doRequestPost(reqUrl, null);
         try {
             dishCategoryList = ResponseParser.parseDishCategory(respStr);
@@ -136,11 +131,9 @@ public class ServiceHelper {
         return dishCategoryList;
     }
 
-
     public static ArrayList<Order> getFreeOrders() {
         ArrayList<Order> orderList = null;
         String reqUrl = getRequestUrl(null, ORDER_PAGE);
-        
         Bundle params = new Bundle();
         params.putString(ORDER_QUERY_KEY, ORDER_STATUS_FREE);
         String respStr = RequestHelper.doRequestPost(reqUrl, params);
@@ -153,11 +146,10 @@ public class ServiceHelper {
         }
         return orderList;
     }
-    
+
     public static ArrayList<Order> getOrders() {
-    	ArrayList<Order> orderList = null;
+        ArrayList<Order> orderList = null;
         String reqUrl = getRequestUrl(null, ORDER_PAGE);
-        
         String respStr = RequestHelper.doRequestPost(reqUrl, null);
         try {
             orderList = ResponseParser.parseOrders(respStr);
@@ -170,9 +162,8 @@ public class ServiceHelper {
     }
 
     public static ArrayList<OrderDetail> getOrderDetail() {
-    	ArrayList<OrderDetail> orderDetailList = null;
+        ArrayList<OrderDetail> orderDetailList = null;
         String reqUrl = getRequestUrl(null, ORDER_DETAIL_PAGE);
-        
         String respStr = RequestHelper.doRequestPost(reqUrl, null);
         try {
             orderDetailList = ResponseParser.parseOrderDetail(respStr);
@@ -184,11 +175,9 @@ public class ServiceHelper {
         return orderDetailList;
     }
 
-
     public static ArrayList<OrderDetail> getOrderDetailByOrderIds(String orderIds) {
-    	ArrayList<OrderDetail> orderDetailList = null;
+        ArrayList<OrderDetail> orderDetailList = null;
         String reqUrl = getRequestUrl(null, ORDER_DETAIL_PAGE);
-
         Bundle params = new Bundle();
         params.putString(ORDER_ITEM_QUERY_KEY, orderIds);
         String respStr = RequestHelper.doRequestPost(reqUrl, null);
@@ -201,11 +190,10 @@ public class ServiceHelper {
         }
         return orderDetailList;
     }
-    
+
     public static ArrayList<Config> getConfigs() {
-    	ArrayList<Config> configList = null;
+        ArrayList<Config> configList = null;
         String reqUrl = getRequestUrl(null, CONFIG_PAGE);
-        
         String respStr = RequestHelper.doRequestPost(reqUrl, null);
         try {
             configList = ResponseParser.parseConfigs(respStr);
@@ -216,21 +204,19 @@ public class ServiceHelper {
         }
         return configList;
     }
-    
+
     public static String getLocalFileStorageUrl(String dir, String fileName) {
         String url = null;
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             if (fileName == null) {
                 return null;
             }
-            
             if (dir == null || dir.equals("")) {
                 dir = "";
             } else {
                 dir = dir + "/";
             }
-            
-            url = Environment.getExternalStorageDirectory() + "/" + dir + fileName;            
+            url = Environment.getExternalStorageDirectory() + "/" + dir + fileName;
         } else {
             LogUtils.logD("SD Card not mount!");
         }

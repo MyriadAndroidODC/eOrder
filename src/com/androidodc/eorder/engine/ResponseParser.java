@@ -19,7 +19,7 @@ public class ResponseParser {
         }
         ArrayList<Dish> resultList = new ArrayList<Dish>();
         JSONObject dishes = new JSONObject(dishesRespStr);
-        
+
         JSONArray dishArray = dishes.getJSONArray("dishes");
         int length = dishArray.length();
         for (int i = 0; i < length; i++) {
@@ -35,21 +35,20 @@ public class ResponseParser {
             long updateTimeValue = dishObj.getLong("update_time");
             Date createTime = new Date(createTimeValue);
             Date updateTime = new Date(updateTimeValue);
-            
             dish.setCreateTime(createTime);
             dish.setUpdateTime(updateTime);
             resultList.add(dish);
         }
         return resultList;
     }
-    
+
     public static ArrayList<Category> parseCategories(String categoryRespStr) throws JSONException {
         if (categoryRespStr == null) {
             return null;
         }
-        ArrayList<Category> resultList = new ArrayList<Category>(); 
+        ArrayList<Category> resultList = new ArrayList<Category>();
         JSONObject categories = new JSONObject(categoryRespStr);
-        
+
         JSONArray categoryArray = categories.getJSONArray("categories");
         int length = categoryArray.length();
         for (int i = 0; i < length; i++) {
@@ -64,13 +63,14 @@ public class ResponseParser {
         return resultList;
     }
 
-    public static ArrayList<DishCategory> parseDishCategory(String dishCategoryRespStr) throws JSONException {
+    public static ArrayList<DishCategory> parseDishCategory(String dishCategoryRespStr)
+            throws JSONException {
         if (dishCategoryRespStr == null) {
             return null;
         }
         ArrayList<DishCategory> resultList = new ArrayList<DishCategory>();
         JSONObject dishCategories = new JSONObject(dishCategoryRespStr);
-        
+
         JSONArray dishCategoryArray = dishCategories.getJSONArray("dish_category");
         int length = dishCategoryArray.length();
         for (int i = 0; i < length; i++) {
@@ -89,10 +89,10 @@ public class ResponseParser {
         }
         ArrayList<Order> resultList = new ArrayList<Order>();
         JSONObject orders = new JSONObject(orderRespStr);
-        
+
         JSONArray orderArray = orders.getJSONArray("orders");
         int length = orderArray.length();
-        for (int i = 0; i < length; i ++) {
+        for (int i = 0; i < length; i++) {
             Order order = new Order();
             JSONObject orderObj = orderArray.getJSONObject(i);
             order.setOrderId(orderObj.getLong("_id"));
@@ -110,13 +110,14 @@ public class ResponseParser {
         return resultList;
     }
 
-    public static ArrayList<OrderDetail> parseOrderDetail(String orderDetailRespStr) throws JSONException {
+    public static ArrayList<OrderDetail> parseOrderDetail(String orderDetailRespStr)
+            throws JSONException {
         if (orderDetailRespStr == null) {
             return null;
         }
         ArrayList<OrderDetail> resultList = new ArrayList<OrderDetail>();
         JSONObject orderDetails = new JSONObject(orderDetailRespStr);
-        
+
         JSONArray orderDetailArray = orderDetails.getJSONArray("order_detail");
         int length = orderDetailArray.length();
         for (int i = 0; i < length; i++) {
@@ -132,13 +133,14 @@ public class ResponseParser {
         return resultList;
     }
 
-    public static ArrayList<DiningTable> parseDiningTables(String diningTablesRespStr) throws JSONException {
+    public static ArrayList<DiningTable> parseDiningTables(String diningTablesRespStr)
+            throws JSONException {
         if (diningTablesRespStr == null) {
             return null;
         }
         ArrayList<DiningTable> resultList = new ArrayList<DiningTable>();
         JSONObject diningTables = new JSONObject(diningTablesRespStr);
-        
+
         JSONArray diningArray = diningTables.getJSONArray("dining_tables");
         int length = diningArray.length();
         for (int i = 0; i < length; i++) {
@@ -147,7 +149,7 @@ public class ResponseParser {
             diningTable.setDiningTableId(diningTableObj.getLong("_id"));
             diningTable.setName(diningTableObj.getString("name"));
             diningTable.setMaxPeople(diningTableObj.getInt("capacity"));
-            int free = diningTableObj.getInt("status");            
+            int free = diningTableObj.getInt("status");
             diningTable.setFree(free == 0 ? true : false);
             resultList.add(diningTable);
         }
@@ -160,7 +162,7 @@ public class ResponseParser {
         }
         ArrayList<Config> resultList = new ArrayList<Config>();
         JSONObject configs = new JSONObject(configsRespStr);
-        
+
         JSONArray configArray = configs.getJSONArray("configs");
         int length = configArray.length();
         for (int i = 0; i < length; i++) {

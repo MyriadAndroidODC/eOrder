@@ -18,11 +18,11 @@ import com.androidodc.eorder.utils.LogUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class DiningService extends Service {    
-    public static final String SYNC_DINING_TABLE = "com.androidodc.intent.SYNC_TABLES_STATUS"; // For the receiver to handle the dining table status  
-    public static final String SYNC_HISTORY_ORDER = "com.androidodc.intent.SYNC_HISTORY_ORDER"; // For the receiver to handle the history orders  
-    public static final String SUBMIT_ORDER = "com.androidodc.intent.SUBMIT_ORDER"; // For the receiver to get the submit result.
-    
+public class DiningService extends Service {
+    public static final String SYNC_DINING_TABLE = "com.androidodc.intent.SYNC_TABLES_STATUS"; //For the receiver to handle the dining table status
+    public static final String SYNC_HISTORY_ORDER = "com.androidodc.intent.SYNC_HISTORY_ORDER"; //For the receiver to handle the history orders
+    public static final String SUBMIT_ORDER = "com.androidodc.intent.SUBMIT_ORDER"; //For the receiver to get the submit result.
+
     public static final String BROADCAST_RESULT_KEY = "broadcast_result"; //broadcast parameter key for return the operation status
     public static final String BROADCAST_RESOURCE_KEY = "broadcast_resource"; //broadcast parameter key for return the result object to receiver
     public static final String DINING_TABLE_KEY = "dining_tables"; //Service operation key to return the dining table objects. 
@@ -32,33 +32,33 @@ public class DiningService extends Service {
     public static final String SUBMIT_ORDER_KEY = "submit_order"; //Service operation key to get the submit orders.
     public static final String SUBMIT_ORDER_DETAIL_KEY = "submit_order_detail"; //Service operation key to get the submit orders details.
     public static final String PARAM_INTENT_KEY = "param_intent"; //Service operation key to transfer the intent to asynctask.
-    
+
     public static final int COMMAND_BLANK = 0;
     public static final int COMMAND_SYNC_DINING_TABLE = 1;
     public static final int COMMAND_SYNC_ORDER = 2;
     public static final int COMMAND_SYNC_OTHER = 3; //Except order and dining table information
     public static final int COMMAND_SUBMIT_ORDER = 4;
-    
+
     public static final int EXECUTE_NONE = 0;
     public static final int EXECUTE_DINING_TABLE_SUCCESS = 1;
     public static final int EXECUTE_ORDER_SUCCESS = 2;
     public static final int EXECUTE_OTHER_SUCCESS = 3;
     public static final int EXECUTE_SUBMIT_ORDER_SUCCESS = 4;
     public static final int EXECUTE_ERROR = 99999;
-    
+
     private DatabaseHelper dbHelper = DatabaseHelper.getInstance();
 
-    @Override  
-    public void onCreate() {  
+    @Override
+    public void onCreate() {
         super.onCreate();
     }
-    
+
     @Override  
     public void onStart(Intent intent, int startId) {
         super.onStart(intent, startId);
         Bundle taskParams = new Bundle();
         taskParams.putParcelable(PARAM_INTENT_KEY, intent);
-        
+
         new AsyncTask<Bundle, Void, Void>(){
             @Override
             protected Void doInBackground(Bundle... objs) {
@@ -73,7 +73,7 @@ public class DiningService extends Service {
             }
         }.execute(new Bundle[]{taskParams});
     }
-    
+
     void executeCommand(int commandType, Intent intent) {
         boolean opSymbol = true;
         if (commandType == COMMAND_SYNC_DINING_TABLE) {
@@ -85,7 +85,7 @@ public class DiningService extends Service {
             } else {
                 sendMsg(SYNC_DINING_TABLE, EXECUTE_ERROR, null);
             }
-            
+
         } else if (commandType == COMMAND_SYNC_ORDER) {
         	ArrayList<Order> orderList = ServiceHelper.getFreeOrders();
             StringBuffer orderIdBuffer = new StringBuffer("");
@@ -94,12 +94,12 @@ public class DiningService extends Service {
             }
             orderIdBuffer.deleteCharAt(orderIdBuffer.length() - 1); //delete the last character
             ArrayList<OrderDetail> orderDetailList = ServiceHelper.getOrderDetailByOrderIds(orderIdBuffer.toString());
-            
+
             if (orderList != null && orderDetailList != null) {
                 HashMap orderMap = new HashMap();
                 HashMap orderTableMap = new HashMap();
                 orderMap.put(ORDER_KEY, orderList);
-                
+
                 for (OrderDetail orderDetail : orderDetailList) {
                     long orderId = orderDetail.getOrderId();
                     long dishId = orderDetail.getDishId();
@@ -107,7 +107,7 @@ public class DiningService extends Service {
                     int number = orderDetail.getNumber();
                     String key = "" + orderId;
                     ArrayList<OrderItem> eachOrderItemList = (ArrayList<OrderItem>)orderMap.get(key);
-                    
+
                     OrderItem orderItem = new OrderItem();
                     orderItem.setAmount(number);
                     orderItem.setDish(dbHelper.getDishById(dishId));
@@ -118,13 +118,13 @@ public class DiningService extends Service {
                     } else {
                         eachOrderItemList.add(orderItem);
                     }
-                    
+
                     String tableKey = "" + tableId;
                     if (orderTableMap.get(tableKey) == null) {
                         orderTableMap.put(key, tableKey);
                     }
                 }
-                
+
                 for (Order order : orderList) {
                     long orderId = order.getOrderId();
                     String key = "" + orderId;
@@ -136,7 +136,6 @@ public class DiningService extends Service {
                         Long tableId = Long.parseLong(tableIdStr);
                         order.setTableId(tableId);
                     }
-                    
                 }
                 sendMsg(SYNC_HISTORY_ORDER, EXECUTE_ORDER_SUCCESS, orderMap);
             } else {
@@ -144,7 +143,7 @@ public class DiningService extends Service {
             }
             
         } else if (commandType == COMMAND_SYNC_OTHER) {
-            try{     
+            try {
                 opSymbol = (opSymbol == true ? syncCategories() : false);
                 opSymbol = (opSymbol == true ? syncDishCategory() : false);
                 opSymbol = (opSymbol == true ? syncDishesAndImages() : false);
@@ -162,34 +161,34 @@ public class DiningService extends Service {
             sendMsg(null, EXECUTE_NONE, null);
         }
     }
-    
+
     private void sendMsg(String broadcastHandle, int executeResult, HashMap resultObj) {
         if (broadcastHandle == null) {
             return; // do nothing
         }
-        
+
         Intent intent = new Intent(broadcastHandle);
         Bundle msgBundle = new Bundle();
-        
+
         msgBundle.putInt(BROADCAST_RESULT_KEY, executeResult);
         msgBundle.putSerializable(BROADCAST_RESOURCE_KEY, resultObj);
         intent.putExtras(msgBundle);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        this.sendBroadcast(intent);  
-    } 
-    
+        this.sendBroadcast(intent);
+    }
+
     private boolean submitOrder(HashMap orderMap) {
         boolean result = true;
         try{
             StringBuffer submitStr = new StringBuffer("");
             Order order = (Order)orderMap.get(SUBMIT_ORDER_KEY);
             ArrayList<OrderDetail> orderDetailList = (ArrayList<OrderDetail>)orderMap.get(SUBMIT_ORDER_DETAIL_KEY);
-           
+
             submitStr.append("{\"sum\":");
             submitStr.append(order.getOrderTotal() + ",");
             submitStr.append("\"order_detail\":[");
             for (OrderDetail eachOrderDetail : orderDetailList) {
-                submitStr.append("{");                
+                submitStr.append("{");
                 submitStr.append("\"dining_table_id\":" + eachOrderDetail.getTableId() + ",");
                 submitStr.append("\"dish_id\":" + eachOrderDetail.getDishId() + ",");
                 submitStr.append("\"number\":" + eachOrderDetail.getNumber());
@@ -204,7 +203,7 @@ public class DiningService extends Service {
         }
         return result;
     }
-    
+
     private boolean syncCategories() {
         boolean result = true;
         ArrayList<Category> categoryList = ServiceHelper.getCategories();
@@ -223,7 +222,7 @@ public class DiningService extends Service {
         ArrayList<Dish> dishList = ServiceHelper.getDishes();
         if (dishList == null) {
             result = false;
-        } else {            
+        } else {
             //synchronize the image and update the local file path
             result = ServiceHelper.syncDishImage(dishList);
             for (Dish dish : dishList) {
@@ -232,7 +231,7 @@ public class DiningService extends Service {
         }
         return result;
     }
-    
+
     private boolean syncDishCategory() {
         boolean result = true;
         ArrayList<DishCategory> dishCategoryList = ServiceHelper.getDishCategory();
@@ -264,5 +263,4 @@ public class DiningService extends Service {
         // TODO Auto-generated method stub
         return null;
     }
-
 }
