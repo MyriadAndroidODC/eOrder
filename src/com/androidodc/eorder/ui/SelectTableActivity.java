@@ -20,6 +20,7 @@ import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.androidodc.eorder.datatypes.DiningTable;
+import com.androidodc.eorder.order.OrderManager;
 import com.androidodc.eorder.service.DiningService;
 
 import java.util.ArrayList;
@@ -85,10 +86,8 @@ public class SelectTableActivity extends Activity {
     public boolean onContextItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case R.id.view_history_orders:
-            // TODO: when CheckHistoryOrdersActivity is created, remove the comments.
-            // Intent intent = new Intent(SelectTableActivity.this,
-            // CheckHistoryOrdersActivity.class);
-            // startActivity(intent);
+            Intent intent = new Intent(SelectTableActivity.this, CheckHistoryOrdersActivity.class);
+            startActivity(intent);
             return true;
         case R.id.sync_tables_status:
             syncTablesStatus();
@@ -124,8 +123,8 @@ public class SelectTableActivity extends Activity {
         GridView tablesView = (GridView) findViewById(R.id.tables);
         tablesView.setAdapter(imagesItem);
         tablesView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                // OrderManager.setTableId(arg2);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                OrderManager.getInstance().setTableId(position);
                 Intent intent = new Intent(SelectTableActivity.this, MainListActivity.class);
                 startActivity(intent);
             }
