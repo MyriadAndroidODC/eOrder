@@ -9,6 +9,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.androidodc.eorder.database.DatabaseUtils;
 import com.androidodc.eorder.datatypes.Dish;
 
 public class DishTable {
@@ -149,8 +150,9 @@ public class DishTable {
      * @param db
      */
     public static void drop(final SQLiteDatabase db) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        DatabaseUtils.drop(db, TABLE_NAME);
     }
+
     /**
      * According to dishId to modify the corresponding Dish object's imageLocal property.
      *
@@ -162,5 +164,14 @@ public class DishTable {
             String imageLocal) {
         db.execSQL("UPDATE " + DishTable.TABLE_NAME + " SET " + DishTable.IMAGE_LOCAL + "="
                 + imageLocal + " WHERE " + DishTable.DISH_ID + " = " + dishId);
+    }
+
+    /**
+     * Remove all data in table dish
+     *
+     * @param db
+     */
+    public static void deleteAll(final SQLiteDatabase db) {
+        DatabaseUtils.truncate(db, TABLE_NAME);
     }
 }

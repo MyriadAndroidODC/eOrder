@@ -9,6 +9,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.androidodc.eorder.database.DatabaseUtils;
 import com.androidodc.eorder.datatypes.Dish;
 import com.androidodc.eorder.datatypes.DishCategory;
 
@@ -24,7 +25,7 @@ public class DishCategoryTable {
     public static final String _ID                      ="_id";
     public static final String DISH_ID                  = "dish_id";
     public static final String CATEGORY_ID              = "category_id";
-
+    public static final long NO_DATA                    = -1;
     /**
      * Create table.
      * @param db writable database
@@ -35,6 +36,13 @@ public class DishCategoryTable {
                 DISH_ID + " INTEGER, "  +
                 CATEGORY_ID + " INTEGER" +
                 ");");
+    }
+
+    /**
+     * Drops the entire table, any data in it will be erased.
+     */
+    public static void drop(final SQLiteDatabase db) {
+        DatabaseUtils.drop(db, TABLE_NAME);
     }
 
     /**
@@ -60,8 +68,8 @@ public class DishCategoryTable {
      */
     public static List<Dish> getDishsByCategory(final SQLiteDatabase db, final long categoryId) {
         final Cursor c = db.rawQuery("SELECT d.* FROM " + DishTable.TABLE_NAME + " d, "
-                + TABLE_NAME + " dc WHERE dc." + CATEGORY_ID + " =? AND d."+DishTable._ID + " = dc." + DISH_ID
-                + " ORDER BY d." + DishTable._ID, new String[] { String.valueOf(categoryId) });
+                + TABLE_NAME + " dc WHERE dc." + CATEGORY_ID + " =? AND d."+DishTable.DISH_ID + " = dc." + DISH_ID
+                + " ORDER BY d." + DishTable.DISH_ID, new String[] { String.valueOf(categoryId) });
         if (c != null) {
             List<Dish> list = new ArrayList<Dish>();
             try {
@@ -87,9 +95,73 @@ public class DishCategoryTable {
     }
 
     /**
-     * Drops the entire table, any data in it will be erased.
+     * Get category id of the current dish category.
+     * @param db
+     * @param dishId
+     * @return categoryId, or -1 if not found relational category
      */
-    public static void drop(final SQLiteDatabase db) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+    public static long getDishCategoryId(final SQLiteDatabase db, final long dishId) {
+        List<Long> list = getDishCategoryIds(db, dishId);
+        for (Long l : list) {
+            return l;
+        }
+        return NO_DATA;
+    }
+
+    /**
+     * Get sequenced dish_ids list
+     * This list was ordered by Table Category' sort_order and category_id ASC, Table DishCategory dish_id ASC
+     * @param db
+     * @return
+     */
+    public static List<Long> getSequencedDishIds(final SQLiteDatabase db) {
+        final Cursor c = db.rawQuery("SELECT dc." + DISH_ID + " FROM " + TABLE_NAME + " dc, "
+                + CategoryTable.TABLE_NAME + " c WHERE dc." + CATEGORY_ID + " = c."
+                + CategoryTable.CATEGORY_ID + " ORDER BY c." + CategoryTable.SORT_ORDER + ", c."
+                + CategoryTable.CATEGORY_ID + ", " + DISH_ID, null);
+        if (c != null) {
+            try {
+                List<Long> list = new ArrayList<Long>();
+                while (c.moveToNext()) {
+                    list.add(c.getLong(c.getColumnIndex(DISH_ID)));
+                }
+                return list;
+            } finally {
+                c.close();
+            }
+        }
+        return Collections.emptyList();
+    }
+
+    /**
+     * Get all category ids of the current dish's categories.
+     * @param db
+     * @param dishId
+     * @return List<categoryId>, or empty List<Long>
+     */
+    public static List<Long> getDishCategoryIds(final SQLiteDatabase db, final long dishId) {
+        final Cursor c = db.rawQuery("SELECT " + CATEGORY_ID + " FROM " + TABLE_NAME + " WHERE "
+                + DISH_ID + " =?", new String[] { String.valueOf(dishId) });
+        if (c != null) {
+            List<Long> list = new ArrayList<Long>();
+            try {
+                while (c.moveToNext()) {
+                    list.add(c.getLong(c.getColumnIndex(CATEGORY_ID)));
+                }
+            } finally {
+                c.close();
+            }
+            return list;
+        }
+        return Collections.emptyList();
+    }
+
+    /**
+     * Remove all data in table dish_category
+     *
+     * @param db
+     */
+    public static void deleteAll(final SQLiteDatabase db) {
+        DatabaseUtils.truncate(db, TABLE_NAME);
     }
 }

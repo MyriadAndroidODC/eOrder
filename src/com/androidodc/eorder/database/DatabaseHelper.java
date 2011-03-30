@@ -1,6 +1,5 @@
 package com.androidodc.eorder.database;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Observable;
 
@@ -110,19 +109,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return DishTable.getDish(getReadableDatabase(), dishId);
     }
 
-    public void addCategory(final Category category) {
-        CategoryTable.add(getWritableDatabase(), category);
+    public long addCategory(final Category category) {
+        return CategoryTable.add(getWritableDatabase(), category);
     }
 
-    public void addDish(final Dish dish) {
-        DishTable.add(getWritableDatabase(), dish);
+    public long addDish(final Dish dish) {
+        return DishTable.add(getWritableDatabase(), dish);
     }
 
-    public void addDishCategory(final DishCategory dishCategory) {
-        DishCategoryTable.add(getWritableDatabase(), dishCategory);
+    public long addDishCategory(final DishCategory dishCategory) {
+        return DishCategoryTable.add(getWritableDatabase(), dishCategory);
     }
 
-    public void addConfig(final Config config) {
-        ConfigTable.add(getWritableDatabase(), config);
+    public long addConfig(final Config config) {
+        return ConfigTable.add(getWritableDatabase(), config);
+    }
+
+    public long getDishCategoryId(long dishId){
+        return DishCategoryTable.getDishCategoryId(getReadableDatabase(), dishId);
+    }
+
+    public List<Long> getDishCategoryIds(long dishId){
+        return DishCategoryTable.getDishCategoryIds(getReadableDatabase(), dishId);
+    }
+
+    public List<Long> getSequencedDishIds(){
+        return DishCategoryTable.getSequencedDishIds(getReadableDatabase());
+    }
+
+    public void deleteAllTableDatas(){
+        final SQLiteDatabase db = getWritableDatabase();
+        ConfigTable.deleteAll(db);
+        DishCategoryTable.deleteAll(db);
+        DishTable.deleteAll(db);
+        CategoryTable.deleteAll(db);
     }
 }
