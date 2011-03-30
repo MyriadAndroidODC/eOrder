@@ -48,7 +48,7 @@ public class CheckHistoryOrdersActivity extends Activity {
         registerReceiver(mReceiver, filter);
     }
 
-    private ArrayList<String> getHistoryOrders() {
+    private ArrayList<String> getHistoryOrdersDetails() {
         if (mHistoryOrders == null || mHistoryOrders.size() == 0) {
             return null;
         }
@@ -75,13 +75,13 @@ public class CheckHistoryOrdersActivity extends Activity {
         setContentView(R.layout.history_orders);
 
         ListView menuItemList = (ListView) findViewById(R.id.history_order_item);
-        ArrayList<String> historyOrders = getHistoryOrders();
-        if (historyOrders != null) {
+        ArrayList<String> historyOrdersDetails = getHistoryOrdersDetails();
+        if (historyOrdersDetails != null) {
             menuItemList.setAdapter(new ArrayAdapter<String>(this,
-                    android.R.layout.simple_expandable_list_item_1, getHistoryOrders()));
+                    android.R.layout.simple_expandable_list_item_1, historyOrdersDetails));
             menuItemList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
-                public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     // TODO Auto-generated method stub
                 }
             });
