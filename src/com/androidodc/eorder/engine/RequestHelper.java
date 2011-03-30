@@ -144,7 +144,7 @@ public class RequestHelper {
          } catch (Exception e) {
              LogUtils.logD(e.getMessage());
              return false;
-         }finally {
+         } finally {
              try{
                  if (is != null) {
                      is.close();
