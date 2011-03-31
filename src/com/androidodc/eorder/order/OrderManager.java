@@ -35,6 +35,7 @@ public class OrderManager {
         mTableId = 0;
         mTotalPrice = 0;
         mOrderDetail = new HashMap<Integer, Integer>();
+        mOrederCategories = new HashMap<Integer, HashSet<Integer>>();
     }
 
     /**
