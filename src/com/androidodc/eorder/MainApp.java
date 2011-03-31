@@ -1,5 +1,8 @@
 package com.androidodc.eorder;
 
+import com.androidodc.eorder.database.DatabaseHelper;
+import com.androidodc.eorder.utils.LogUtils;
+
 import android.app.Application;
 import android.os.StrictMode;
 
@@ -16,7 +19,12 @@ public class MainApp extends Application {
                 .detectNetwork()
                 .penaltyLog().build());
         }
-
         super.onCreate();
+
+        try{
+            DatabaseHelper.init(this);
+        } catch (Exception e) {
+            LogUtils.logD("Database initialize error! " + e.getMessage());
+        }
     }
 }
