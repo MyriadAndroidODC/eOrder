@@ -3,7 +3,11 @@
     <string name="app_name">电子订单</string>
     <string name="welcome">欢迎光临</string>
     <string name="enter_button">进 入</string>
+    <string name="return_button">返 回</string>
     <string name="title_tables">选桌</string>
     <string name="dish_title">菜单</string>
     <string name="text_orderedlist_button">查看已点</string>
+    <string name="history_order_item">%1$d:  %2$d号桌共计%3$d元</string>
+    <string name="history_orders_title">历史订单</string>
+    <string name="no_history_orders">没有订单</string>
 </resources>

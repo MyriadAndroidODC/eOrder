@@ -9,6 +9,8 @@
         android:largeScreens="true"
         android:anyDensity="true" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application android:icon="@drawable/icon"
             android:label="@string/app_name"
             android:name="com.androidodc.eorder.MainApp">
@@ -27,6 +29,15 @@
         <activity android:name=".MainListActivity"
                   android:label="@string/dish_title">
         </activity>
+
+        <activity android:name=".CheckHistoryOrdersActivity"
+                  android:label="@string/history_orders_title">
+            <intent-filter>
+                <action android:name="com.androidodc.intent.SYNC_HISTORY_ORDER" />
+            </intent-filter>
+        </activity>"
+
+        <service android:name="com.androidodc.eorder.service.DiningService" />
 
     </application>
 </manifest>
