@@ -43,15 +43,9 @@ public class SelectTableActivity extends Activity {
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onDestroy() {
+        super.onDestroy();
         unregisterReceiver(mReceiver);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        syncTablesStatus();
     }
 
     @Override
@@ -77,7 +71,7 @@ public class SelectTableActivity extends Activity {
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
 
-        menu.setHeaderTitle(getString(R.string.title_context_menu));
+        menu.setHeaderTitle(R.string.title_context_menu);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.context_menu, menu);
     }
@@ -172,33 +166,33 @@ public class SelectTableActivity extends Activity {
         startService(service);
     }
 
-    class SyncReceiver extends BroadcastReceiver {
+    private class SyncReceiver extends BroadcastReceiver {
         @Override
-        public void onReceive(Context arg0, Intent arg1) {
-            String action = arg1.getAction();
+        public void onReceive(Context content, Intent intent) {
+            String action = intent.getAction();
 
             if (action.equals(DiningService.SYNC_DINING_TABLE)) {
-                int result = arg1.getIntExtra(DiningService.BROADCAST_RESULT_KEY,
+                int result = intent.getIntExtra(DiningService.BROADCAST_RESULT_KEY,
                         DiningService.EXECUTE_ERROR);
                 if (result == DiningService.EXECUTE_ERROR) {
                     mTablesList = null;
                     Toast.makeText(SelectTableActivity.this, R.string.info_sync_failture,
                             Toast.LENGTH_LONG).show();
-                    removeDialog(DIALOG_SYNC_DATA);
+                    dismissDialog(DIALOG_SYNC_DATA);
+                    finish();
                     return;
                 }
 
                 @SuppressWarnings("unchecked")
-                HashMap<Integer, List<DiningTable>> map = (HashMap<Integer, List<DiningTable>>) arg1
+                HashMap<Integer, List<DiningTable>> map = (HashMap<Integer, List<DiningTable>>) intent
                         .getSerializableExtra("broadcast_resource");
                 mTablesList = (List<DiningTable>) map.get("dining_tables");
 
-                removeDialog(DIALOG_SYNC_DATA);
+                dismissDialog(DIALOG_SYNC_DATA);
                 Toast.makeText(SelectTableActivity.this, R.string.info_sync_success,
                         Toast.LENGTH_LONG).show();
+                initUI();
             }
-
-            initUI();
         }
     }
 }
