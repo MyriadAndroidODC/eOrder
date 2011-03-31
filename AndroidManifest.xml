@@ -38,5 +38,9 @@
 
         <service android:name="com.androidodc.eorder.service.DiningService" />
 
+        <activity android:name="ViewDishsGallery"
+                  android:label="@string/app_dish_introduction">
+        </activity>
+
     </application>
 </manifest>

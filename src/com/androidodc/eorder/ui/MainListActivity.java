@@ -273,10 +273,10 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
     private void viewDishDetail(final int dishId) {
         // TODO open the detail page
 
-        /*Intent intent = new Intent(MainListActivity.this, ViewDishsGallery.class);
+        Intent intent = new Intent(MainListActivity.this, ViewDishsGallery.class);
         Integer dishIdInteger = dishId;
         Long dishLong = dishIdInteger.longValue();
         intent.putExtra(SELECTED_DISH_ID, dishLong);
-        startActivityForResult(intent, OPEN_DETAILPAGE_FLAG);*/
+        startActivityForResult(intent, OPEN_DETAILPAGE_FLAG);
     }
 }

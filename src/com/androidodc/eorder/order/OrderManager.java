@@ -11,7 +11,6 @@ import java.util.Iterator;
 
 /**
  * @author brady.geng
- * 
  */
 public class OrderManager {
     private static final OrderManager sInstance = new OrderManager();
@@ -22,9 +21,9 @@ public class OrderManager {
     private int mOrderListId;
     private int mTableId;
     private int mTotalPrice;
-    //Integer in HashMap: 1:Dish Id 2:Dish copies
+    // Integer in HashMap: 1:Dish Id 2:Dish copies
     private HashMap<Integer, Integer> mOrderDetail;
-    //Integer in HashMap: 1:Category Id 2:Dish Id set
+    // Integer in HashMap: 1:Category Id 2:Dish Id set
     private HashMap<Integer, HashSet<Integer>> mOrederCategories;
 
     /**
@@ -47,7 +46,6 @@ public class OrderManager {
 
     /**
      * Add one dish into the ordered list.
-     * 
      * @param dishId
      *            Dish ID in one category
      * @param categoryId
@@ -66,7 +64,6 @@ public class OrderManager {
 
     /**
      * Remove one dish into the ordered list.
-     * 
      * @param dishId
      *            Dish ID in one category
      * @param categoryId
@@ -82,7 +79,6 @@ public class OrderManager {
 
     /**
      * Set the dish copy.
-     * 
      * @param dishId
      *            Dish ID in one category
      * @param copyNum
@@ -94,7 +90,6 @@ public class OrderManager {
 
     /**
      * Set the dish copy.
-     * 
      * @param dishId
      *            Dish ID in one category
      * @param copyNum
@@ -106,7 +101,6 @@ public class OrderManager {
 
     /**
      * Get the dish copy.
-     * 
      * @param dishId
      *            Dish ID in one category
      * @return The dish's copy number
@@ -117,7 +111,6 @@ public class OrderManager {
 
     /**
      * Check if this category in the ordered list.
-     * 
      * @param categoryId
      *            Category ID
      * @return true: in, false: not
@@ -128,7 +121,6 @@ public class OrderManager {
 
     /**
      * Get ordered dishes by category ID.
-     * 
      * @param categoryId
      *            Category ID
      * @return HashSet<> - dishes ID
@@ -139,7 +131,6 @@ public class OrderManager {
 
     /**
      * Get ordered dishes by category ID.
-     * 
      * @param dishId
      *            Dish ID
      * @return true: This dish is in the order detail. false: Not in.
@@ -150,7 +141,6 @@ public class OrderManager {
 
     /**
      * Set the table ID in the ordered list.
-     * 
      * @param tableId
      *            table ID
      */
@@ -160,7 +150,6 @@ public class OrderManager {
 
     /**
      * Set the table ID in the ordered list.
-     * 
      * @return tableId table ID
      */
     public synchronized int getTableId() {
@@ -169,7 +158,6 @@ public class OrderManager {
 
     /**
      * Generate and return total price.
-     * 
      * @return totalPrice The dishes' total price.
      */
     public synchronized int getTotalPrice() {

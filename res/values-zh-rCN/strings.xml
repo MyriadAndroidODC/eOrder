@@ -17,4 +17,9 @@
     <string name="history_order_item">%1$d:  %2$d号桌共计%3$d元</string>
     <string name="history_orders_title">历史订单</string>
     <string name="no_history_orders">没有订单</string>
+    <string name="dish_name">菜名: </string>
+    <string name="dish_price">价格: </string>
+    <string name="dish_introduction">介绍: </string>
+    <string name="dish_return">返回</string>
+    <string name="app_dish_introduction">菜品介绍</string>
 </resources>
