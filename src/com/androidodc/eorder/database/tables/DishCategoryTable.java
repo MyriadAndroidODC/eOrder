@@ -102,9 +102,12 @@ public class DishCategoryTable {
      */
     public static long getDishCategoryId(final SQLiteDatabase db, final long dishId) {
         List<Long> list = getDishCategoryIds(db, dishId);
-        for (Long l : list) {
-            return l;
+        if(list.size()>0){
+            return list.get(list.size()-1);
         }
+//        for (Long l : list) {
+//            return l;
+//        }
         return NO_DATA;
     }
 
