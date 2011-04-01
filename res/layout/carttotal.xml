@@ -8,24 +8,40 @@
     android:background="@drawable/order_bg">
 
     <TextView 
-        android:text="@string/tablename" 
-        android:id="@+id/mOrderTitle" 
+        android:text="@string/orderTableInfo" 
+        android:id="@+id/orderTableInfo" 
         android:layout_width="wrap_content" 
         android:layout_height="wrap_content"
         android:textSize="15sp"/>
 
-    <LinearLayout 
-        android:id="@+id/mTotalDishCountLayout" 
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content"
-        android:layout_below="@id/mOrderTitle">
-    </LinearLayout>
+    <TextView 
+            android:text="@string/orderCategoryInfo" 
+            android:id="@+id/orderCategoryInfo" 
+            android:layout_width="wrap_content" 
+            android:layout_height="wrap_content" 
+            android:textSize="15sp" 
+            android:layout_below="@id/orderTableInfo"/>
+            
+<!--    <LinearLayout -->
+<!--        android:id="@+id/mTotalDishCountLayout" -->
+<!--        android:layout_width="wrap_content" -->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@id/orderTableInfo">-->
+<!--    </LinearLayout>-->
+
+    <TextView 
+            android:text="@string/orderTotalCostInfo" 
+            android:id="@+id/orderTotalCostInfo" 
+            android:layout_width="wrap_content" 
+            android:layout_height="wrap_content" 
+            android:textSize="15sp" 
+            android:layout_below="@id/orderCategoryInfo"/>
 
     <LinearLayout 
         android:id="@+id/mTotalPriceLayout" 
         android:layout_width="wrap_content" 
         android:layout_height="wrap_content"
-        android:layout_below="@id/mTotalDishCountLayout">
+        android:layout_below="@id/orderTotalCostInfo">
 	
 	    <TextView 
 	        android:text="@string/total" 

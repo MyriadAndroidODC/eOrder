@@ -26,4 +26,7 @@
     <string name="dishcount2"></string>
     <string name="dishcount3"></string>
     <string name="dishcount4"></string>
+    <string name="orderTableInfo">Table %1$d order detail</string>
+    <string name="orderCategoryInfo"></string>
+    <string name="orderTotalCostInfo">Total : $%1$d</string>
 </resources>

@@ -26,4 +26,7 @@
     <string name="dishcount2"></string>
     <string name="dishcount3"></string>
     <string name="dishcount4"></string>
+    <string name="orderTableInfo">%1$d 号餐桌订餐详情</string>
+    <string name="orderCategoryInfo"></string>
+    <string name="orderTotalCostInfo">总计: %1$d 元</string>
 </resources>

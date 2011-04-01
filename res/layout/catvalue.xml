@@ -4,52 +4,11 @@
 	android:layout_width="match_parent" 
 	android:id="@+id/catvalue"
 	android:layout_height="wrap_content">
-	
-    <TextView android:text="@string/category1" 
-        android:id="@+id/categoray1" 
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content"
-        android:textSize="15sp"/>
-        
-    <TextView android:text="@string/dishcount1" 
-        android:id="@+id/dishcount1" 
+
+    <TextView android:text="@string/orderCategoryInfo" 
+        android:id="@+id/orderCategoryInfo" 
         android:layout_width="wrap_content" 
         android:layout_height="wrap_content"
         android:textSize="15sp"/>
 
-    <TextView android:text="@string/category2" 
-        android:id="@+id/categoray2" 
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content"
-        android:textSize="15sp"/>
-
-    <TextView android:text="@string/dishcount2" 
-        android:id="@+id/dishcount2" 
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content"
-        android:textSize="15sp"/>
-        
-    <TextView android:text="@string/category3" 
-        android:id="@+id/categoray3" 
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content"
-        android:textSize="15sp"/>
-
-    <TextView android:text="@string/dishcount3" 
-        android:id="@+id/dishcount3" 
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content"
-        android:textSize="15sp"/>
-
-    <TextView android:text="@string/category4" 
-        android:id="@+id/categoray4" 
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content"
-        android:textSize="15sp"/>
-
-    <TextView android:text="@string/dishcount4"  
-        android:id="@+id/dishcount4" 
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content"
-        android:textSize="15sp"/>
 </LinearLayout>

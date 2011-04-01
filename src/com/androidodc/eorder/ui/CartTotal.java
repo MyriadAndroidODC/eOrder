@@ -27,17 +27,16 @@ import java.util.List;
 import java.util.Set;
 
 public class CartTotal extends Activity implements OnClickListener {
+    private OrderManager orderManager = OrderManager.getInstance();
     private static DatabaseHelper mDBHelper = DatabaseHelper.getInstance();
     private List<Category> mOrderCategoryList;
     private List<Dish> mOrderDishList;
     // 1:Dish Id 2:Dish amount
-    private HashMap<Long, Integer> mOrderDishAmountMap;
-    // 1:Category Id 2:Dish Id set
-    private HashMap<Long, HashSet<Long>> mOrderCategoryMap;
+    private HashMap<Long, Integer> mOrderCategoryDishesMap;
 
     private RelativeLayout mCartTotalLayout = null;
 
-    private TextView mOrderTitle = null;
+    // private TextView mOrderTitle = null;
     private LayoutInflater inflater = null;
 
     private LinearLayout mTotalDishCountLayout = null;
@@ -57,40 +56,42 @@ public class CartTotal extends Activity implements OnClickListener {
     private categoryGridViewAdapter mDishItem = null;
     private GridView[] mCategoryGallery;
     private DishDetail[] mDishList = new DishDetail[5];
-    
+
     // Dish number in one row
     private final static int DISHNUM_IN_ONEROW = 3;
     // The height of gridview's one row
     private final static int HEIGHT_ONEROW = 315;
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mDishItem = new categoryGridViewAdapter(this,inflater);
+        mDishItem = new categoryGridViewAdapter(this, inflater);
         initData();
         initUI();
         this.setContentView(mCartTotalLayout);
 
     }
 
-    private void initData(){
-        OrderManager orderManager = OrderManager.getInstance();
+    private void initData() {
         mOrderCategoryList = new ArrayList<Category>();
         mOrderDishList = new ArrayList<Dish>();
+        mOrderCategoryDishesMap = new HashMap<Long,Integer>();
+        
         List<Category> categoryList = mDBHelper.getAllCategorys();
-        Set<Long> categoryIdSet = null; // mDBHelper.getOrderCategories();
+        Set<Long> categoryIdSet = orderManager.getAllOrderedCategory();
 
         for (Category category : categoryList) {
             if (categoryIdSet.contains(category.getCategoryId())) {
                 mOrderCategoryList.add(category);
-            }
 
-            HashSet<Integer> dishIdSet = orderManager.getOrderedDishByCategoryId((int) category
-                    .getCategoryId());
-            mOrderDishAmountMap.put(category.getCategoryId(), dishIdSet.size());
-            
-            for (Integer dishId : dishIdSet) {
-                mOrderDishList.add(mDBHelper.getDishById(dishId));
+                HashSet<Long> dishIdSet = orderManager.getOrderedDishByCategoryId(category
+                        .getCategoryId());
+                mOrderCategoryDishesMap.put(category.getCategoryId(), dishIdSet.size());
+
+                for (Long dishId : dishIdSet) {
+                    mOrderDishList.add(mDBHelper.getDishById(dishId));
+                }
             }
         }
     }
@@ -98,53 +99,40 @@ public class CartTotal extends Activity implements OnClickListener {
     private void initUI() {
         inflater = LayoutInflater.from(this);
 
-        mCartTotalLayout = (RelativeLayout)inflater.inflate(R.layout.carttotal,null);
-
-        mOrderTitle = (TextView)this.findViewById(R.id.mOrderTitle);
+        mCartTotalLayout = (RelativeLayout) inflater.inflate(R.layout.carttotal, null);
 
         showHeaderInfo();
-
-        showTotalPrice();
 
         showDishChecked();
 
         showConfirmButton();
     }
 
-    private void showTotalPrice() {
-        mTotal = (TextView)mCartTotalLayout.findViewById(R.id.mTotal);
-        mPrice = (TextView)mCartTotalLayout.findViewById(R.id.mPrice);
-
-        //TODO calculate the real price here.
-        int mRealPrice = 1307;
-
-        mTotal.append("Total" + " : ");
-        mPrice.append(mRealPrice + "dollar");
-    }
-
     private void showConfirmButton() {
-        mOK = (Button)mCartTotalLayout.findViewById(R.id.mOK);
+        mOK = (Button) mCartTotalLayout.findViewById(R.id.mOK);
         mOK.setOnClickListener(this);
 
-        mCheck = (Button)mCartTotalLayout.findViewById(R.id.mCheck);
+        mCheck = (Button) mCartTotalLayout.findViewById(R.id.mCheck);
         mCheck.setOnClickListener(this);
 
     }
 
     private void showDishChecked() {
-        //TODO get the dish category count here;
+        // TODO get the dish category count here;
         int dishCategory = 1;
 
-        mCategoryDetailLayout = (LinearLayout)mCartTotalLayout.findViewById(R.id.mCategoryDetailLayout);
+        mCategoryDetailLayout = (LinearLayout) mCartTotalLayout
+                .findViewById(R.id.mCategoryDetailLayout);
 
         mCategoryGallery = new GridView[dishCategory];
-        for(int i = 0; i < dishCategory; i++){
-            LinearLayout mCategoryListLayout = (LinearLayout)inflater.inflate(R.layout.catlist, null);
+        for (int i = 0; i < dishCategory; i++) {
+            LinearLayout mCategoryListLayout = (LinearLayout) inflater.inflate(R.layout.catlist,
+                    null);
 
-            mCategoryGallery[i] = (GridView)mCategoryListLayout.findViewById(R.id.mCategoryItem);
+            mCategoryGallery[i] = (GridView) mCategoryListLayout.findViewById(R.id.mCategoryItem);
             mCategoryGallery[i].setId(i);
             mCategoryGallery[i].setAdapter(mDishItem);
-            //TODO get dish count of each category
+            // TODO get dish count of each category
             int mDishCount = 5;
             int rowNum = (mDishCount % DISHNUM_IN_ONEROW == 0) ? mDishCount / DISHNUM_IN_ONEROW
                     : mDishCount / DISHNUM_IN_ONEROW + 1;
@@ -155,37 +143,29 @@ public class CartTotal extends Activity implements OnClickListener {
     }
 
     private void showHeaderInfo() {
-        //TODO need to query the exact number of dish categories.
-        int mdishCategory = 4;
-        mTotalDishCountLayout = (LinearLayout)mCartTotalLayout.findViewById(R.id.mTotalDishCountLayout);
+        TextView orderTableInfo = (TextView) mCartTotalLayout.findViewById(R.id.orderTableInfo);
+        orderTableInfo.setText(String.format(getString(R.string.orderTableInfo),(orderManager.getTableId() + 1) ));
 
-        LinearLayout mDishCountLayout = (LinearLayout)inflater.inflate(R.layout.catvalue, null);
-
-        //TODO need to quey the categories of the dish, and each count of one type
-        String mCate1Name = new String("Salad");
-        String mCate1Count = new String("3");
-
-        mCate1 = (TextView)mDishCountLayout.findViewById(R.id.categoray1);
-        mCate1.setText(mCate1Name + " : ");
-        mDish1Count = (TextView)mDishCountLayout.findViewById(R.id.dishcount1);
-        mDish1Count.setText( " " + mCate1Count);
-
-        mCate2 = (TextView)mDishCountLayout.findViewById(R.id.categoray2);
-        mCate2.setText(" hot food : ");
-        mDish2Count = (TextView)mDishCountLayout.findViewById(R.id.dishcount2);
-        mDish2Count.setText(" 4 ");
-        mTotalDishCountLayout.addView(mDishCountLayout);
+        TextView categoryInfo = (TextView) mCartTotalLayout.findViewById(R.id.orderCategoryInfo);
+        StringBuilder sb = new StringBuilder();
+        for (Category category : mOrderCategoryList) {
+            sb.append(category.getName()).append(": ").append(mOrderCategoryDishesMap.get(category.getCategoryId())).append("  ");
+        }
+        categoryInfo.setText(sb.toString());
+        
+        TextView totalCostInfo = (TextView) mCartTotalLayout.findViewById(R.id.orderTotalCostInfo);
+        totalCostInfo.setText(String.format(getString(R.string.orderTotalCostInfo), orderManager.getTotalPrice()));
     }
+
     public void onClick(View view) {
         // TODO Auto-generated method stub
-        if(view == mOK) {
-            //TODO open orderList activity.
+        if (view == mOK) {
+            // TODO open orderList activity.
             System.out.println("mOK is pressed");
-        }
-        else if(view == mCheck) {
-            //TODO go back to order activity.
+        } else if (view == mCheck) {
+            // TODO go back to order activity.
             System.out.println("mCheck is pressed");
-        }else if(null == view){
+        } else if (null == view) {
         }
     }
 
@@ -193,7 +173,8 @@ public class CartTotal extends Activity implements OnClickListener {
         private Context mContext = null;
 
         private LayoutInflater inflater = null;
-        final class ViewHolder{
+
+        final class ViewHolder {
             private ImageView mImageView = null;
             private TextView mDishName = null;
             private TextView mDishPrice = null;
@@ -201,17 +182,19 @@ public class CartTotal extends Activity implements OnClickListener {
             private Button mAdd = null;
             private TextView mCount = null;
         }
-        private Integer[] mThumbIds = { R.drawable.icon, R.drawable.icon, R.drawable.icon,
-                R.drawable.icon,R.drawable.icon};
 
-        public categoryGridViewAdapter(Context c, LayoutInflater li){
+        private Integer[] mThumbIds = { R.drawable.icon, R.drawable.icon, R.drawable.icon,
+                R.drawable.icon, R.drawable.icon };
+
+        public categoryGridViewAdapter(Context c, LayoutInflater li) {
             mContext = c;
             inflater = LayoutInflater.from(mContext);
         }
+
         @Override
         public int getCount() {
             // TODO Auto-generated method stub
-            return  mThumbIds.length;
+            return mThumbIds.length;
         }
 
         @Override
@@ -226,27 +209,29 @@ public class CartTotal extends Activity implements OnClickListener {
             return position;
         }
 
-        public void setDishItem(final ViewHolder viewHolder, final int position){
-            viewHolder.mImageView.setImageResource(mThumbIds[position]);
-            viewHolder.mDishName.setText(mDishList[position].getDishName());
-            viewHolder.mDishPrice.setText(String.valueOf(mDishList[position].getDishPrice()));
-            viewHolder.mCount.setText(String.valueOf(mDishList[position].getDishCount()));
-            viewHolder.mDescend.setOnClickListener(new OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    // TODO Auto-generated method stub
-                    mDishList[position].setDishCount(mDishList[position].getDishCount() - 1);
-                    viewHolder.mCount.setText(String.valueOf(mDishList[position].getDishCount()));
-                }
-            });
-            viewHolder.mAdd.setOnClickListener(new OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    // TODO Auto-generated method stub
-                    mDishList[position].setDishCount(mDishList[position].getDishCount() + 1);
-                    viewHolder.mCount.setText(String.valueOf(mDishList[position].getDishCount()));
-                }
-            });
+        public void setDishItem(final ViewHolder viewHolder, final int position) {
+            // viewHolder.mImageView.setImageResource(mThumbIds[position]);
+            // viewHolder.mDishName.setText(mDishList[position].getDishName());
+            // viewHolder.mDishPrice.setText(String.valueOf(mDishList[position].getDishPrice()));
+            // viewHolder.mCount.setText(String.valueOf(mDishList[position].getDishCount()));
+            // viewHolder.mDescend.setOnClickListener(new OnClickListener() {
+            // @Override
+            // public void onClick(View v) {
+            // // TODO Auto-generated method stub
+            // mDishList[position].setDishCount(mDishList[position].getDishCount()
+            // - 1);
+            // viewHolder.mCount.setText(String.valueOf(mDishList[position].getDishCount()));
+            // }
+            // });
+            // viewHolder.mAdd.setOnClickListener(new OnClickListener() {
+            // @Override
+            // public void onClick(View v) {
+            // // TODO Auto-generated method stub
+            // mDishList[position].setDishCount(mDishList[position].getDishCount()
+            // + 1);
+            // viewHolder.mCount.setText(String.valueOf(mDishList[position].getDishCount()));
+            // }
+            // });
         }
 
         @Override
@@ -254,27 +239,28 @@ public class CartTotal extends Activity implements OnClickListener {
             final ViewHolder viewHolder = new ViewHolder();
 
             if (null == convertView) {
-                convertView = (LinearLayout)inflater.inflate(R.layout.cateitem, null);
+                convertView = (LinearLayout) inflater.inflate(R.layout.cateitem, null);
                 viewHolder.mImageView = (ImageView) convertView.findViewById(R.id.mDishImage);
                 viewHolder.mDishName = (TextView) convertView.findViewById(R.id.mDishName);
                 viewHolder.mDishPrice = (TextView) convertView.findViewById(R.id.mDishPrice);
                 viewHolder.mDescend = (Button) convertView.findViewById(R.id.mDescend);
                 viewHolder.mCount = (TextView) convertView.findViewById(R.id.mCount);
                 viewHolder.mAdd = (Button) convertView.findViewById(R.id.mAdd);
-                setDishItem(viewHolder,position);
+                setDishItem(viewHolder, position);
                 convertView.setTag(viewHolder);
-            } 
+            }
             return convertView;
         }
     }
-    public class DishDetail{
+
+    public class DishDetail {
         private Integer mDishResouceID = null;
         private String mDishName = null;
         private int mDishPrice = 0;
         private int mDishCount = 0;
 
-        public DishDetail(Integer mRes, String mName, int mPrice, int mCount){
-            if(0 != mRes && null != mName && 0 != mPrice && 0!= mCount){
+        public DishDetail(Integer mRes, String mName, int mPrice, int mCount) {
+            if (0 != mRes && null != mName && 0 != mPrice && 0 != mCount) {
                 mDishResouceID = mRes;
                 mDishName = mName;
                 mDishPrice = mPrice;
@@ -282,43 +268,43 @@ public class CartTotal extends Activity implements OnClickListener {
             }
         }
 
-        public void setDishResouce(Integer mRes){
-            if(null != mRes){
+        public void setDishResouce(Integer mRes) {
+            if (null != mRes) {
                 mDishResouceID = mRes;
             }
         }
 
-        public Integer getDishResouce(){
+        public Integer getDishResouce() {
             return mDishResouceID;
         }
 
-        public void setDishName(String mName){
-            if(null != mName){
+        public void setDishName(String mName) {
+            if (null != mName) {
                 mDishName = mName;
             }
         }
 
-        public String getDishName(){
+        public String getDishName() {
             return mDishName;
         }
 
-        public void setDishPrice(int mPrice){
-            if(0 != mPrice){
+        public void setDishPrice(int mPrice) {
+            if (0 != mPrice) {
                 mDishPrice = mPrice;
             }
         }
 
-        public int getDishPrice(){
+        public int getDishPrice() {
             return mDishPrice;
         }
 
-        public void setDishCount(int mCount){
-            if(0 != mCount){
+        public void setDishCount(int mCount) {
+            if (0 != mCount) {
                 mDishCount = mCount;
             }
         }
 
-        public int getDishCount(){
+        public int getDishCount() {
             return mDishCount;
         }
     }
