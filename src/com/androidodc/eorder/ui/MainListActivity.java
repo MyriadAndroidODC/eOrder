@@ -102,19 +102,19 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
         int categoryNum = mCategoryList.size();
         mCategoryGallery = new GridView[categoryNum];
         // Initial the grid view for every food category.
-        for (int i = 0; i < categoryNum - 1; i++) {
+        for (int i = 0; i < categoryNum; i++) {
             LinearLayout categoryLayout = (LinearLayout) inflater.inflate(
                     R.layout.main_list_item, null);
 
             TextView cagegoryNameTextView = (TextView) categoryLayout.findViewById(
                     R.id.category_name);
 
-            int categoryId = i + 1;
-            Category category = mCategoryList.get(categoryId);
+            Category category = mCategoryList.get(i);
+            long categoryId = category.getCategoryId();
             cagegoryNameTextView.setText(category.getName());
 
             mCategoryGallery[i] = (GridView) categoryLayout.findViewById(R.id.dish_grid);
-            mCategoryGallery[i].setId(categoryId);
+            mCategoryGallery[i].setId((int) categoryId);
             mCategoryGallery[i].setAdapter(new GridViewAdapter(this, categoryId));
             mCategoryGallery[i].setOnItemClickListener(this);
 
@@ -148,7 +148,7 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
         //Data base helper 
         //DatabaseHelper mDbHelper;
 
-        public GridViewAdapter(Context c, int i) {
+        public GridViewAdapter(Context c, long i) {
             mContext = c;
             mInflater = LayoutInflater.from(mContext);
             mDishList = mDbHelper.getDishsByCategory(i);
@@ -180,11 +180,11 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
                 viewHolder.dishPriceTextView = (TextView) convertView.findViewById(R.id.food_price);
                 viewHolder.dishSelectCheckBox = (CheckBox) convertView.findViewById(R.id.food_select);
 
-                int dishId = (int) mDishList.get(position).getDishId();
+                long dishId = mDishList.get(position).getDishId();
                 setCheckBoxClickListener(viewHolder.dishSelectCheckBox, dishId, parent.getId());
                 // Set the dish attributes
                 setDishDetails(viewHolder, position);
-                convertView.setId(dishId);
+                convertView.setId((int) dishId);
                 convertView.setTag(viewHolder);
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
@@ -196,9 +196,9 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
         /**
          * Update the checkbox's .
          */
-        private void updateDishStatus(ViewHolder viewHolder, int categoryId) {
+        private void updateDishStatus(ViewHolder viewHolder, long categoryId) {
             // TODO Auto-generated method stub
-            int dishId = viewHolder.dishSelectCheckBox.getId();
+            long dishId = viewHolder.dishSelectCheckBox.getId();
             if (mOrderManager.isOrderedDish(dishId)) {
                 viewHolder.dishSelectCheckBox.setChecked(true);
             }else {
@@ -209,10 +209,10 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
         /**
          * Set check box's click listener.
          */
-        private void setCheckBoxClickListener(CheckBox dishSelectCheckBox, int dishId,
-                int gridViewId) {
+        private void setCheckBoxClickListener(CheckBox dishSelectCheckBox, long dishId,
+                long gridViewId) {
             // TODO Set check box's click listener
-            dishSelectCheckBox.setId(dishId);
+            dishSelectCheckBox.setId((int) dishId);
             dishSelectCheckBox.setTag(gridViewId);
             dishSelectCheckBox.setOnCheckedChangeListener(this);
         }
@@ -230,8 +230,8 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
 
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            int dishId = buttonView.getId();
-            int categoryId = (Integer) buttonView.getTag();
+            long dishId = buttonView.getId();
+            long categoryId = (Long)buttonView.getTag();
             if (isChecked) {
                 mOrderManager.addOneDish(dishId, categoryId);
             } else {
@@ -256,7 +256,7 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        int dishId = view.getId();
+        long dishId = view.getId();
         viewDishDetail(dishId);
     }
 
@@ -272,13 +272,11 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
     /**
      * Open the dish detail page.
      */
-    private void viewDishDetail(final int dishId) {
+    private void viewDishDetail(final long dishId) {
         // TODO open the detail page
 
-        /*Intent intent = new Intent(MainListActivity.this, ViewDishsGallery.class);
-        Integer dishIdInteger = dishId;
-        Long dishLong = dishIdInteger.longValue();
-        intent.putExtra(SELECTED_DISH_ID, dishLong);
-        startActivityForResult(intent, OPEN_DETAILPAGE_FLAG);*/
+        Intent intent = new Intent(MainListActivity.this, ViewDishsGallery.class);
+        intent.putExtra(SELECTED_DISH_ID, dishId);
+        startActivityForResult(intent, OPEN_DETAILPAGE_FLAG);
     }
 }

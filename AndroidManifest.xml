@@ -10,8 +10,6 @@
         android:anyDensity="true" />
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application android:icon="@drawable/icon"
@@ -42,6 +40,16 @@
         </activity>
 
         <service android:name="com.androidodc.eorder.service.DiningService" />
+
+        <activity android:name=".CheckHistoryOrdersActivity"
+                  android:label="@string/history_orders_title">
+        </activity>"
+
+        <service android:name="com.androidodc.eorder.service.DiningService" />
+
+        <activity android:name="ViewDishsGallery"
+                  android:label="@string/app_dish_introduction">
+        </activity>
 
     </application>
 </manifest>
