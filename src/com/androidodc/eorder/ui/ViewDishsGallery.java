@@ -82,9 +82,11 @@ public class ViewDishsGallery extends Activity implements OnClickListener {
 
         private ViewHolder mViewHolder;
         private LayoutInflater mInflater;
+        OrderManager mOrderManager;
 
         public GalleryAdapter(Context c) {
             mInflater = LayoutInflater.from(c);
+            mOrderManager = OrderManager.getInstance();
         }
 
         @Override
@@ -140,25 +142,24 @@ public class ViewDishsGallery extends Activity implements OnClickListener {
 
         private void setCheckBoxClickListener(final int dishId) {
             mViewHolder.dishCheckBox.setId(dishId);
-            OrderManager orderManager = OrderManager.getInstance();
-            if (orderManager.isOrderedDish(dishId)) {
+            if (mOrderManager.isOrderedDish(dishId)) {
                 mViewHolder.dishCheckBox.setChecked(true);
             } else {
                 mViewHolder.dishCheckBox.setChecked(false);
             }
-            /*mViewHolder.dishCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            mViewHolder.dishCheckBox.setOnClickListener(new OnClickListener() {
+                
                 @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    OrderManager orderManager = OrderManager.getInstance();
-                    DatabaseHelper dbHelper = DatabaseHelper.getInstance();
-                    int categoryId = (int) dbHelper.getDishCategoryId(dishId);
-                    if (isChecked) {
-                        orderManager.addOneDish(dishId, categoryId);
+                public void onClick(View v) {
+                    long dishId = v.getId();
+                    long categoryId = mDbHelper.getDishCategoryId(dishId);
+                    if (mOrderManager.isOrderedDish(dishId)) {
+                        mOrderManager.removeDish(dishId, categoryId);
                     } else {
-                        orderManager.removeDish(dishId, categoryId);
+                        mOrderManager.addOneDish(dishId, categoryId);
                     }
                 }
-            });*/
+            });
 
         }
     }
