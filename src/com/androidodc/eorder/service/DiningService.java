@@ -144,7 +144,7 @@ public class DiningService extends Service {
             
         } else if (commandType == COMMAND_SYNC_OTHER) {
             try {
-            	dbHelper.deleteAllTableDatas();
+                dbHelper.deleteAllTableDatas();
                 opSymbol = (opSymbol == true ? syncCategories() : false);
                 opSymbol = (opSymbol == true ? syncDishCategory() : false);
                 opSymbol = (opSymbol == true ? syncDishesAndImages() : false);
