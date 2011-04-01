@@ -2,6 +2,7 @@ package com.androidodc.eorder.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,11 +12,9 @@ import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.androidodc.eorder.database.DatabaseHelper;
 import com.androidodc.eorder.datatypes.Dish;
