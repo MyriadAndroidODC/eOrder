@@ -141,7 +141,13 @@ public class ViewDishsGallery extends Activity implements OnClickListener {
 
         private void setCheckBoxClickListener(final int dishId) {
             mViewHolder.dishCheckBox.setId(dishId);
-            mViewHolder.dishCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            OrderManager orderManager = OrderManager.getInstance();
+            if (orderManager.isOrderedDish(dishId)) {
+                mViewHolder.dishCheckBox.setChecked(true);
+            } else {
+                mViewHolder.dishCheckBox.setChecked(false);
+            }
+            /*mViewHolder.dishCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     OrderManager orderManager = OrderManager.getInstance();
@@ -153,7 +159,7 @@ public class ViewDishsGallery extends Activity implements OnClickListener {
                         orderManager.removeDish(dishId, categoryId);
                     }
                 }
-            });
+            });*/
 
         }
     }
