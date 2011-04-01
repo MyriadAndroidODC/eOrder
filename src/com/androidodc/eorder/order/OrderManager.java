@@ -13,7 +13,6 @@ import java.util.Set;
 public class OrderManager {
     private static final OrderManager sInstance = new OrderManager();
     private static final Integer DEFAULT_DISHCOPY = 1;
-    private DatabaseHelper mDatabaseHelper;
 
     // The data of the order
     private long mOrderListId;
@@ -175,12 +174,16 @@ public class OrderManager {
      * @return totalPrice The dishes' total price.
      */
     public synchronized int getTotalPrice() {
-        Iterator<Long> iter = mOrderDetail.keySet().iterator();
-        while (iter.hasNext()) {
-            long dishId = iter.next();
-            long dishCopy = mOrderDetail.get(dishId);
-            mTotalPrice = (int) (mDatabaseHelper.getDishById(dishId).getPrice() * dishCopy);
+        if (null != mOrderDetail) {
+            DatabaseHelper dbHelper = DatabaseHelper.getInstance();
+            Iterator<Long> iter = mOrderDetail.keySet().iterator();
+            while (iter.hasNext()) {
+                long dishId = iter.next();
+                long dishCopy = mOrderDetail.get(dishId);
+                mTotalPrice = (int) (dbHelper.getDishById(dishId).getPrice() * dishCopy);
+            }
         }
+
         return mTotalPrice;
     }
 
