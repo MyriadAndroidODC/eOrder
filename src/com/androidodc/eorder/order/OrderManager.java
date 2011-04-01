@@ -180,7 +180,7 @@ public class OrderManager {
             while (iter.hasNext()) {
                 long dishId = iter.next();
                 long dishCopy = mOrderDetail.get(dishId);
-                mTotalPrice = (int) (dbHelper.getDishById(dishId).getPrice() * dishCopy);
+                mTotalPrice += (int) (dbHelper.getDishById(dishId).getPrice() * dishCopy);
             }
         }
 

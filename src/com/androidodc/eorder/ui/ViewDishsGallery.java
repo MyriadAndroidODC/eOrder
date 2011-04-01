@@ -168,7 +168,8 @@ public class ViewDishsGallery extends Activity implements OnClickListener {
     public void onClick(View v) {
         // TODO Auto-generated method stub
         if (R.id.return_button == v.getId()) {
-            setResult(RESULT_OK, null);
+            Intent intent = new Intent(ViewDishsGallery.this, MainListActivity.class);
+            startActivity(intent);
             finish();
         }
     }
