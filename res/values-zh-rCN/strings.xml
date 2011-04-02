@@ -30,4 +30,9 @@
     <string name="dishcount2"></string>
     <string name="dishcount3"></string>
     <string name="dishcount4"></string>
+    <string name="dish_name">菜名: </string>
+    <string name="dish_price">价格: </string>
+    <string name="dish_introduction">介绍: </string>
+    <string name="dish_return">返回</string>
+    <string name="app_dish_introduction">菜品介绍</string>
 </resources>

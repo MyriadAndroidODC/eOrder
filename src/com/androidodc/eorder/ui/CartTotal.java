@@ -112,6 +112,7 @@ public class CartTotal extends Activity implements OnClickListener {
         mCartTotalLayout = (RelativeLayout) inflater.inflate(R.layout.carttotal, null);
 
         mOrderTitle = (TextView) this.findViewById(R.id.mOrderTitle);
+        mOrderTitle.setText(getString(R.string.tablename, mOrderManager.getTableId()));
 
         showDishCount();
 
@@ -169,7 +170,7 @@ public class CartTotal extends Activity implements OnClickListener {
 
     private void showDishCount() {
         // TODO need to query the exact number of dish categories.
-        int mdishCategory = 4;
+        // int mdishCategory = mOrderManager.getAllOrderedCategory();
         mTotalDishCountLayout = (LinearLayout) mCartTotalLayout
                 .findViewById(R.id.mTotalDishCountLayout);
 

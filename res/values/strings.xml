@@ -30,4 +30,9 @@
     <string name="dishcount2"></string>
     <string name="dishcount3"></string>
     <string name="dishcount4"></string>
+    <string name="dish_name">Name: </string>
+    <string name="dish_price">Price: </string>
+    <string name="dish_introduction">Introduction: </string>
+    <string name="dish_return">Return</string>
+    <string name="app_dish_introduction">Dish Introduction</string>
 </resources>
