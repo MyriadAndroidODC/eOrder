@@ -36,6 +36,10 @@
                   android:label="@string/history_orders_title">
         </activity>"
 
+        <activity android:name=".CartTotal"
+                  android:label="@string/history_orders_title">
+        </activity>"
+
         <service android:name="com.androidodc.eorder.service.DiningService" />
 
     </application>

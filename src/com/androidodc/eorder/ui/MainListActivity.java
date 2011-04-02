@@ -6,25 +6,26 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.androidodc.eorder.database.DatabaseHelper;
 import com.androidodc.eorder.datatypes.Category;
 import com.androidodc.eorder.datatypes.Dish;
 import com.androidodc.eorder.order.OrderManager;
 import com.androidodc.eorder.utils.ImageHelper;
+import com.androidodc.eorder.utils.LogUtils;
 
 import java.util.List;
 
@@ -34,11 +35,11 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
     // The height of gridview's one row
     private final static int HEIGHT_ONEROW = 220;
 
-    //Open the detail page's static data
+    // Open the detail page's static data
     public static final String SELECTED_DISH_ID = "selected_dish_id";
     public static final int OPEN_DETAILPAGE_FLAG = 1000;
 
-    //Open the order page's static data
+    // Open the order page's static data
     public static final int OPEN_ORDERPAGE_FLAG = 1001;
 
     // Every column is displayed by a gallery
@@ -52,6 +53,7 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
 
     // Order manager
     private static OrderManager mOrderManager;
+
     /**
      * Called when the activity is first created.
      */
@@ -61,6 +63,11 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
         // Initial all the data needed
         initData();
         // Initial the UI manually.
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         initUi();
     }
 
@@ -103,11 +110,11 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
         mCategoryGallery = new GridView[categoryNum];
         // Initial the grid view for every food category.
         for (int i = 0; i < categoryNum - 1; i++) {
-            LinearLayout categoryLayout = (LinearLayout) inflater.inflate(
-                    R.layout.main_list_item, null);
+            LinearLayout categoryLayout = (LinearLayout) inflater.inflate(R.layout.main_list_item,
+                    null);
 
-            TextView cagegoryNameTextView = (TextView) categoryLayout.findViewById(
-                    R.id.category_name);
+            TextView cagegoryNameTextView = (TextView) categoryLayout
+                    .findViewById(R.id.category_name);
 
             int categoryId = i + 1;
             Category category = mCategoryList.get(categoryId);
@@ -145,8 +152,9 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
         private LayoutInflater mInflater;
         // Dish List
         private List<Dish> mDishList;
-        //Data base helper 
-        //DatabaseHelper mDbHelper;
+
+        // Data base helper
+        // DatabaseHelper mDbHelper;
 
         public GridViewAdapter(Context c, int i) {
             mContext = c;
@@ -175,10 +183,12 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
             if (convertView == null) {
                 convertView = mInflater.inflate(R.layout.gridview_item, null);
                 viewHolder = new ViewHolder();
-                viewHolder.dishImageImageView = (ImageView) convertView.findViewById(R.id.food_image);
+                viewHolder.dishImageImageView = (ImageView) convertView
+                        .findViewById(R.id.food_image);
                 viewHolder.dishNameTextView = (TextView) convertView.findViewById(R.id.food_name);
                 viewHolder.dishPriceTextView = (TextView) convertView.findViewById(R.id.food_price);
-                viewHolder.dishSelectCheckBox = (CheckBox) convertView.findViewById(R.id.food_select);
+                viewHolder.dishSelectCheckBox = (CheckBox) convertView
+                        .findViewById(R.id.food_select);
 
                 int dishId = (int) mDishList.get(position).getDishId();
                 setCheckBoxClickListener(viewHolder.dishSelectCheckBox, dishId, parent.getId());
@@ -201,7 +211,7 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
             int dishId = viewHolder.dishSelectCheckBox.getId();
             if (mOrderManager.isOrderedDish(dishId)) {
                 viewHolder.dishSelectCheckBox.setChecked(true);
-            }else {
+            } else {
                 viewHolder.dishSelectCheckBox.setChecked(false);
             }
         }
@@ -223,7 +233,8 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
         private void setDishDetails(ViewHolder viewHolder, int position) {
             // TODO use hard code for test
             Dish dish = mDishList.get(position);
-            viewHolder.dishImageImageView.setImageBitmap(ImageHelper.getImage(dish.getImageLocal()));
+            viewHolder.dishImageImageView
+                    .setImageBitmap(ImageHelper.getImage(dish.getImageLocal()));
             viewHolder.dishNameTextView.setText(dish.getName());
             viewHolder.dishPriceTextView.setText(String.valueOf(dish.getPrice()));
         }
@@ -232,9 +243,12 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             int dishId = buttonView.getId();
             int categoryId = (Integer) buttonView.getTag();
+            LogUtils.logE("Yes dishId = " + dishId + "   categoryId = " + categoryId);
             if (isChecked) {
+                LogUtils.logE("Yes");
                 mOrderManager.addOneDish(dishId, categoryId);
             } else {
+                LogUtils.logE("No");
                 mOrderManager.removeDish(dishId, categoryId);
             }
         }
@@ -265,6 +279,7 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
      */
     private void openOrderedListPage() {
         // TODO Open the ordered list page
+        startActivity(new Intent(MainListActivity.this, CartTotal.class));
     }
 
     /**
@@ -273,10 +288,11 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
     private void viewDishDetail(final int dishId) {
         // TODO open the detail page
 
-        /*Intent intent = new Intent(MainListActivity.this, ViewDishsGallery.class);
-        Integer dishIdInteger = dishId;
-        Long dishLong = dishIdInteger.longValue();
-        intent.putExtra(SELECTED_DISH_ID, dishLong);
-        startActivityForResult(intent, OPEN_DETAILPAGE_FLAG);*/
+        /*
+         * Intent intent = new Intent(MainListActivity.this, ViewDishsGallery.class); Integer
+         * dishIdInteger = dishId; Long dishLong = dishIdInteger.longValue();
+         * intent.putExtra(SELECTED_DISH_ID, dishLong); startActivityForResult(intent,
+         * OPEN_DETAILPAGE_FLAG);
+         */
     }
 }

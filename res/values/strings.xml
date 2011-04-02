@@ -17,4 +17,17 @@
     <string name="history_order_item">%1$d:  bill of table %2$d is %3$d Yuan</string>
     <string name="history_orders_title">History Orders</string>
     <string name="no_history_orders">No Orders</string>
+    <string name="OK">OK</string>
+    <string name="check">Check</string>
+    <string name="tablename">Table %1$d order detail</string>
+    <string name="total"></string>
+    <string name="totalprice"></string>
+    <string name="category1"></string>
+    <string name="category2"></string>
+    <string name="category3"></string>
+    <string name="category4"></string>
+    <string name="dishcount1"></string>
+    <string name="dishcount2"></string>
+    <string name="dishcount3"></string>
+    <string name="dishcount4"></string>
 </resources>
