@@ -48,6 +48,7 @@ public class ServiceHelper {
         Bundle params = new Bundle();
         params.putString("orders", orderInfo);
         String resultStr = RequestHelper.doRequestPost(submitUrl, params);
+        //Fix me. The server returned result contains newline characters. So it should use the indexOf function to judge.
         if (null == resultStr || resultStr.indexOf(STATUS_SUCCESS) < 0) {
             result = false;
         }
