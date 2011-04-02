@@ -51,7 +51,7 @@ public class ServiceHelper {
         Bundle params = new Bundle();
         params.putString("orders", orderInfo);
         String resultStr = RequestHelper.doRequestPost(submitUrl, params);
-        if (resultStr == null || resultStr.indexOf(STATUS_SUCCESS) < 0) {
+        if (resultStr == null || !resultStr.equals(STATUS_SUCCESS)) {
             result = false;
         }
         return result;

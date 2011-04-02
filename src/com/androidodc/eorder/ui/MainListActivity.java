@@ -269,7 +269,7 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
      * Open the ordered list page.
      */
     private void openOrderedListPage() {
-        startActivity(new Intent(MainListActivity.this, CartTotal.class));
+        startActivity(new Intent(MainListActivity.this, CartTotalActivity.class));
     }
 
     /**
