@@ -1,6 +1,8 @@
 package com.androidodc.eorder.engine;
 
-public class OrderDetail implements java.io.Serializable {
+import java.io.Serializable;
+
+public class OrderDetail implements Serializable {
     private long mOrderItemId;
     private long mOrderId;
     private long mTableId;

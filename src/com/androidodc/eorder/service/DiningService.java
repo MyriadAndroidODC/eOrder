@@ -49,11 +49,6 @@ public class DiningService extends Service {
     private DatabaseHelper dbHelper = DatabaseHelper.getInstance();
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-    }
-
-    @Override  
     public void onStart(Intent intent, int startId) {
         super.onStart(intent, startId);
         Bundle taskParams = new Bundle();
@@ -261,7 +256,6 @@ public class DiningService extends Service {
 
     @Override
     public IBinder onBind(Intent arg0) {
-        // TODO Auto-generated method stub
         return null;
     }
 }
