@@ -60,6 +60,11 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
         super.onCreate(savedInstanceState);
         // Initial all the data needed
         initData();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         // Initial the UI manually.
         initUi();
     }
@@ -264,7 +269,7 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
      * Open the ordered list page.
      */
     private void openOrderedListPage() {
-        // TODO Open the ordered list page
+        startActivity(new Intent(MainListActivity.this, CartTotal.class));
     }
 
     /**
