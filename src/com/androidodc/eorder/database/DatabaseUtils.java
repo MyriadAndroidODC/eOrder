@@ -7,9 +7,4 @@ public class DatabaseUtils {
     public static void drop(final SQLiteDatabase db, String tableName) {
         db.execSQL("DROP TABLE IF EXISTS " + tableName);
     }
-
-    public static void truncate(final SQLiteDatabase db, String tableName) {
-        db.execSQL("TRUNCATE TABLE " + tableName);
-    }
-
 }
