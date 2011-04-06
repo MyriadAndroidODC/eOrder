@@ -9,7 +9,7 @@ public class DatabaseUtils {
     }
 
     public static void truncate(final SQLiteDatabase db, String tableName) {
-        db.execSQL("TRUNCATE TABLE " + tableName);
+        db.execSQL("DELETE FROM " + tableName);
     }
 
 }

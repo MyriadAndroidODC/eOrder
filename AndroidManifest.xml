@@ -36,8 +36,8 @@
                   android:label="@string/history_orders_title">
         </activity>"
 
-        <activity android:name=".CartTotal"
-                  android:label="@string/history_orders_title">
+        <activity android:name=".CartTotalActivity"
+                  android:label="@string/cart_title">
         </activity>"
 
         <service android:name="com.androidodc.eorder.service.DiningService" />

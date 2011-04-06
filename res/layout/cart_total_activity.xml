@@ -1,63 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/mCartTotalLayout"
     android:layout_width="fill_parent"
     android:orientation="vertical"
     android:layout_height="fill_parent"
     android:background="@drawable/order_bg">
 
     <TextView
-        android:text="@string/tablename"
-        android:id="@+id/mOrderTitle"
+        android:text="@string/cart_name"
+        android:id="@+id/cart_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="15sp"/>
 
     <TextView
-        android:id="@+id/mTotalDishCount"
+        android:id="@+id/total_dish_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/mOrderTitle"/>
+        android:layout_below="@id/cart_name"/>
 
     <TextView
-        android:text="@string/total"
-        android:id="@+id/mTotal"
+        android:text="@string/total_price"
+        android:id="@+id/total_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/mTotalDishCount"
+        android:layout_below="@id/total_dish_count"
         android:textSize="15sp"/>
 
     <LinearLayout
-        android:id="@+id/buttonLayout"
+        android:id="@+id/button_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:paddingBottom="60px"
+        android:paddingBottom="60dp"
         android:layout_gravity="center">
 
         <Button
             android:text="@string/check"
-            android:id="@+id/mCheck"
+            android:id="@+id/check"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="150px"
+            android:layout_marginLeft="150dp"
             android:textSize="15sp"/>
 
         <Button
             android:text="@string/ok"
-            android:id="@+id/mOK"
+            android:id="@+id/ok"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="50px"
+            android:layout_marginLeft="50dp"
             android:textSize="15sp"/>
     </LinearLayout> 
 
     <GridView
-        android:layout_below="@id/mTotal"
-        android:layout_above="@id/buttonLayout"
+        android:layout_below="@id/total_price"
+        android:layout_above="@id/button_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/mCategoryItem"
+        android:id="@+id/category_item"
         android:layout_marginLeft="6dp"
         android:layout_marginRight="6dp"
         android:verticalSpacing="4dp"

@@ -19,11 +19,12 @@
     <string name="no_history_orders">No Orders</string>
     <string name="ok">OK</string>
     <string name="check">Check</string>
-    <string name="tablename">Table %1$d order detail</string>
-    <string name="total">Total: %1$d Yuan</string>
+    <string name="cart_name">Table %1$d order detail</string>
+    <string name="total_price">Total: %1$d Yuan</string>
     <string name="dish_name">Name: </string>
     <string name="dish_price">Price: </string>
     <string name="dish_introduction">Introduction: </string>
     <string name="dish_return">Return</string>
     <string name="app_dish_introduction">Dish Introduction</string>
+    <string name="cart_title">Cart</string>
 </resources>
