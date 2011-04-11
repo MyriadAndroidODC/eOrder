@@ -16,7 +16,7 @@ public class WelcomeActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.welcome);
+        setContentView(R.layout.welcome_activity);
 
         View welcomeLayout = findViewById(R.id.layout_welcome);
         welcomeLayout.getBackground().setAlpha(BACKGROUND_ALPHA);

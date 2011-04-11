@@ -37,7 +37,7 @@ public class SelectTableActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.tables);
+        setContentView(R.layout.select_table_activity);
 
         syncTablesStatus();
     }
