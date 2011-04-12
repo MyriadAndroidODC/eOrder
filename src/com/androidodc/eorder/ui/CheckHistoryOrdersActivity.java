@@ -72,7 +72,7 @@ public class CheckHistoryOrdersActivity extends Activity {
     }
 
     private void initUI() {
-        setContentView(R.layout.history_orders);
+        setContentView(R.layout.check_history_orders_activity);
 
         ListView menuItemList = (ListView) findViewById(R.id.history_order_item);
         ArrayList<String> historyOrdersDetails = getHistoryOrdersDetails();
