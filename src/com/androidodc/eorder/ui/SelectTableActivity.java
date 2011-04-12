@@ -8,15 +8,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.GridView;
-import android.widget.SimpleAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidodc.eorder.datatypes.DiningTable;
@@ -26,6 +28,7 @@ import com.androidodc.eorder.service.DiningService;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SelectTableActivity extends Activity {
 
@@ -33,6 +36,7 @@ public class SelectTableActivity extends Activity {
     private final String CURRENT_POS = "current_position";
     private SyncReceiver mReceiver = null;
     private List<DiningTable> mTablesList = null;
+    private ArrayList<Boolean> mTableStatus = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,32 +63,15 @@ public class SelectTableActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.sync_data:
+        case R.id.sync_server_data:
             syncOtherData();
-            return true;
-        }
-
-        return false;
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-
-        menu.setHeaderTitle(R.string.title_context_menu);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.context_menu, menu);
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case R.id.view_history_orders:
-            Intent intent = new Intent(SelectTableActivity.this, CheckHistoryOrdersActivity.class);
-            startActivity(intent);
             return true;
         case R.id.sync_tables_status:
             syncTablesStatus();
+            return true;
+        case R.id.check_history_orders:
+            Intent intent = new Intent(SelectTableActivity.this, CheckHistoryOrdersActivity.class);
+            startActivity(intent);
             return true;
         }
 
@@ -112,17 +99,25 @@ public class SelectTableActivity extends Activity {
             tableNumbers.add(map);
         }
 
-        SimpleAdapter imagesItem = new SimpleAdapter(this, tableNumbers, R.layout.table_item,
-                new String[] { CURRENT_POS }, new int[] { R.id.table_num });
+        mTableStatus = getTableStatus();
+        GridViewAdapter imagesItem = new GridViewAdapter((Context) SelectTableActivity.this,
+                tableNumbers, R.layout.table_item, CURRENT_POS, new int[] { R.id.table_num },
+                mTableStatus);
         GridView tablesView = (GridView) findViewById(R.id.tables);
         tablesView.setAdapter(imagesItem);
         tablesView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 OrderManager.getInstance().setTableId(position + 1);
-                Intent intent = new Intent(SelectTableActivity.this, MainListActivity.class);
-                startActivity(intent);
+                if (mTableStatus.get(position) == true) {
+                    OrderManager.getInstance().setTableId(position + 1);
+                    Intent intent = new Intent(SelectTableActivity.this, MainListActivity.class);
+                    startActivity(intent);
+                } else {
+                    // FIXME: handle else condition.
+                }
             }
         });
+
         registerForContextMenu(tablesView);
     }
 
@@ -133,11 +128,9 @@ public class SelectTableActivity extends Activity {
         return mTablesList.size();
     }
 
-    @SuppressWarnings("unused")
     private ArrayList<Boolean> getTableStatus() {
-
         ArrayList<Boolean> result = new ArrayList<Boolean>();
-        int size = mTablesList.size();
+        int size = getTablesCount();
 
         for (int i = 0; i < size; i++) {
             result.add(mTablesList.get(i).isFree());
@@ -193,6 +186,68 @@ public class SelectTableActivity extends Activity {
                         Toast.LENGTH_LONG).show();
                 initUI();
             }
+        }
+    }
+
+    private class GridViewAdapter extends BaseAdapter {
+
+        private Context mContext = null;
+        private List<? extends Map<String, ?>> mData = null;
+        private int mResource = 0;
+        private String mFrom = null;
+        private ArrayList<Boolean> mUsed = null;
+        private LayoutInflater mInflater = null;
+
+        final class ViewHolder {
+            private ImageView mImageView = null;
+            private TextView mTextView = null;
+        }
+
+        public GridViewAdapter(Context context, List<? extends Map<String, ?>> data, int resource,
+                String from, int[] to, ArrayList<Boolean> used) {
+            mContext = context;
+            mData = data;
+            mResource = resource;
+            mFrom = from;
+            mUsed = used;
+            mInflater = LayoutInflater.from(mContext);
+        }
+
+        @Override
+        public int getCount() {
+            return mData.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return mData.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        public void setDishItem(final ViewHolder viewHolder, final int position) {
+            viewHolder.mImageView.setImageResource(R.drawable.custom_table_item);
+            viewHolder.mTextView.setText("" + (Integer) mData.get(position).get(mFrom));
+            if (mUsed.get(position) == false) {
+                viewHolder.mImageView.setAlpha(128);
+            }
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            final ViewHolder viewHolder = new ViewHolder();
+
+            if (null == convertView) {
+                convertView = mInflater.inflate(mResource, null);
+                viewHolder.mImageView = (ImageView) convertView.findViewById(R.id.table_bg);
+                viewHolder.mTextView = (TextView) convertView.findViewById(R.id.table_num);
+                setDishItem(viewHolder, position);
+                convertView.setTag(viewHolder);
+            }
+            return convertView;
         }
     }
 }

@@ -6,9 +6,9 @@
     <string name="return_button">Return</string>
     <string name="title_tables">Select Table</string>
     <string name="sync_info">Please wait while loading data...</string>
-    <string name="menu_view_history_orders">View History Orders</string>
-    <string name="menu_sync_tables_status">Sync Tables State</string>
-    <string name="menu_sync_all_data">Sync All Data</string>
+    <string name="menu_check_history_orders">Check History Orders</string>
+    <string name="menu_sync_tables_status">Sync Tables Status</string>
+    <string name="menu_sync_server_data">Sync Server Data</string>
     <string name="title_context_menu">View or Sync</string>
     <string name="info_sync_success">Sync Data Successfully</string>
     <string name="info_sync_failture">Sync Data Failed</string>
