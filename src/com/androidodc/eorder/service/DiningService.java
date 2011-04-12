@@ -145,10 +145,13 @@ public class DiningService extends Service {
         } else if (commandType == COMMAND_SYNC_OTHER) {
             try {
                 dbHelper.deleteAllTableDatas();
-                opSymbol = (opSymbol == true ? syncCategories() : false);
-                opSymbol = (opSymbol == true ? syncDishCategory() : false);
-                opSymbol = (opSymbol == true ? syncDishesAndImages() : false);
-                //opSymbol = (opSymbol == true ? synConfigs() : false); // TODO
+                while(opSymbol){
+                    opSymbol = syncCategories();
+                    opSymbol = syncDishCategory();
+                    opSymbol = syncDishesAndImages();
+//                    opSymbol = synConfigs();
+                    break;
+                }
             } catch (Exception e) {
                 LogUtils.logD("Synchronize other information error! \n" + e.getMessage());
                 opSymbol = false;
