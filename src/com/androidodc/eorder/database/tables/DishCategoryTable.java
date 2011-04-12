@@ -1,10 +1,5 @@
 package com.androidodc.eorder.database.tables;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,6 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
 import com.androidodc.eorder.database.DatabaseUtils;
 import com.androidodc.eorder.datatypes.Dish;
 import com.androidodc.eorder.datatypes.DishCategory;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 public class DishCategoryTable {
     /**
@@ -22,10 +22,10 @@ public class DishCategoryTable {
     /**
      * The columns of this table.
      */
-    public static final String _ID                      ="_id";
-    public static final String DISH_ID                  = "dish_id";
-    public static final String CATEGORY_ID              = "category_id";
-    public static final long NO_DATA                    = -1;
+    private static final String _ID                      ="_id";
+    private static final String DISH_ID                  = "dish_id";
+    private static final String CATEGORY_ID              = "category_id";
+
     /**
      * Create table.
      * @param db writable database
@@ -102,10 +102,11 @@ public class DishCategoryTable {
      */
     public static long getDishCategoryId(final SQLiteDatabase db, final long dishId) {
         List<Long> list = getDishCategoryIds(db, dishId);
-        for (Long l : list) {
-            return l;
+        //remove first category if current dish exist more than 1 category
+        if(list.size()>0){
+            return list.get(list.size()-1);
         }
-        return NO_DATA;
+        return DatabaseUtils.NO_DATA_ID;
     }
 
     /**
