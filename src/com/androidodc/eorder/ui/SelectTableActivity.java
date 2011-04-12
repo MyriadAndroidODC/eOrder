@@ -28,12 +28,10 @@ import com.androidodc.eorder.service.DiningService;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class SelectTableActivity extends Activity {
 
     private final int DIALOG_SYNC_DATA = 0;
-    private final String CURRENT_POS = "current_position";
     private SyncReceiver mReceiver = null;
     private List<DiningTable> mTablesList = null;
     private ArrayList<Boolean> mTableStatus = null;
@@ -64,7 +62,7 @@ public class SelectTableActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case R.id.sync_server_data:
-            syncOtherData();
+            syncServerData();
             return true;
         case R.id.sync_tables_status:
             syncTablesStatus();
@@ -92,17 +90,14 @@ public class SelectTableActivity extends Activity {
     }
 
     private void initUI() {
-        ArrayList<HashMap<String, Integer>> tableNumbers = new ArrayList<HashMap<String, Integer>>();
+        ArrayList<Integer> tableNumbers = new ArrayList<Integer>();
         for (int i = 1; i <= getTablesCount(); i++) {
-            HashMap<String, Integer> map = new HashMap<String, Integer>();
-            map.put(CURRENT_POS, i);
-            tableNumbers.add(map);
+            tableNumbers.add(i);
         }
 
         mTableStatus = getTableStatus();
-        GridViewAdapter imagesItem = new GridViewAdapter((Context) SelectTableActivity.this,
-                tableNumbers, R.layout.table_item, CURRENT_POS, new int[] { R.id.table_num },
-                mTableStatus);
+        GridViewAdapter imagesItem = new GridViewAdapter(this,
+                tableNumbers, R.layout.table_item, mTableStatus);
         GridView tablesView = (GridView) findViewById(R.id.tables);
         tablesView.setAdapter(imagesItem);
         tablesView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -153,7 +148,7 @@ public class SelectTableActivity extends Activity {
     }
 
     /* The operation will last long, and no answer from server. */
-    private void syncOtherData() {
+    private void syncServerData() {
         Intent service = new Intent(SelectTableActivity.this, DiningService.class);
         service.putExtra(DiningService.SERVICE_COMMAND_KEY, DiningService.COMMAND_SYNC_OTHER);
         startService(service);
@@ -192,9 +187,8 @@ public class SelectTableActivity extends Activity {
     private class GridViewAdapter extends BaseAdapter {
 
         private Context mContext = null;
-        private List<? extends Map<String, ?>> mData = null;
+        private List<?> mData = null;
         private int mResource = 0;
-        private String mFrom = null;
         private ArrayList<Boolean> mUsed = null;
         private LayoutInflater mInflater = null;
 
@@ -203,12 +197,10 @@ public class SelectTableActivity extends Activity {
             private TextView mTextView = null;
         }
 
-        public GridViewAdapter(Context context, List<? extends Map<String, ?>> data, int resource,
-                String from, int[] to, ArrayList<Boolean> used) {
+        public GridViewAdapter(Context context, List<?> data, int resource, ArrayList<Boolean> used) {
             mContext = context;
             mData = data;
             mResource = resource;
-            mFrom = from;
             mUsed = used;
             mInflater = LayoutInflater.from(mContext);
         }
@@ -230,7 +222,7 @@ public class SelectTableActivity extends Activity {
 
         public void setDishItem(final ViewHolder viewHolder, final int position) {
             viewHolder.mImageView.setImageResource(R.drawable.custom_table_item);
-            viewHolder.mTextView.setText("" + (Integer) mData.get(position).get(mFrom));
+            viewHolder.mTextView.setText(mData.get(position).toString());
             if (mUsed.get(position) == false) {
                 viewHolder.mImageView.setAlpha(128);
             }
