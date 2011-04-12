@@ -19,7 +19,7 @@ public class OrderManager {
     private long mTableId;
     private int mTotalPrice;
     // Integer in HashMap: 1:Dish Id 2:Dish copies
-    private HashMap<Long, Long> mOrderDetail;
+    private HashMap<Long, Integer> mOrderDetail;
     // Integer in HashMap: 1:Category Id 2:Dish Id set
     private HashMap<Long, HashSet<Long>> mOrederCategories;
 
@@ -30,7 +30,7 @@ public class OrderManager {
         mOrderListId = 0;
         mTableId = 0;
         mTotalPrice = 0;
-        mOrderDetail = new HashMap<Long, Long>();
+        mOrderDetail = new HashMap<Long, Integer>();
         mOrederCategories = new HashMap<Long, HashSet<Long>>();
     }
 
@@ -81,7 +81,7 @@ public class OrderManager {
      * @param copyNum
      *            Dish copies number
      */
-    public synchronized void setDishCopy(final long dishId, final long copyNum) {
+    public synchronized void setDishCopy(final long dishId, final int copyNum) {
         updateOrderDetail(dishId, copyNum);
     }
 
@@ -92,7 +92,7 @@ public class OrderManager {
      * @param copyNum
      *            Dish copies number
      */
-    private synchronized void updateOrderDetail(final long dishId, final long copyNum) {
+    private synchronized void updateOrderDetail(final long dishId, final int copyNum) {
         mOrderDetail.put(dishId, copyNum);
     }
 
@@ -102,7 +102,7 @@ public class OrderManager {
      *            Dish ID in one category
      * @return The dish's copy number
      */
-    public synchronized long getDishCopy(final long dishId) {
+    public synchronized int getDishCopy(final long dishId) {
         return mOrderDetail.get(dishId);
     }
 
@@ -130,7 +130,7 @@ public class OrderManager {
      * Get all ordered dishes.
      * @return HashMap<> - dishes ID and dishes' copy
      */
-    public synchronized HashMap<Long, Long> getAllOrderedDishes() {
+    public synchronized HashMap<Long, Integer> getAllOrderedDishes() {
         return mOrderDetail;
     }
 
@@ -174,6 +174,7 @@ public class OrderManager {
      * @return totalPrice The dishes' total price.
      */
     public synchronized int getTotalPrice() {
+        mTotalPrice = 0;
         if (null != mOrderDetail) {
             DatabaseHelper dbHelper = DatabaseHelper.getInstance();
             Iterator<Long> iter = mOrderDetail.keySet().iterator();

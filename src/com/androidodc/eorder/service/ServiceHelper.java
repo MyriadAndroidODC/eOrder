@@ -2,6 +2,9 @@ package com.androidodc.eorder.service;
 
 import android.os.Bundle;
 import android.os.Environment;
+
+import org.json.JSONException;
+
 import com.androidodc.eorder.datatypes.Category;
 import com.androidodc.eorder.datatypes.Config;
 import com.androidodc.eorder.datatypes.DiningTable;
@@ -9,10 +12,10 @@ import com.androidodc.eorder.datatypes.Dish;
 import com.androidodc.eorder.datatypes.DishCategory;
 import com.androidodc.eorder.datatypes.Order;
 import com.androidodc.eorder.engine.OrderDetail;
-import com.androidodc.eorder.engine.ResponseParser;
 import com.androidodc.eorder.engine.RequestHelper;
+import com.androidodc.eorder.engine.ResponseParser;
 import com.androidodc.eorder.utils.LogUtils;
-import org.json.JSONException;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -91,7 +94,7 @@ public class ServiceHelper {
 
     public static ArrayList<Category> getCategories() {
         ArrayList<Category> categoryList = null;
-        String reqUrl = getRequestUrl(null, CATEGORY_PAGE);        
+        String reqUrl = getRequestUrl(null, CATEGORY_PAGE);
         String respStr = RequestHelper.doRequestPost(reqUrl, null);
         try {
             categoryList = ResponseParser.parseCategories(respStr);
