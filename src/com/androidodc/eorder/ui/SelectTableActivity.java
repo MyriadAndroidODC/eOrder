@@ -61,16 +61,16 @@ public class SelectTableActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.sync_server_data:
-            syncServerData();
-            return true;
-        case R.id.sync_tables_status:
-            syncTablesStatus();
-            return true;
-        case R.id.check_history_orders:
-            Intent intent = new Intent(SelectTableActivity.this, CheckHistoryOrdersActivity.class);
-            startActivity(intent);
-            return true;
+            case R.id.sync_server_data:
+                syncServerData();
+                return true;
+            case R.id.sync_tables_status:
+                syncTablesStatus();
+                return true;
+            case R.id.check_history_orders:
+                Intent intent = new Intent(SelectTableActivity.this, CheckHistoryOrdersActivity.class);
+                startActivity(intent);
+                return true;
         }
 
         return false;
@@ -79,12 +79,12 @@ public class SelectTableActivity extends Activity {
     @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
-        case DIALOG_SYNC_DATA:
-            ProgressDialog dialog = new ProgressDialog(this);
-            dialog.setMessage(getString(R.string.sync_info));
-            dialog.setIndeterminate(true);
-            dialog.setCancelable(false);
-            return dialog;
+            case DIALOG_SYNC_DATA:
+                ProgressDialog dialog = new ProgressDialog(this);
+                dialog.setMessage(getString(R.string.sync_info));
+                dialog.setIndeterminate(true);
+                dialog.setCancelable(false);
+                return dialog;
         }
         return null;
     }
