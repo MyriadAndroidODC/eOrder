@@ -159,12 +159,9 @@ public class CartTotalActivity extends Activity implements OnClickListener {
         order.setTableId(mTableId);
         order.setOrderTotal(total);
 
-        HashMap<String, Object> submitOrder = new HashMap<String, Object>();
-        submitOrder.put(DiningService.SUBMIT_ORDER_KEY, order);
-        submitOrder.put(DiningService.SUBMIT_ORDER_DETAIL_KEY, orderDetails);
-
         Intent service = new Intent(CartTotalActivity.this, DiningService.class);
-        service.putExtra(DiningService.SUBMIT_KEY, submitOrder);
+        service.putExtra(DiningService.SUBMIT_ORDER_KEY, order);
+        service.putExtra(DiningService.SUBMIT_ORDER_DETAIL_KEY, orderDetails);
         service.putExtra(DiningService.SERVICE_COMMAND_KEY, DiningService.COMMAND_SUBMIT_ORDER);
         startService(service);
     }

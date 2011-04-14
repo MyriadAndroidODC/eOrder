@@ -1,10 +1,11 @@
 package com.androidodc.eorder.service;
 
-import android.app.Service; 
+import android.app.Service;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
+
 import com.androidodc.eorder.database.DatabaseHelper;
 import com.androidodc.eorder.datatypes.Category;
 import com.androidodc.eorder.datatypes.Config;
@@ -15,8 +16,10 @@ import com.androidodc.eorder.datatypes.Order;
 import com.androidodc.eorder.datatypes.OrderItem;
 import com.androidodc.eorder.engine.OrderDetail;
 import com.androidodc.eorder.utils.LogUtils;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class DiningService extends Service {
     public static final String SYNC_DINING_TABLE = "com.androidodc.intent.SYNC_TABLES_STATUS"; //For the receiver to handle the dining table status
@@ -77,117 +80,142 @@ public class DiningService extends Service {
     void executeCommand(int commandType, Intent intent) {
         boolean opSymbol = true;
         if (commandType == COMMAND_SYNC_DINING_TABLE) {
-            HashMap diningTableMap = new HashMap();
+            HashMap<String, ArrayList<DiningTable>> diningTableMap = new HashMap<String, ArrayList<DiningTable>>();
             ArrayList<DiningTable> diningTableList = ServiceHelper.getDiningTables();
             if (diningTableList != null) {
                 diningTableMap.put(DINING_TABLE_KEY, diningTableList);
-                sendMsg(SYNC_DINING_TABLE, EXECUTE_DINING_TABLE_SUCCESS, diningTableMap);
+                sendDiningTableMsg(SYNC_DINING_TABLE, EXECUTE_DINING_TABLE_SUCCESS, diningTableMap);
             } else {
-                sendMsg(SYNC_DINING_TABLE, EXECUTE_ERROR, null);
+                sendMsg(SYNC_DINING_TABLE, EXECUTE_ERROR);
             }
-
         } else if (commandType == COMMAND_SYNC_ORDER) {
-        	ArrayList<Order> orderList = ServiceHelper.getFreeOrders();
-            StringBuffer orderIdBuffer = new StringBuffer("");
-            for (Order order : orderList) {
-                orderIdBuffer.append(order.getOrderId() + ",");
-            }
-            orderIdBuffer.deleteCharAt(orderIdBuffer.length() - 1); //delete the last character
-            ArrayList<OrderDetail> orderDetailList = ServiceHelper.getOrderDetailByOrderIds(orderIdBuffer.toString());
+            ArrayList<Order> orderList = ServiceHelper.getFreeOrders();
+            ArrayList<OrderDetail> orderDetailList = ServiceHelper.getOrderDetailByOrderIds();
 
             if (orderList != null && orderDetailList != null) {
-                HashMap orderMap = new HashMap();
-                HashMap orderTableMap = new HashMap();
-                orderMap.put(ORDER_KEY, orderList);
+                HashMap<Long, ArrayList<OrderItem>> orderItemMap = new HashMap<Long, ArrayList<OrderItem>>();
+                HashMap<Long, Long> orderTableMap = new HashMap<Long, Long>();
 
                 for (OrderDetail orderDetail : orderDetailList) {
                     long orderId = orderDetail.getOrderId();
                     long dishId = orderDetail.getDishId();
                     long tableId = orderDetail.getTableId();
                     int number = orderDetail.getNumber();
-                    String key = "" + orderId;
-                    ArrayList<OrderItem> eachOrderItemList = (ArrayList<OrderItem>)orderMap.get(key);
 
                     OrderItem orderItem = new OrderItem();
                     orderItem.setAmount(number);
                     orderItem.setDish(dbHelper.getDishById(dishId));
+
+                    ArrayList<OrderItem> eachOrderItemList = (ArrayList<OrderItem>) orderItemMap
+                            .get(orderId);
                     if (null == eachOrderItemList) {
-                        eachOrderItemList = new ArrayList();
+                        eachOrderItemList = new ArrayList<OrderItem>();
                         eachOrderItemList.add(orderItem);
-                        orderMap.put(key, eachOrderItemList);
+                        orderItemMap.put(orderId, eachOrderItemList);
                     } else {
                         eachOrderItemList.add(orderItem);
                     }
 
-                    String tableKey = "" + tableId;
-                    if (orderTableMap.get(tableKey) == null) {
-                        orderTableMap.put(key, tableKey);
-                    }
+                    orderTableMap.put(orderId, tableId);
                 }
 
                 for (Order order : orderList) {
                     long orderId = order.getOrderId();
-                    String key = "" + orderId;
-                    ArrayList<OrderItem> eachOrderItemList = (ArrayList<OrderItem>)orderMap.get(key);
+                    ArrayList<OrderItem> eachOrderItemList = (ArrayList<OrderItem>) orderItemMap
+                            .get(orderId);
                     order.setOrderItems(eachOrderItemList);
 
-                    String tableIdStr = (String)orderTableMap.get(key);
-                    if (tableIdStr != null) {
-                        Long tableId = Long.parseLong(tableIdStr);
+                    Long tableId = orderTableMap.get(orderId);
+                    if (tableId != null) {
                         order.setTableId(tableId);
                     }
                 }
-                sendMsg(SYNC_HISTORY_ORDER, EXECUTE_ORDER_SUCCESS, orderMap);
+
+                HashMap<String, ArrayList<Order>> orderMap = new HashMap<String, ArrayList<Order>>();
+                orderMap.put(ORDER_KEY, orderList);
+                sendHistoryOrdersMsg(SYNC_HISTORY_ORDER, EXECUTE_ORDER_SUCCESS, orderMap);
             } else {
-                sendMsg(SYNC_HISTORY_ORDER, EXECUTE_ERROR, null);
+                sendMsg(SYNC_HISTORY_ORDER, EXECUTE_ERROR);
             }
-            
+
         } else if (commandType == COMMAND_SYNC_OTHER) {
             try {
                 dbHelper.deleteAllTableDatas();
-                while(opSymbol){
+                while (opSymbol) {
                     opSymbol = syncCategories();
                     opSymbol = syncDishCategory();
                     opSymbol = syncDishesAndImages();
-//                    opSymbol = synConfigs();
                     break;
                 }
             } catch (Exception e) {
                 LogUtils.logD("Synchronize other information error! \n" + e.getMessage());
                 opSymbol = false;
             }
-            sendMsg(null, opSymbol == true ? EXECUTE_OTHER_SUCCESS : EXECUTE_ERROR, null);
+            sendMsg(null, opSymbol == true ? EXECUTE_OTHER_SUCCESS : EXECUTE_ERROR);
         } else if (commandType == COMMAND_SUBMIT_ORDER) {
-            HashMap submitOrderMap = (HashMap)intent.getSerializableExtra(SUBMIT_KEY);
-            opSymbol = submitOrder(submitOrderMap);
-            sendMsg(SUBMIT_ORDER, opSymbol == true ? EXECUTE_SUBMIT_ORDER_SUCCESS : EXECUTE_ERROR, null);
+            Order order = (Order) intent.getSerializableExtra(SUBMIT_ORDER_KEY);
+            @SuppressWarnings("unchecked")
+            ArrayList<OrderDetail> orderDetailList = (ArrayList<OrderDetail>) intent
+                    .getSerializableExtra(SUBMIT_ORDER_DETAIL_KEY);
+            opSymbol = submitOrder(order, orderDetailList);
+            sendMsg(SUBMIT_ORDER, opSymbol == true ? EXECUTE_SUBMIT_ORDER_SUCCESS : EXECUTE_ERROR);
         } else {
-            sendMsg(null, EXECUTE_NONE, null);
+            sendMsg(null, EXECUTE_NONE);
         }
     }
 
-    private void sendMsg(String broadcastHandle, int executeResult, HashMap resultObj) {
+    private void sendDiningTableMsg(String broadcastHandle, int executeResult,
+            HashMap<String, ArrayList<DiningTable>> data) {
         if (broadcastHandle == null) {
-            return; // do nothing
+            return;
         }
 
         Intent intent = new Intent(broadcastHandle);
-        Bundle msgBundle = new Bundle();
 
+        Bundle msgBundle = new Bundle();
         msgBundle.putInt(BROADCAST_RESULT_KEY, executeResult);
-        msgBundle.putSerializable(BROADCAST_RESOURCE_KEY, resultObj);
+        msgBundle.putSerializable(BROADCAST_RESOURCE_KEY, data);
         intent.putExtras(msgBundle);
+
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         this.sendBroadcast(intent);
     }
 
-    private boolean submitOrder(HashMap orderMap) {
-        boolean result = true;
-        try{
-            StringBuilder submitStr = new StringBuilder("");
-            Order order = (Order)orderMap.get(SUBMIT_ORDER_KEY);
-            ArrayList<OrderDetail> orderDetailList = (ArrayList<OrderDetail>)orderMap.get(SUBMIT_ORDER_DETAIL_KEY);
+    private void sendHistoryOrdersMsg(String broadcastHandle, int executeResult,
+            HashMap<String, ArrayList<Order>> data) {
+        if (broadcastHandle == null) {
+            return;
+        }
 
+        Intent intent = new Intent(broadcastHandle);
+
+        Bundle msgBundle = new Bundle();
+        msgBundle.putInt(BROADCAST_RESULT_KEY, executeResult);
+        msgBundle.putSerializable(BROADCAST_RESOURCE_KEY, data);
+        intent.putExtras(msgBundle);
+
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        this.sendBroadcast(intent);
+    }
+
+    private void sendMsg(String broadcastHandle, int executeResult) {
+        if (broadcastHandle == null) {
+            return;
+        }
+
+        Intent intent = new Intent(broadcastHandle);
+
+        Bundle msgBundle = new Bundle();
+        msgBundle.putInt(BROADCAST_RESULT_KEY, executeResult);
+        intent.putExtras(msgBundle);
+
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        this.sendBroadcast(intent);
+    }
+
+    private boolean submitOrder(Order order, List<OrderDetail> orderDetailList) {
+        try {
+            StringBuilder submitStr = new StringBuilder("");
             submitStr.append("{\"sum\":");
             submitStr.append(order.getOrderTotal() + ",");
             submitStr.append("\"order_detail\":[");
@@ -203,63 +231,57 @@ public class DiningService extends Service {
             ServiceHelper.submitOrderToServer(submitStr.toString());
         } catch (Exception e) {
             LogUtils.logD("Submit order error! \n" + e.getMessage());
-            result = false;
+            return false;
         }
-        return result;
+        return true;
     }
 
     private boolean syncCategories() {
-        boolean result = true;
         ArrayList<Category> categoryList = ServiceHelper.getCategories();
         if (categoryList == null) {
-            result = false;
-        } else {
-            for (Category category : categoryList) {
-                dbHelper.addCategory(category);
-            }
+            return false;
         }
-        return result;
+        for (Category category : categoryList) {
+            dbHelper.addCategory(category);
+        }
+        return true;
     }
 
     private boolean syncDishesAndImages() {
-        boolean result = true;
         ArrayList<Dish> dishList = ServiceHelper.getDishes();
         if (dishList == null) {
-            result = false;
+            return false;
         } else {
-            //synchronize the image and update the local file path
-            result = ServiceHelper.syncDishImage(dishList);
+            // synchronize the image and update the local file path
+            boolean result = ServiceHelper.syncDishImage(dishList);
             for (Dish dish : dishList) {
                 dbHelper.addDish(dish);
             }
+            return result;
         }
-        return result;
     }
 
     private boolean syncDishCategory() {
-        boolean result = true;
         ArrayList<DishCategory> dishCategoryList = ServiceHelper.getDishCategory();
         if (dishCategoryList == null) {
-            result = false;
-        } else {
-            for (DishCategory dishCategory : dishCategoryList) {
-                dbHelper.addDishCategory(dishCategory);
-            }
+            return false;
         }
-        return result;
+        for (DishCategory dishCategory : dishCategoryList) {
+            dbHelper.addDishCategory(dishCategory);
+        }
+        return true;
     }
 
+    @SuppressWarnings("unused")
     private boolean syncConfigs() {
-        boolean result = true;
         ArrayList<Config> configList = ServiceHelper.getConfigs();
         if (configList == null) {
-            result = false;
-        } else {
-            for (Config config : configList) {
-                dbHelper.addConfig(config);
-            }
+            return false;
         }
-        return result;
+        for (Config config : configList) {
+            dbHelper.addConfig(config);
+        }
+        return true;
     }
 
     @Override
