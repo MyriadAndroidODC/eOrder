@@ -1,6 +1,7 @@
 package com.androidodc.eorder.database;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -17,6 +18,7 @@ import com.androidodc.eorder.utils.LogUtils;
 
 import java.util.List;
 import java.util.Observable;
+import java.util.Observer;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static DatabaseHelper sDBHelper;
@@ -75,6 +77,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    public void addObserver(final Observer observer) {
+        mDBObservable.addObserver(observer);
+    }
+
+    public void deleteObserver(final Observer observer) {
+        mDBObservable.deleteObserver(observer);
+    }
+
+    public void notifyObservers() {
+        notifyObservers(null);
+    }
+
+    public void notifyObservers(final Object data) {
+        mDBObservable.doChanged();
+        mDBObservable.notifyObservers(data);
+
+        mContext.sendBroadcast(new Intent("android.appwidget.action.APPWIDGET_REFRESH"));
+    }
+    
     @Override
     public void onUpgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
         dropAllTables(db);
@@ -93,15 +114,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         DishCategoryTable.drop(db);
         DishTable.drop(db);
         CategoryTable.drop(db);
-        DatabaseCache.clearAllCache();
     }
 
     public List<Category> getAllCategorys() {
-        return DatabaseCache.getAllCategorys(getReadableDatabase());
+        return CategoryTable.getAllCategorys(getReadableDatabase());
     }
 
     public List<Dish> getDishsByCategory(final long categoryId) {
-        return DatabaseCache.getDishsByCategory(getReadableDatabase(), categoryId);
+        return DishCategoryTable.getDishsByCategory(getReadableDatabase(), categoryId);
     }
 
     public List<Dish> getAllDishs() {
@@ -128,6 +148,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return ConfigTable.add(getWritableDatabase(), config);
     }
 
+    /**
+     * get dish last category id
+     * @param dishId
+     * @return
+     */
     public long getDishCategoryId(long dishId){
         List<Long> list = getDishCategoryIds(dishId);
         if (list.size() > 0) {
@@ -141,7 +166,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public List<Long> getSequencedDishIds(){
-        return DatabaseCache.getSequencedDishIds(getReadableDatabase());
+        return DishCategoryTable.getSequencedDishIds(getReadableDatabase());
     }
 
     public void deleteAllTableDatas(){
@@ -151,6 +176,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         DishTable.deleteAll(db);
         CategoryTable.deleteAll(db);
         db.execSQL("DELETE FROM " + TABLE_SQLITE_SEQUENCE);
-        DatabaseCache.clearAllCache();
     }
 }
