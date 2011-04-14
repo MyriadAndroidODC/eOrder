@@ -179,7 +179,8 @@ public class SelectTableActivity extends Activity {
                     Toast.makeText(SelectTableActivity.this, R.string.info_sync_failture,
                             Toast.LENGTH_LONG).show();
                     dismissDialog(DIALOG_SYNC_DATA);
-                    finish();
+//                    finish();
+                    initUI();
                     return;
                 }
 
