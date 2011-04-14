@@ -14,17 +14,22 @@
     <string name="info_sync_failture">Sync Data Failed</string>
     <string name="dish_title">Menu</string>
     <string name="text_orderedlist_button">Check Order</string>
-    <string name="history_order_item">%1$d:  bill of table %2$d is %3$d Yuan</string>
+    <string name="history_order_item">%1$d:  bill of table %2$d is CNY %3$d</string>
     <string name="history_orders_title">History Orders</string>
     <string name="no_history_orders">No Orders</string>
     <string name="ok">OK</string>
     <string name="check">Check</string>
     <string name="cart_name">Table %1$d order detail</string>
-    <string name="total_price">Total: %1$d Yuan</string>
+    <string name="total_price">Total: CNY %1$d</string>
     <string name="dish_name">Name: </string>
     <string name="dish_price">Price: </string>
     <string name="dish_introduction">Introduction: </string>
     <string name="dish_return">Return</string>
     <string name="app_dish_introduction">Dish Introduction</string>
     <string name="cart_title">Cart</string>
+    <string name="change_order">Change Order</string>
+    <string name="app_menus">Menus</string>
+    <string name="menus_price">Price: CNY %1$d</string>
+    <string name="menus_copy">Amount: %1$d Copy</string>
+    <string name="menus_copies">Amount: %1$d Copies</string>
 </resources>

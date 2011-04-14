@@ -27,4 +27,9 @@
     <string name="dish_return">返回</string>
     <string name="app_dish_introduction">菜品介绍</string>
     <string name="cart_title">购物车</string>
+    <string name="change_order">修改菜单</string>
+    <string name="app_menus">菜单</string>
+    <string name="menus_price">单价: %1$d 元</string>
+    <string name="menus_copy">数量: %1$d 份</string>
+    <string name="menus_copies">数量: %1$d 份</string>
 </resources>
