@@ -85,7 +85,7 @@ public class CheckHistoryOrdersActivity extends Activity {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Order currentOrder = mHistoryOrders.get(position);
                     Intent intent = new Intent(CheckHistoryOrdersActivity.this,
-                            OrderMenusActivity.class);
+                            OrderDetailActivity.class);
                     intent.putExtra(CURRENT_ORDER, currentOrder);
                     startActivity(intent);
                 }

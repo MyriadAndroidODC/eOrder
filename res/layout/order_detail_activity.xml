@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:orientation="vertical"
     android:layout_height="fill_parent"
+    android:orientation="vertical"
     android:background="@drawable/order_bg">
 
     <TextView
@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
         android:text="@string/cart_name"
-        android:textSize="18sp"/>
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/total_dish_count"
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/cart_name"
         android:paddingLeft="10dp"
-        android:textSize="16dp"/>
+        android:textSize="16dp" />
 
     <TextView
         android:id="@+id/total_price"
@@ -28,7 +28,7 @@
         android:layout_below="@id/total_dish_count"
         android:paddingLeft="10dp"
         android:text="@string/total_price"
-        android:textSize="16sp"/>
+        android:textSize="16sp" />
 
     <LinearLayout
         android:id="@+id/button_layout"
@@ -44,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="150dp"
-            android:textSize="15sp"/>
+            android:textSize="15sp" />
 
         <Button
             android:text="@string/ok"
@@ -52,7 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="50dp"
-            android:textSize="15sp"/>
+            android:textSize="15sp" />
     </LinearLayout> 
 
     <ListView

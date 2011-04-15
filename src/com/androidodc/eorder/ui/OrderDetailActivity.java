@@ -19,12 +19,11 @@ import com.androidodc.eorder.datatypes.Dish;
 import com.androidodc.eorder.datatypes.Order;
 import com.androidodc.eorder.datatypes.OrderItem;
 import com.androidodc.eorder.utils.ImageHelper;
-import com.androidodc.eorder.utils.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderMenusActivity extends Activity implements OnClickListener {
+public class OrderDetailActivity extends Activity implements OnClickListener {
 
     private DatabaseHelper mDbHelper = DatabaseHelper.getInstance();
 
@@ -35,7 +34,7 @@ public class OrderMenusActivity extends Activity implements OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.order_menus_activity);
+        setContentView(R.layout.order_detail_activity);
 
         mOrder = (Order) getIntent().getSerializableExtra(CheckHistoryOrdersActivity.CURRENT_ORDER);
 
@@ -90,14 +89,7 @@ public class OrderMenusActivity extends Activity implements OnClickListener {
         modifyButton.setOnClickListener(this);
 
         ListView view = (ListView) findViewById(R.id.menus_order_item);
-        if (view == null) {
-            LogUtils.logE("view null pointer");
-            if (mDishesDetail == null) {
-                LogUtils.logE("mDishesDetail null pointer");
-            }
-            finish();
-        }
-        view.setAdapter(new DishListAdapter(this, R.layout.order_menus_item, mDishesDetail));
+        view.setAdapter(new DishListAdapter(this, R.layout.order_detail_item, mDishesDetail));
     }
 
     private void showTotalPrice(int total) {
