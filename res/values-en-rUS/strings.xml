@@ -11,7 +11,7 @@
     <string name="menu_sync_server_data">Sync Server Data</string>
     <string name="title_context_menu">View or Sync</string>
     <string name="info_sync_success">Sync Data Successfully</string>
-    <string name="info_sync_failture">Sync Data Failed</string>
+    <string name="info_sync_failure">Sync Data Failed</string>
     <string name="dish_title">Menu</string>
     <string name="text_orderedlist_button">Check Order</string>
     <string name="history_order_item">%1$d:  bill of table %2$d is %3$d Yuan</string>
