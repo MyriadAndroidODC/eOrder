@@ -161,17 +161,15 @@ public class SelectTableActivity extends Activity {
 
     private class GridViewAdapter extends ArrayAdapter<DiningTable> {
 
-        private final int USED_FLAG = 126;
+        private static final int USED_FLAG = 126;
         private Context mContext = null;
         private int mResource = 0;
-        private List<DiningTable> mTables = null;
         private LayoutInflater mInflater = null;
 
         public GridViewAdapter(Context context, int resource, List<DiningTable> tables) {
             super(context, resource, tables);
             mContext = context;
             mResource = resource;
-            mTables = tables;
             mInflater = LayoutInflater.from(mContext);
         }
 
@@ -184,7 +182,7 @@ public class SelectTableActivity extends Activity {
                 view = convertView;
             }
 
-            DiningTable t = mTables.get(position);
+            DiningTable t = getItem(position);
 
             TextView table;
             table = (TextView) view.findViewById(R.id.table_num);
