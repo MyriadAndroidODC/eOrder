@@ -25,7 +25,6 @@ import com.androidodc.eorder.datatypes.DiningTable;
 import com.androidodc.eorder.order.OrderManager;
 import com.androidodc.eorder.service.DiningService;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -90,11 +89,6 @@ public class SelectTableActivity extends Activity {
     }
 
     private void initUI() {
-        ArrayList<Integer> tableNumbers = new ArrayList<Integer>();
-        for (int i = 1; i <= getTablesCount(); i++) {
-            tableNumbers.add(i);
-        }
-
         GridViewAdapter imagesItem = new GridViewAdapter(this, R.layout.table_item, mTablesList);
         GridView tablesView = (GridView) findViewById(R.id.tables);
         tablesView.setAdapter(imagesItem);
@@ -112,13 +106,6 @@ public class SelectTableActivity extends Activity {
         });
 
         registerForContextMenu(tablesView);
-    }
-
-    private int getTablesCount() {
-        if (mTablesList == null || mTablesList.size() == 0) {
-            return 0;
-        }
-        return mTablesList.size();
     }
 
     private void syncTablesStatus() {
