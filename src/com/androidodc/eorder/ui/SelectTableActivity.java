@@ -37,7 +37,7 @@ public class SelectTableActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.tables);
+        setContentView(R.layout.select_table_activity);
 
         syncTablesStatus();
     }
@@ -118,7 +118,7 @@ public class SelectTableActivity extends Activity {
         tablesView.setAdapter(imagesItem);
         tablesView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                OrderManager.getInstance().setTableId(position);
+                OrderManager.getInstance().setTableId(position + 1);
                 Intent intent = new Intent(SelectTableActivity.this, MainListActivity.class);
                 startActivity(intent);
             }

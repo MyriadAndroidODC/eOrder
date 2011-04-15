@@ -162,6 +162,6 @@ public class DishCategoryTable {
      * @param db
      */
     public static void deleteAll(final SQLiteDatabase db) {
-        DatabaseUtils.truncate(db, TABLE_NAME);
+        db.execSQL("DELETE FROM " + TABLE_NAME);
     }
 }

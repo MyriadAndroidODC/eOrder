@@ -1,6 +1,10 @@
 package com.androidodc.eorder.engine;
 
-public class OrderDetail {
+import java.io.Serializable;
+
+public class OrderDetail implements Serializable {
+
+    private static final long serialVersionUID = 244422795448220424L;
     private long mOrderItemId;
     private long mOrderId;
     private long mTableId;

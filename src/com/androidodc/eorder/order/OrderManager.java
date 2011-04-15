@@ -19,7 +19,7 @@ public class OrderManager {
     private long mTableId;
     private int mTotalPrice;
     // Integer in HashMap: 1:Dish Id 2:Dish copies
-    private HashMap<Long, Long> mOrderDetail;
+    private HashMap<Long, Integer> mOrderDetail;
     // Integer in HashMap: 1:Category Id 2:Dish Id set
     private HashMap<Long, HashSet<Long>> mOrederCategories;
 
@@ -30,7 +30,7 @@ public class OrderManager {
         mOrderListId = 0;
         mTableId = 0;
         mTotalPrice = 0;
-        mOrderDetail = new HashMap<Long, Long>();
+        mOrderDetail = new HashMap<Long, Integer>();
         mOrederCategories = new HashMap<Long, HashSet<Long>>();
     }
 
@@ -174,6 +174,7 @@ public class OrderManager {
      * @return totalPrice The dishes' total price.
      */
     public int getTotalPrice() {
+        mTotalPrice = 0;
         if (null != mOrderDetail) {
             DatabaseHelper dbHelper = DatabaseHelper.getInstance();
             Iterator<Long> iter = mOrderDetail.keySet().iterator();
