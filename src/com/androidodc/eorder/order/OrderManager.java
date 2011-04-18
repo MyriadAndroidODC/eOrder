@@ -19,7 +19,7 @@ public class OrderManager {
     private long mTableId;
     private int mTotalPrice;
     // Integer in HashMap: 1:Dish Id 2:Dish copies
-    private HashMap<Long, Integer> mOrderDetail;
+    private HashMap<Long, Long> mOrderDetail;
     // Integer in HashMap: 1:Category Id 2:Dish Id set
     private HashMap<Long, HashSet<Long>> mOrederCategories;
 
@@ -30,8 +30,25 @@ public class OrderManager {
         mOrderListId = 0;
         mTableId = 0;
         mTotalPrice = 0;
-        mOrderDetail = new HashMap<Long, Integer>();
+        mOrderDetail = new HashMap<Long, Long>();
         mOrederCategories = new HashMap<Long, HashSet<Long>>();
+    }
+
+    /**
+     * Clear the OrderManager's data
+     */
+    public void ClearOrderManager() {
+        mOrderListId = 0;
+        mTableId = 0;
+        mTotalPrice = 0;
+
+        if (null != mOrderDetail) {
+            mOrderDetail.clear();
+        }
+
+        if (null != mOrederCategories) {
+            mOrederCategories.clear();
+        }
     }
 
     /**

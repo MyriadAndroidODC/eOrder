@@ -77,7 +77,8 @@ public class CartTotalActivity extends Activity implements OnClickListener {
                 String name = dish.getName();
                 int price = dish.getPrice();
                 String image = dish.getImageLocal();
-                int count = mOrderManager.getDishCopy(dishId);
+                //TODO Should modify the "count"'s data type to long
+                int count = (int) mOrderManager.getDishCopy(dishId);
                 mDishesDetail.add(new DishDetail(dishId, c.getCategoryId(), name, c.getName(),
                         price, count, image));
             }
