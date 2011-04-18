@@ -95,8 +95,7 @@ public class SelectTableActivity extends Activity {
         tablesView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 OrderManager.getInstance().setTableId(position + 1);
-                if (mTablesList.get(position).isFree() == true) {
-                    OrderManager.getInstance().setTableId(position + 1);
+                if (mTablesList.get(position).isFree()) {
                     Intent intent = new Intent(SelectTableActivity.this, MainListActivity.class);
                     startActivity(intent);
                 } else {
