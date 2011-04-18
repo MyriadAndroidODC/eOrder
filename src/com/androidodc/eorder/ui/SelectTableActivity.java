@@ -190,7 +190,7 @@ public class SelectTableActivity extends Activity {
 
             ImageView background;
             background = (ImageView) view.findViewById(R.id.table_bg);
-            if (t.isFree() == false) {
+            if (!t.isFree()) {
                 background.setAlpha(USED_FLAG);
             }
 
