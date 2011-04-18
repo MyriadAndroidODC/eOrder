@@ -6,8 +6,8 @@
 
     <ImageView
         android:id="@+id/menus_dish_image"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:paddingLeft="10dp" />
 
     <RelativeLayout
@@ -20,12 +20,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
+            android:paddingBottom="10dp"
             android:textSize="16sp" />
 
         <TextView
             android:id="@+id/menus_dish_price"
             android:layout_below="@id/menus_dish_name"
-            android:layout_width="100dp"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:paddingLeft="14dp"
             android:text="@string/menus_price"
@@ -35,7 +36,7 @@
             android:id="@+id/menus_count"
             android:layout_toRightOf="@id/menus_dish_price"
             android:layout_below="@id/menus_dish_name"
-            android:layout_width="100dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:text="@string/menus_copy"
