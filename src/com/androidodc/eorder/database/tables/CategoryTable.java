@@ -33,6 +33,7 @@ public class CategoryTable {
 
     /**
      * Create table.
+     *
      * @param db writable database
      */
     public static void create(final SQLiteDatabase db) {
@@ -91,18 +92,18 @@ public class CategoryTable {
     }
 
     /**
-     * Get all dish categorys, ordered by sort_order and _id fields.
+     * Get all dish categories, ordered by sort_order and _id fields.
+     *
      * @param db
      * @return
      */
     public static List<Category> getAllCategorys(final SQLiteDatabase db) {
         final Cursor c = db.rawQuery("SELECT  * FROM " + TABLE_NAME + " ORDER BY " + SORT_ORDER
                 + ", " + CATEGORY_ID, null);
-
         if (c != null) {
             List<Category> list = new ArrayList<Category>();
             try {
-                while(c.moveToNext()){
+                while (c.moveToNext()) {
                     final Category category = new Category();
                     category.setId(c.getLong(c.getColumnIndex(_ID)));
                     category.setCategoryId(c.getLong(c.getColumnIndex(CATEGORY_ID)));

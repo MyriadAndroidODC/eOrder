@@ -11,7 +11,9 @@ import com.androidodc.eorder.datatypes.DishCategory;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DishCategoryTable {
     /**
@@ -116,6 +118,7 @@ public class DishCategoryTable {
      * @return
      */
     public static List<Long> getSequencedDishIds(final SQLiteDatabase db) {
+        long b = System.currentTimeMillis();
         final Cursor c = db.rawQuery("SELECT dc." + DISH_ID + " FROM " + TABLE_NAME + " dc, "
                 + CategoryTable.TABLE_NAME + " c WHERE dc." + CATEGORY_ID + " = c."
                 + CategoryTable.CATEGORY_ID + " ORDER BY c." + CategoryTable.SORT_ORDER + ", c."
@@ -126,6 +129,7 @@ public class DishCategoryTable {
                 while (c.moveToNext()) {
                     list.add(c.getLong(c.getColumnIndex(DISH_ID)));
                 }
+                System.out.println("getSequencedDishIds " + (System.currentTimeMillis()-b));
                 return list;
             } finally {
                 c.close();
@@ -164,5 +168,39 @@ public class DishCategoryTable {
      */
     public static void deleteAll(final SQLiteDatabase db) {
         db.execSQL("DELETE FROM " + TABLE_NAME);
+    }
+
+    public static Map<Long, List<Dish>> getCategoryAndDishes(SQLiteDatabase db) {
+        final Cursor c = db.rawQuery("SELECT dc." + CATEGORY_ID + ", d.* FROM " + DishTable.TABLE_NAME + " d, "
+                + TABLE_NAME + " dc WHERE d."+DishTable.DISH_ID + " = dc." + DISH_ID
+                + " ORDER BY d." + DishTable.DISH_ID, null);
+        if (c != null) {
+            Map<Long, List<Dish>> map = new HashMap<Long,List<Dish>>();
+            try {
+                while(c.moveToNext()) {
+                    Long categoryId = c.getLong(c.getColumnIndex(CATEGORY_ID));
+                    List<Dish> list = map.get(categoryId);
+                    if(list == null){
+                        list = new ArrayList<Dish>();
+                    }
+                    Dish dish = new Dish();
+                    dish.setId(c.getLong(c.getColumnIndex(DishTable._ID)));
+                    dish.setDishId(c.getLong(c.getColumnIndex(DishTable.DISH_ID)));
+                    dish.setName(c.getString(c.getColumnIndex(DishTable.NAME)));
+                    dish.setPrice(c.getInt(c.getColumnIndex(DishTable.PRICE)));
+                    dish.setDescription(c.getString(c.getColumnIndex(DishTable.DESCRIPTION)));
+                    dish.setImageLocal(c.getString(c.getColumnIndex(DishTable.IMAGE_LOCAL)));
+                    dish.setImageServer(c.getString(c.getColumnIndex(DishTable.IMAGE_SERVER)));
+                    dish.setCreateTime(new Date(c.getLong(c.getColumnIndex(DishTable.CREATE_TIME))));
+                    dish.setUpdateTime(new Date(c.getLong(c.getColumnIndex(DishTable.UPDATE_TIME))));
+                    list.add(dish);
+                    map.put(categoryId, list);
+                }
+            } finally {
+                c.close();
+            }
+            return map;
+        }
+        return Collections.emptyMap();
     }
 }

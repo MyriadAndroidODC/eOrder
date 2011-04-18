@@ -17,6 +17,7 @@ import com.androidodc.eorder.datatypes.DishCategory;
 import com.androidodc.eorder.utils.LogUtils;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -95,7 +96,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         mContext.sendBroadcast(new Intent("android.appwidget.action.APPWIDGET_REFRESH"));
     }
-    
+
     @Override
     public void onUpgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
         dropAllTables(db);
@@ -122,6 +123,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public List<Dish> getDishsByCategory(final long categoryId) {
         return DishCategoryTable.getDishsByCategory(getReadableDatabase(), categoryId);
+    }
+
+    public Map<Long,List<Dish>> getCategoryAndDishes() {
+        return DishCategoryTable.getCategoryAndDishes(getReadableDatabase());
     }
 
     public List<Dish> getAllDishs() {
