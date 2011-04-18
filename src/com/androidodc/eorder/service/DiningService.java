@@ -56,7 +56,7 @@ public class DiningService extends Service {
         super.onCreate();
     }
 
-    @Override  
+    @Override
     public void onStart(Intent intent, int startId) {
         super.onStart(intent, startId);
         Bundle taskParams = new Bundle();
@@ -141,12 +141,9 @@ public class DiningService extends Service {
         } else if (commandType == COMMAND_SYNC_OTHER) {
             try {
                 dbHelper.deleteAllTableDatas();
-                while (opSymbol) {
-                    opSymbol = syncCategories();
-                    opSymbol = syncDishCategory();
-                    opSymbol = syncDishesAndImages();
-                    break;
-                }
+                opSymbol = syncCategories();
+                opSymbol = opSymbol ? syncDishCategory() : false;
+                opSymbol = opSymbol ? syncDishesAndImages() : false;
             } catch (Exception e) {
                 LogUtils.logD("Synchronize other information error! \n" + e.getMessage());
                 opSymbol = false;
