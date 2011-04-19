@@ -1,67 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:orientation="vertical"
     android:layout_height="fill_parent"
+    android:orientation="vertical"
     android:background="@drawable/order_bg">
 
-    <TextView
-        android:text="@string/cart_name"
-        android:id="@+id/cart_name"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/order_details"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textSize="15sp"/>
+        android:layout_marginLeft="10dp"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/total_dish_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/cart_name"/>
+        <TextView
+            android:id="@+id/cart_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cart_name"
+            android:textSize="15sp" />
 
-    <TextView
-        android:text="@string/total_price"
-        android:id="@+id/total_price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/total_dish_count"
-        android:textSize="15sp"/>
+        <TextView
+            android:id="@+id/total_dish_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/total_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/total_price"
+            android:textSize="15sp" />
+
+    </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/list_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/order_details">
+
+        <TextView
+            android:id="@+id/title_image"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:text="@string/title_image"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/title_dish_name"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="@string/title_dish_name"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/title_price"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="@string/title_price"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/title_amount"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:paddingRight="45dp"
+            android:gravity="right"
+            android:text="@string/title_amount"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <RelativeLayout
         android:id="@+id/button_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:paddingBottom="60dp"
-        android:layout_gravity="center">
+        android:layout_centerHorizontal="true"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
 
         <Button
-            android:text="@string/check"
             android:id="@+id/check"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="150dp"
-            android:textSize="15sp"/>
+            android:text="@string/check"
+            android:textSize="15sp" />
 
         <Button
-            android:text="@string/ok"
             android:id="@+id/ok"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/check"
             android:layout_marginLeft="50dp"
-            android:textSize="15sp"/>
-    </LinearLayout> 
+            android:text="@string/ok"
+            android:textSize="15sp" />
 
-    <GridView
-        android:layout_below="@id/total_price"
-        android:layout_above="@id/button_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    </RelativeLayout>
+
+    <ListView
         android:id="@+id/category_item"
-        android:layout_marginLeft="6dp"
-        android:layout_marginRight="6dp"
-        android:verticalSpacing="4dp"
-        android:columnWidth="120dp"
-        android:numColumns="auto_fit"
-        android:stretchMode="columnWidth" />
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/list_title"
+        android:layout_above="@id/button_layout"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:cacheColorHint="#00000000" />
 
 </RelativeLayout>

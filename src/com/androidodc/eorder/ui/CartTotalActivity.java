@@ -1,18 +1,19 @@
 package com.androidodc.eorder.ui;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.androidodc.eorder.database.DatabaseHelper;
@@ -39,10 +40,6 @@ public class CartTotalActivity extends Activity implements OnClickListener {
     private List<DishDetail> mDishesDetail = new ArrayList<DishDetail>();
 
     private Long mTableId = mOrderManager.getTableId();
-
-    private final static int DISHNUM_IN_ONEROW = 3;
-
-    private final static int HEIGHT_ONEROW = 315;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -77,7 +74,7 @@ public class CartTotalActivity extends Activity implements OnClickListener {
                 String name = dish.getName();
                 int price = dish.getPrice();
                 String image = dish.getImageLocal();
-                //TODO Should modify the "count"'s data type to long
+                // TODO Should modify the "count"'s data type to long
                 int count = (int) mOrderManager.getDishCopy(dishId);
                 mDishesDetail.add(new DishDetail(dishId, c.getCategoryId(), name, c.getName(),
                         price, count, image));
@@ -98,12 +95,8 @@ public class CartTotalActivity extends Activity implements OnClickListener {
         Button check = (Button) findViewById(R.id.check);
         check.setOnClickListener(this);
 
-        GridView view = (GridView) findViewById(R.id.category_item);
-        view.setAdapter(new categoryGridViewAdapter(this));
-        int size = mDishesDetail.size();
-        int rowNum = (size % DISHNUM_IN_ONEROW == 0) ? size / DISHNUM_IN_ONEROW : size
-                / DISHNUM_IN_ONEROW + 1;
-        view.getLayoutParams().height = rowNum * HEIGHT_ONEROW;
+        ListView view = (ListView) findViewById(R.id.category_item);
+        view.setAdapter(new DishListAdapter(this, R.layout.cateitem, mDishesDetail));
     }
 
     private void showTotalPrice(int total) {
@@ -164,6 +157,8 @@ public class CartTotalActivity extends Activity implements OnClickListener {
         service.putExtra(DiningService.SUBMIT_ORDER_DETAIL_KEY, orderDetails);
         service.putExtra(DiningService.SERVICE_COMMAND_KEY, DiningService.COMMAND_SUBMIT_ORDER);
         startService(service);
+
+        mOrderManager.ClearOrderManager();
     }
 
     private void updateOrderManager() {
@@ -177,114 +172,93 @@ public class CartTotalActivity extends Activity implements OnClickListener {
 
     public void onClick(View view) {
         if (view.getId() == R.id.ok) {
-            submitOrder();
+            new AlertDialog.Builder(this)
+                    .setMessage(getString(R.string.submit_warning))
+                    .setCancelable(false)
+                    .setPositiveButton(getString(R.string.submit_yes),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    submitOrder();
+                                    startActivity(new Intent(CartTotalActivity.this,
+                                            SelectTableActivity.class));
+                                    finish();
+                                }
+                            })
+                    .setNegativeButton(getString(R.string.submit_no),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            }).create().show();
         } else if (view.getId() == R.id.check) {
             updateOrderManager();
             finish();
         }
     }
 
-    private class categoryGridViewAdapter extends BaseAdapter {
-        private Context mContext = null;
-        private LayoutInflater mInflater = null;
+    private class DishListAdapter extends ArrayAdapter<DishDetail> {
+        protected LayoutInflater mInflater;
+        private int mResource = 0;
 
-        final class ViewHolder {
-            private ImageView mImageView = null;
-            private TextView mDishName = null;
-            private TextView mDishPrice = null;
-            private Button mDescend = null;
-            private Button mAdd = null;
-            private TextView mCount = null;
-        }
-
-        public categoryGridViewAdapter(Context c) {
-            mContext = c;
-            mInflater = LayoutInflater.from(mContext);
+        public DishListAdapter(Context context, int resource, List<DishDetail> mDishesDetail) {
+            super(context, resource, mDishesDetail);
+            mResource = resource;
+            mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
         @Override
-        public int getCount() {
-            return mDishesDetail.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return position;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @SuppressWarnings("unused")
-        private void decreaseDishCopy(int position) {
-            DishDetail dish = mDishesDetail.get(position);
-            int dishCount = dish.getDishCount();
-            if (dishCount == 0) {
-                return;
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View view;
+            if (convertView == null) {
+                view = mInflater.inflate(mResource, parent, false);
+            } else {
+                view = convertView;
             }
-            dish.setDishCount(dishCount - 1);
-        }
 
-        @SuppressWarnings("unused")
-        private void increaseDishCopy(int position) {
-            DishDetail dish = mDishesDetail.get(position);
-            dish.setDishCount(dish.getDishCount() + 1);
-        }
+            final DishDetail current = getItem(position);
 
-        public void setDishItem(final ViewHolder viewHolder, final int position) {
-            viewHolder.mImageView.setImageBitmap(ImageHelper.getImage(mDishesDetail.get(position)
-                    .getDishImage()));
-            viewHolder.mDishName.setText(mDishesDetail.get(position).getDishName());
-            viewHolder.mDishPrice.setText(String
-                    .valueOf(mDishesDetail.get(position).getDishPrice()));
-            viewHolder.mCount.setText(String.valueOf(mDishesDetail.get(position).getDishCount()));
-            viewHolder.mDescend.setOnClickListener(new OnClickListener() {
+            ImageView image = (ImageView) view.findViewById(R.id.dish_image);
+            image.setImageBitmap(ImageHelper.getImage(current.getDishImage()));
+
+            TextView name = (TextView) view.findViewById(R.id.dish_name);
+            name.setText(current.getDishName());
+
+            TextView price = (TextView) view.findViewById(R.id.dish_price);
+            price.setText(String.valueOf(current.getDishPrice()));
+
+            final TextView amount = (TextView) view.findViewById(R.id.count);
+            amount.setText(String.valueOf(current.getDishCount()));
+
+            Button rm = (Button) view.findViewById(R.id.descend_copy);
+            rm.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    DishDetail dish = mDishesDetail.get(position);
-                    int count = dish.getDishCount() - 1;
+                    int count = current.getDishCount() - 1;
                     if (count < 0) {
                         return;
                     }
-                    dish.setDishCount(count);
-                    mOrderManager.setDishCopy(dish.getId(), count);
-                    viewHolder.mCount.setText(String.valueOf(dish.getDishCount()));
+                    current.setDishCount(count);
+                    mOrderManager.setDishCopy(current.getId(), count);
+                    amount.setText(String.valueOf(current.getDishCount()));
                     showDishCount();
                     showTotalPrice(mOrderManager.getTotalPrice());
                 }
             });
-            viewHolder.mAdd.setOnClickListener(new OnClickListener() {
+
+            Button add = (Button) view.findViewById(R.id.add_copy);
+            add.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    DishDetail dish = mDishesDetail.get(position);
-                    int count = dish.getDishCount() + 1;
-                    dish.setDishCount(count);
-                    mOrderManager.setDishCopy(dish.getId(), count);
-                    viewHolder.mCount.setText(String.valueOf(dish.getDishCount()));
+                    int count = current.getDishCount() + 1;
+                    current.setDishCount(count);
+                    mOrderManager.setDishCopy(current.getId(), count);
+                    amount.setText(String.valueOf(current.getDishCount()));
                     showDishCount();
                     showTotalPrice(mOrderManager.getTotalPrice());
                 }
             });
-        }
 
-        @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
-            final ViewHolder viewHolder = new ViewHolder();
-
-            if (null == convertView) {
-                convertView = (LinearLayout) mInflater.inflate(R.layout.cateitem, null);
-                viewHolder.mImageView = (ImageView) convertView.findViewById(R.id.dish_image);
-                viewHolder.mDishName = (TextView) convertView.findViewById(R.id.dish_name);
-                viewHolder.mDishPrice = (TextView) convertView.findViewById(R.id.dish_price);
-                viewHolder.mDescend = (Button) convertView.findViewById(R.id.descend_copy);
-                viewHolder.mCount = (TextView) convertView.findViewById(R.id.count);
-                viewHolder.mAdd = (Button) convertView.findViewById(R.id.add_copy);
-                setDishItem(viewHolder, position);
-                convertView.setTag(viewHolder);
-            }
-            return convertView;
+            return view;
         }
     }
 
