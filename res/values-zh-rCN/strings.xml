@@ -27,4 +27,5 @@
     <string name="dish_return">返回</string>
     <string name="app_dish_introduction">菜品介绍</string>
     <string name="cart_title">购物车</string>
+    <string name="warning_emptyorder">您还未点菜, 请至少点一样菜!谢谢!</string>
 </resources>

@@ -27,4 +27,5 @@
     <string name="dish_return">Return</string>
     <string name="app_dish_introduction">Dish Introduction</string>
     <string name="cart_title">Cart</string>
+    <string name="warning_emptyorder">Sorry but please select at least one dish!</string>
 </resources>

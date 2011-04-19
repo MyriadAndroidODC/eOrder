@@ -170,6 +170,14 @@ public class OrderManager {
     }
 
     /**
+     * Judge if the order is empty.
+     * @return true: The order is not empty. false: The order is empty.
+     */
+    public boolean isOrderEmpty() {
+        return mOrderDetail.isEmpty();
+    }
+
+    /**
      * Set the table ID in the ordered list.
      * @param tableId
      *            table ID
