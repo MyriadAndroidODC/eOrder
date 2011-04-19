@@ -27,4 +27,11 @@
     <string name="dish_return">Return</string>
     <string name="app_dish_introduction">Dish Introduction</string>
     <string name="cart_title">Cart</string>
+    <string name="title_image">Image</string>
+    <string name="title_dish_name">Dish Name</string>
+    <string name="title_price">Price</string>
+    <string name="title_amount">Amount</string>
+    <string name="submit_warning">Are you sure you want to submit the order?</string>
+    <string name="submit_yes">Yes</string>
+    <string name="submit_no">No</string>
 </resources>

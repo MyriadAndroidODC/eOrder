@@ -27,4 +27,11 @@
     <string name="dish_return">返回</string>
     <string name="app_dish_introduction">菜品介绍</string>
     <string name="cart_title">购物车</string>
+    <string name="title_image">图片</string>
+    <string name="title_dish_name">菜品名</string>
+    <string name="title_price">价格</string>
+    <string name="title_amount">数量</string>
+    <string name="submit_warning">您确定要提交订单？</string>
+    <string name="submit_yes">是</string>
+    <string name="submit_no">否</string>
 </resources>
