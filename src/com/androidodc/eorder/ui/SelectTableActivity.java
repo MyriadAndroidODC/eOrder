@@ -111,8 +111,8 @@ public class SelectTableActivity extends Activity {
         IntentFilter filter = new IntentFilter(DiningService.SYNC_DINING_TABLE);
         if (mReceiver == null) {
             mReceiver = new SyncReceiver();
+            registerReceiver(mReceiver, filter);
         }
-        registerReceiver(mReceiver, filter);
 
         Intent service = new Intent(SelectTableActivity.this, DiningService.class);
         service.putExtra(DiningService.SERVICE_COMMAND_KEY, DiningService.COMMAND_SYNC_DINING_TABLE);
