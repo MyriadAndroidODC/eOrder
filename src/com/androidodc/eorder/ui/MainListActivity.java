@@ -95,6 +95,8 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    // TODO To avoid waiting period before the view display, activity should build the view frame first,
+    // when fetch all data, and then refresh the view again.
     private void asyncInitUi() {
         new AsyncTask<Void, Void, Void>() {
 
