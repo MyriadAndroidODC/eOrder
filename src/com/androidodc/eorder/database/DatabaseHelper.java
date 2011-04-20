@@ -30,14 +30,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String  TABLE_SQLITE_SEQUENCE = "sqlite_sequence";
 
-    private DatabaseObservable mDBObservable;
-
-    private static class DatabaseObservable extends Observable {
-        public void doChanged() {
-            setChanged();
-        }
-    }
-
     private Context mContext;
 
     public static DatabaseHelper getInstance() {
@@ -62,39 +54,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     protected DatabaseHelper(final Context context, final String name, final CursorFactory factory,
             final int version) {
         super(context, name, factory, version);
-        mDBObservable = new DatabaseObservable();
         mContext = context;
     }
 
     @Override
     public void onCreate(final SQLiteDatabase db) {
         createAllTables(db);
-    }
-
-    @Override
-    public synchronized void close() {
-        if (mDBObservable != null) {
-            mDBObservable.deleteObservers();
-        }
-    }
-
-    public void addObserver(final Observer observer) {
-        mDBObservable.addObserver(observer);
-    }
-
-    public void deleteObserver(final Observer observer) {
-        mDBObservable.deleteObserver(observer);
-    }
-
-    public void notifyObservers() {
-        notifyObservers(null);
-    }
-
-    public void notifyObservers(final Object data) {
-        mDBObservable.doChanged();
-        mDBObservable.notifyObservers(data);
-
-        mContext.sendBroadcast(new Intent("android.appwidget.action.APPWIDGET_REFRESH"));
     }
 
     @Override

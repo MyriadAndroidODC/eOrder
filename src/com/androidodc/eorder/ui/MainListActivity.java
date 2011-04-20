@@ -165,8 +165,7 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
             mCategoryGallery[i].setOnItemClickListener(this);
 
             int dishNumber = dishList.size();
-            // If dish number = 8, then row number = 2; If dish number = 9, then
-            // row number = 3
+            // If dish number = 8, then row number = 2; If dish number = 9, then row number = 3
             // Every row should have 4 dishes.
             int rowNum = (dishNumber % DISHNUM_IN_ONEROW == 0) ? (dishNumber / DISHNUM_IN_ONEROW)
                     : (dishNumber / DISHNUM_IN_ONEROW + 1);
@@ -174,7 +173,6 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
 
             galleryFrame.addView(categoryLayout);
         }
-        mDbHelper.notifyObservers();
     }
 
     /**
