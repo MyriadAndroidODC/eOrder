@@ -22,7 +22,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 
 public class ServiceHelper {
-    private static final String DEFAULT_URL = "http://10.15.5.237:8080/";
+    private static final String DEFAULT_URL = "http://10.15.5.125:8080/";
     private static final String DEFAULT_APP = "eOrder";
     private static final String CATEGORY_PAGE = "categories.jsp";
     private static final String DISH_PAGE = "dishes.jsp";

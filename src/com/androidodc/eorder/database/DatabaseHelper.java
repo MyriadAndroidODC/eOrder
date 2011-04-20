@@ -25,6 +25,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
 
+    private static final String  TABLE_SQLITE_SEQUENCE = "sqlite_sequence";
+
     private DatabaseObservable mDBObservable;
 
     private static class DatabaseObservable extends Observable {
@@ -143,5 +145,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         DishCategoryTable.deleteAll(db);
         DishTable.deleteAll(db);
         CategoryTable.deleteAll(db);
+        db.execSQL("DELETE FROM " + TABLE_SQLITE_SEQUENCE);
     }
 }
