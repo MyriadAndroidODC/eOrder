@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="@drawable/order_bg">
+
+    <TextView
+        android:id="@+id/cart_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:text="@string/cart_name"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/total_dish_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cart_name"
+        android:paddingLeft="10dp"
+        android:textSize="16dp" />
+
+    <TextView
+        android:id="@+id/total_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/total_dish_count"
+        android:paddingLeft="10dp"
+        android:text="@string/total_price"
+        android:textSize="16sp" />
+
+    <RelativeLayout
+        android:id="@+id/button_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp">
+
+        <Button
+            android:id="@+id/change_order"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="@string/change_order"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/order_return_button"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/change_order"
+            android:layout_marginLeft="50dp"
+            android:text="@string/return_button"
+            android:textSize="15sp" />
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/menus_order_item"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:cacheColorHint="#00000000"
+        android:layout_below="@id/total_price"
+        android:layout_above="@id/button_layout" />
+
+</RelativeLayout>

@@ -23,6 +23,7 @@ import java.util.List;
 
 public class CheckHistoryOrdersActivity extends Activity {
 
+    public static final String CURRENT_ORDER = "current_order";
     private ArrayList<Order> mHistoryOrders = null;
     private SyncReceiver mReceiver = null;
 
@@ -82,7 +83,11 @@ public class CheckHistoryOrdersActivity extends Activity {
             menuItemList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    // TODO Auto-generated method stub
+                    Order currentOrder = mHistoryOrders.get(position);
+                    Intent intent = new Intent(CheckHistoryOrdersActivity.this,
+                            OrderDetailActivity.class);
+                    intent.putExtra(CURRENT_ORDER, currentOrder);
+                    startActivity(intent);
                 }
             });
         } else {

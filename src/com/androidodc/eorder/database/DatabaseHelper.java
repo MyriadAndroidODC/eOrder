@@ -1,7 +1,6 @@
 package com.androidodc.eorder.database;
 
 import android.content.Context;
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -18,8 +17,6 @@ import com.androidodc.eorder.utils.LogUtils;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static DatabaseHelper sDBHelper;

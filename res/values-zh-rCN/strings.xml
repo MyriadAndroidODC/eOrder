@@ -6,12 +6,12 @@
     <string name="return_button">返 回</string>
     <string name="title_tables">选桌</string>
     <string name="sync_info">正在加载数据，请等待...</string>
-    <string name="menu_view_history_orders">查看历史订单</string>
+    <string name="menu_check_history_orders">查看历史订单</string>
     <string name="menu_sync_tables_status">更新餐桌状态</string>
-    <string name="menu_sync_all_data">更新所有数据</string>
+    <string name="menu_sync_server_data">更新服务器数据</string>
     <string name="title_context_menu">查看和更新</string>
     <string name="info_sync_success">更新数据成功</string>
-    <string name="info_sync_failture">更新数据失败</string>
+    <string name="info_sync_failure">更新数据失败</string>
     <string name="dish_title">菜单</string>
     <string name="text_orderedlist_button">查看已点</string>
     <string name="history_order_item">%1$d:  %2$d号桌共计%3$d元</string>
@@ -27,4 +27,10 @@
     <string name="dish_return">返回</string>
     <string name="app_dish_introduction">菜品介绍</string>
     <string name="cart_title">购物车</string>
+    <string name="change_order">修改菜单</string>
+    <string name="app_menus">菜单</string>
+    <string name="menus_price">单价: %1$d 元</string>
+    <string name="menus_copy">数量: %1$d 份</string>
+    <string name="menus_copies">数量: %1$d 份</string>
+    <string name="warning_emptyorder">您还未点菜, 请至少点一样菜!谢谢!</string>
 </resources>

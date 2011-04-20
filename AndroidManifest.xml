@@ -46,5 +46,9 @@
                   android:label="@string/app_dish_introduction">
         </activity>
 
+        <activity android:name="OrderDetailActivity"
+                  android:label="@string/app_menus">
+        </activity>
+
     </application>
 </manifest>
