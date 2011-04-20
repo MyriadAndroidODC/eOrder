@@ -69,7 +69,7 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mDbHelper = DatabaseHelper.getInstance();
-        initData();
+        mOrderManager = OrderManager.getInstance();
     }
 
     @Override
@@ -93,13 +93,6 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    /**
-     * Initial all the data for UI.
-     */
-    private void initData() {
-        mOrderManager = OrderManager.getInstance();
     }
 
     private void asyncInitUi() {
@@ -155,11 +148,8 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
         mCategoryGallery = new GridView[categoryNum];
         // Initial the grid view for every food category.
         for (int i = 0; i < categoryNum; i++) {
-            LinearLayout categoryLayout = (LinearLayout) inflater.inflate(R.layout.main_list_item,
-                    null);
-
-            TextView cagegoryNameTextView = (TextView) categoryLayout
-                    .findViewById(R.id.category_name);
+            LinearLayout categoryLayout = (LinearLayout) inflater.inflate(R.layout.main_list_item, null);
+            TextView cagegoryNameTextView = (TextView) categoryLayout.findViewById(R.id.category_name);
 
             Category category = mCategoryList.get(i);
             long categoryId = category.getCategoryId();
