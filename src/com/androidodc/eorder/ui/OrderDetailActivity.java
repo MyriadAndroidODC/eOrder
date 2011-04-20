@@ -80,12 +80,10 @@ public class OrderDetailActivity extends Activity implements OnClickListener {
         showDishCount();
         showTotalPrice(mOrder.getOrderTotal());
 
-        Button returnButton = (Button) findViewById(R.id.ok);
-        returnButton.setText(R.string.return_button);
+        Button returnButton = (Button) findViewById(R.id.order_return_button);
         returnButton.setOnClickListener(this);
 
-        Button modifyButton = (Button) findViewById(R.id.check);
-        modifyButton.setText(R.string.change_order);
+        Button modifyButton = (Button) findViewById(R.id.change_order);
         modifyButton.setOnClickListener(this);
 
         ListView view = (ListView) findViewById(R.id.menus_order_item);
@@ -123,9 +121,9 @@ public class OrderDetailActivity extends Activity implements OnClickListener {
     }
 
     public void onClick(View view) {
-        if (view.getId() == R.id.ok) {
+        if (view.getId() == R.id.order_return_button) {
             finish();
-        } else if (view.getId() == R.id.check) {
+        } else if (view.getId() == R.id.change_order) {
             // TODO: need to implement
         }
     }
