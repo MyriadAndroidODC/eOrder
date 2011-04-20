@@ -6,12 +6,12 @@
     <string name="return_button">Return</string>
     <string name="title_tables">Select Table</string>
     <string name="sync_info">Please wait while loading data...</string>
-    <string name="menu_view_history_orders">View History Orders</string>
-    <string name="menu_sync_tables_status">Sync Tables State</string>
-    <string name="menu_sync_all_data">Sync All Data</string>
+    <string name="menu_check_history_orders">Check History Orders</string>
+    <string name="menu_sync_tables_status">Sync Tables Status</string>
+    <string name="menu_sync_server_data">Sync Server Data</string>
     <string name="title_context_menu">View or Sync</string>
     <string name="info_sync_success">Sync Data Successfully</string>
-    <string name="info_sync_failture">Sync Data Failed</string>
+    <string name="info_sync_failure">Sync Data Failed</string>
     <string name="dish_title">Menu</string>
     <string name="text_orderedlist_button">Check Order</string>
     <string name="history_order_item">%1$d:  bill of table %2$d is CNY %3$d</string>
@@ -32,4 +32,5 @@
     <string name="menus_price">Price: CNY %1$d</string>
     <string name="menus_copy">Amount: %1$d Copy</string>
     <string name="menus_copies">Amount: %1$d Copies</string>
+    <string name="warning_emptyorder">Sorry but please select at least one dish!</string>
 </resources>

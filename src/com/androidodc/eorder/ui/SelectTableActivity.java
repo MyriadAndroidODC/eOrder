@@ -8,29 +8,29 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.GridView;
-import android.widget.SimpleAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidodc.eorder.datatypes.DiningTable;
 import com.androidodc.eorder.order.OrderManager;
 import com.androidodc.eorder.service.DiningService;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class SelectTableActivity extends Activity {
 
     private final int DIALOG_SYNC_DATA = 0;
-    private final String CURRENT_POS = "current_position";
     private SyncReceiver mReceiver = null;
     private List<DiningTable> mTablesList = null;
 
@@ -59,33 +59,17 @@ public class SelectTableActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.sync_data:
-            syncOtherData();
-            return true;
-        }
-
-        return false;
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-
-        menu.setHeaderTitle(R.string.title_context_menu);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.context_menu, menu);
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case R.id.view_history_orders:
-            Intent intent = new Intent(SelectTableActivity.this, CheckHistoryOrdersActivity.class);
-            startActivity(intent);
-            return true;
-        case R.id.sync_tables_status:
-            syncTablesStatus();
-            return true;
+            case R.id.sync_server_data:
+                syncServerData();
+                return true;
+            case R.id.sync_tables_status:
+                syncTablesStatus();
+                return true;
+            case R.id.check_history_orders:
+                Intent intent = new Intent(SelectTableActivity.this,
+                        CheckHistoryOrdersActivity.class);
+                startActivity(intent);
+                return true;
         }
 
         return false;
@@ -94,63 +78,41 @@ public class SelectTableActivity extends Activity {
     @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
-        case DIALOG_SYNC_DATA:
-            ProgressDialog dialog = new ProgressDialog(this);
-            dialog.setMessage(getString(R.string.sync_info));
-            dialog.setIndeterminate(true);
-            dialog.setCancelable(false);
-            return dialog;
+            case DIALOG_SYNC_DATA:
+                ProgressDialog dialog = new ProgressDialog(this);
+                dialog.setMessage(getString(R.string.sync_info));
+                dialog.setIndeterminate(true);
+                dialog.setCancelable(false);
+                return dialog;
         }
         return null;
     }
 
     private void initUI() {
-        ArrayList<HashMap<String, Integer>> tableNumbers = new ArrayList<HashMap<String, Integer>>();
-        for (int i = 1; i <= getTablesCount(); i++) {
-            HashMap<String, Integer> map = new HashMap<String, Integer>();
-            map.put(CURRENT_POS, i);
-            tableNumbers.add(map);
-        }
-
-        SimpleAdapter imagesItem = new SimpleAdapter(this, tableNumbers, R.layout.table_item,
-                new String[] { CURRENT_POS }, new int[] { R.id.table_num });
+        GridViewAdapter imagesItem = new GridViewAdapter(this, R.layout.table_item, mTablesList);
         GridView tablesView = (GridView) findViewById(R.id.tables);
         tablesView.setAdapter(imagesItem);
         tablesView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 OrderManager.getInstance().setTableId(position + 1);
-                Intent intent = new Intent(SelectTableActivity.this, MainListActivity.class);
-                startActivity(intent);
+                if (mTablesList.get(position).isFree()) {
+                    Intent intent = new Intent(SelectTableActivity.this, MainListActivity.class);
+                    startActivity(intent);
+                } else {
+                    // TODO: handle else condition.
+                }
             }
         });
+
         registerForContextMenu(tablesView);
-    }
-
-    private int getTablesCount() {
-        if (mTablesList == null || mTablesList.size() == 0) {
-            return 0;
-        }
-        return mTablesList.size();
-    }
-
-    @SuppressWarnings("unused")
-    private ArrayList<Boolean> getTableStatus() {
-
-        ArrayList<Boolean> result = new ArrayList<Boolean>();
-        int size = mTablesList.size();
-
-        for (int i = 0; i < size; i++) {
-            result.add(mTablesList.get(i).isFree());
-        }
-        return result;
     }
 
     private void syncTablesStatus() {
         IntentFilter filter = new IntentFilter(DiningService.SYNC_DINING_TABLE);
         if (mReceiver == null) {
             mReceiver = new SyncReceiver();
+            registerReceiver(mReceiver, filter);
         }
-        registerReceiver(mReceiver, filter);
 
         Intent service = new Intent(SelectTableActivity.this, DiningService.class);
         service.putExtra(DiningService.SERVICE_COMMAND_KEY, DiningService.COMMAND_SYNC_DINING_TABLE);
@@ -160,7 +122,7 @@ public class SelectTableActivity extends Activity {
     }
 
     /* The operation will last long, and no answer from server. */
-    private void syncOtherData() {
+    private void syncServerData() {
         Intent service = new Intent(SelectTableActivity.this, DiningService.class);
         service.putExtra(DiningService.SERVICE_COMMAND_KEY, DiningService.COMMAND_SYNC_OTHER);
         startService(service);
@@ -176,10 +138,10 @@ public class SelectTableActivity extends Activity {
                         DiningService.EXECUTE_ERROR);
                 if (result == DiningService.EXECUTE_ERROR) {
                     mTablesList = null;
-                    Toast.makeText(SelectTableActivity.this, R.string.info_sync_failture,
+                    Toast.makeText(SelectTableActivity.this, R.string.info_sync_failure,
                             Toast.LENGTH_LONG).show();
                     dismissDialog(DIALOG_SYNC_DATA);
-                    finish();
+                    // TODO: need to handle failed condition, but only give a notice.
                     return;
                 }
 
@@ -193,6 +155,45 @@ public class SelectTableActivity extends Activity {
                         Toast.LENGTH_LONG).show();
                 initUI();
             }
+        }
+    }
+
+    private class GridViewAdapter extends ArrayAdapter<DiningTable> {
+
+        private static final int USED_FLAG = 126;
+        private Context mContext = null;
+        private int mResource = 0;
+        private LayoutInflater mInflater = null;
+
+        public GridViewAdapter(Context context, int resource, List<DiningTable> tables) {
+            super(context, resource, tables);
+            mContext = context;
+            mResource = resource;
+            mInflater = LayoutInflater.from(mContext);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View view;
+            if (convertView == null) {
+                view = mInflater.inflate(mResource, parent, false);
+            } else {
+                view = convertView;
+            }
+
+            DiningTable t = getItem(position);
+
+            TextView table;
+            table = (TextView) view.findViewById(R.id.table_num);
+            table.setText(t.getName());
+
+            ImageView background;
+            background = (ImageView) view.findViewById(R.id.table_bg);
+            if (!t.isFree()) {
+                background.setAlpha(USED_FLAG);
+            }
+
+            return view;
         }
     }
 }

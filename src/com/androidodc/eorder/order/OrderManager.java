@@ -19,7 +19,7 @@ public class OrderManager {
     private long mTableId;
     private int mTotalPrice;
     // Integer in HashMap: 1:Dish Id 2:Dish copies
-    private HashMap<Long, Integer> mOrderDetail;
+    private HashMap<Long, Long> mOrderDetail;
     // Integer in HashMap: 1:Category Id 2:Dish Id set
     private HashMap<Long, HashSet<Long>> mOrederCategories;
 
@@ -30,8 +30,25 @@ public class OrderManager {
         mOrderListId = 0;
         mTableId = 0;
         mTotalPrice = 0;
-        mOrderDetail = new HashMap<Long, Integer>();
+        mOrderDetail = new HashMap<Long, Long>();
         mOrederCategories = new HashMap<Long, HashSet<Long>>();
+    }
+
+    /**
+     * Clear the OrderManager's data
+     */
+    public void ClearOrderManager() {
+        mOrderListId = 0;
+        mTableId = 0;
+        mTotalPrice = 0;
+
+        if (null != mOrderDetail) {
+            mOrderDetail.clear();
+        }
+
+        if (null != mOrederCategories) {
+            mOrederCategories.clear();
+        }
     }
 
     /**
@@ -48,7 +65,7 @@ public class OrderManager {
      * @param categoryId
      *            Category ID
      */
-    public synchronized void addOneDish(final long dishId, final long categoryId) {
+    public void addOneDish(final long dishId, final long categoryId) {
         updateOrderDetail(dishId, DEFAULT_DISHCOPY);
         if (mOrederCategories.containsKey(categoryId)) {
             mOrederCategories.get(categoryId).add(dishId);
@@ -66,7 +83,7 @@ public class OrderManager {
      * @param categoryId
      *            Category ID
      */
-    public synchronized void removeDish(final long dishId, final long categoryId) {
+    public void removeDish(final long dishId, final long categoryId) {
         mOrderDetail.remove(dishId);
         HashSet<Long> dishIdSet = mOrederCategories.get(categoryId);
         if (dishIdSet.contains(dishId)) {
@@ -81,7 +98,7 @@ public class OrderManager {
      * @param copyNum
      *            Dish copies number
      */
-    public synchronized void setDishCopy(final long dishId, final int copyNum) {
+    public void setDishCopy(final long dishId, final long copyNum) {
         updateOrderDetail(dishId, copyNum);
     }
 
@@ -92,7 +109,7 @@ public class OrderManager {
      * @param copyNum
      *            Dish copies number
      */
-    private synchronized void updateOrderDetail(final long dishId, final int copyNum) {
+    private void updateOrderDetail(final long dishId, final long copyNum) {
         mOrderDetail.put(dishId, copyNum);
     }
 
@@ -102,7 +119,7 @@ public class OrderManager {
      *            Dish ID in one category
      * @return The dish's copy number
      */
-    public synchronized int getDishCopy(final long dishId) {
+    public long getDishCopy(final long dishId) {
         return mOrderDetail.get(dishId);
     }
 
@@ -112,7 +129,7 @@ public class OrderManager {
      *            Category ID
      * @return true: in, false: not
      */
-    public synchronized boolean isOrderedCategory(final long categoryId) {
+    public boolean isOrderedCategory(final long categoryId) {
         return mOrederCategories.containsKey(categoryId);
     }
 
@@ -122,7 +139,7 @@ public class OrderManager {
      *            Category ID
      * @return HashSet<> - dishes ID
      */
-    public synchronized HashSet<Long> getOrderedDishByCategoryId(final long categoryId) {
+    public HashSet<Long> getOrderedDishByCategoryId(final long categoryId) {
         return mOrederCategories.get(categoryId);
     }
 
@@ -130,7 +147,7 @@ public class OrderManager {
      * Get all ordered dishes.
      * @return HashMap<> - dishes ID and dishes' copy
      */
-    public synchronized HashMap<Long, Integer> getAllOrderedDishes() {
+    public HashMap<Long, Long> getAllOrderedDishes() {
         return mOrderDetail;
     }
 
@@ -138,7 +155,7 @@ public class OrderManager {
      * Get all ordered category.
      * @return Set<Long> - Ordered category ID
      */
-    public synchronized Set<Long> getAllOrderedCategory() {
+    public Set<Long> getAllOrderedCategory() {
         return mOrederCategories.keySet();
     }
 
@@ -148,8 +165,16 @@ public class OrderManager {
      *            Dish ID
      * @return true: This dish is in the order detail. false: Not in.
      */
-    public synchronized boolean isOrderedDish(final long dishId) {
+    public boolean isOrderedDish(final long dishId) {
         return mOrderDetail.containsKey(dishId);
+    }
+
+    /**
+     * Judge if the order is empty.
+     * @return true: The order is not empty. false: The order is empty.
+     */
+    public boolean isOrderEmpty() {
+        return mOrderDetail.isEmpty();
     }
 
     /**
@@ -157,7 +182,7 @@ public class OrderManager {
      * @param tableId
      *            table ID
      */
-    public synchronized void setTableId(long tableId) {
+    public void setTableId(long tableId) {
         mTableId = tableId;
     }
 
@@ -165,7 +190,7 @@ public class OrderManager {
      * Set the table ID in the ordered list.
      * @return tableId table ID
      */
-    public synchronized long getTableId() {
+    public long getTableId() {
         return mTableId;
     }
 
@@ -173,7 +198,7 @@ public class OrderManager {
      * Generate and return total price.
      * @return totalPrice The dishes' total price.
      */
-    public synchronized int getTotalPrice() {
+    public int getTotalPrice() {
         mTotalPrice = 0;
         if (null != mOrderDetail) {
             DatabaseHelper dbHelper = DatabaseHelper.getInstance();
@@ -188,11 +213,11 @@ public class OrderManager {
         return mTotalPrice;
     }
 
-    public synchronized void setOrderListId(int orderListId) {
+    public void setOrderListId(int orderListId) {
         mOrderListId = orderListId;
     }
 
-    public synchronized long getOrderListId() {
+    public long getOrderListId() {
         return mOrderListId;
     }
 }

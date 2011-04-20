@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/sync_data"
-          android:title="@string/menu_sync_all_data" />
+    <item android:id="@+id/sync_server_data"
+          android:title="@string/menu_sync_server_data" />
 
+    <item android:id="@+id/sync_tables_status"
+          android:title="@string/menu_sync_tables_status" />
+
+    <item android:id="@+id/check_history_orders"
+          android:title="@string/menu_check_history_orders" />
 </menu>
