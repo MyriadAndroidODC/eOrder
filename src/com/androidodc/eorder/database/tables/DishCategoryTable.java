@@ -104,7 +104,7 @@ public class DishCategoryTable {
      */
     public static long getDishCategoryId(final SQLiteDatabase db, final long dishId) {
         List<Long> list = getDishCategoryIds(db, dishId);
-        //remove first category if current dish exist more than 1 category
+        //return the last category id in current dish's sequenced categories list
         if(list.size()>0){
             return list.get(list.size()-1);
         }
@@ -118,7 +118,6 @@ public class DishCategoryTable {
      * @return
      */
     public static List<Long> getSequencedDishIds(final SQLiteDatabase db) {
-        long b = System.currentTimeMillis();
         final Cursor c = db.rawQuery("SELECT dc." + DISH_ID + " FROM " + TABLE_NAME + " dc, "
                 + CategoryTable.TABLE_NAME + " c WHERE dc." + CATEGORY_ID + " = c."
                 + CategoryTable.CATEGORY_ID + " ORDER BY c." + CategoryTable.SORT_ORDER + ", c."
@@ -129,7 +128,6 @@ public class DishCategoryTable {
                 while (c.moveToNext()) {
                     list.add(c.getLong(c.getColumnIndex(DISH_ID)));
                 }
-                System.out.println("getSequencedDishIds " + (System.currentTimeMillis()-b));
                 return list;
             } finally {
                 c.close();
