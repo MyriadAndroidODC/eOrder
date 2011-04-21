@@ -55,9 +55,9 @@ public class ServiceHelper {
         return true;
     }
 
-    public static void syncDishImage(ArrayList<Dish> dishList) {
+    public static boolean syncDishImage(ArrayList<Dish> dishList) {
         if (dishList == null) {
-            return;
+            return true;
         }
         for (Dish dish : dishList) {
             String imgUrl = getRequestUrl(null, dish.getImageServer());
@@ -66,6 +66,7 @@ public class ServiceHelper {
             RequestHelper.getFileFromServer(imgUrl, null, filePath);
             dish.setImageLocal(filePath);
         }
+        return true;
     }
 
     public static ArrayList<DiningTable> getDiningTables() {
@@ -192,7 +193,7 @@ public class ServiceHelper {
             if (fileName == null) {
                 return null;
             }
-            if (dir == null || dir.equals("")) {
+            if (dir == null || dir.isEmpty()) {
                 return Environment.getExternalStorageDirectory() + ('/' + IMAGE_STORAGE_DEFAULT_DIR + '/' + fileName);
             } else {
                 return Environment.getExternalStorageDirectory() + ('/' + dir + '/' + fileName);

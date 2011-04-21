@@ -40,8 +40,8 @@ public class RequestHelper {
     private static final int FILE_BUFFER_SIZE = 1024;
 
     public static String doRequestGet(String url, Bundle params) {
-        String newUrl = null;
-        if (params != null) {
+        String newUrl = url;
+        if (params != null && !params.isEmpty()) {
             StringBuilder sb = new StringBuilder();
             sb.append(url).append('?');
 
@@ -107,7 +107,7 @@ public class RequestHelper {
         }
     }
 
-    public static void getFileFromServer(String path, Bundle params, String filePath) {
+    public static boolean getFileFromServer(String path, Bundle params, String filePath) {
         byte[] bf = new byte[FILE_BUFFER_SIZE];
         int current = 0;
         InputStream is = null;
@@ -151,12 +151,16 @@ public class RequestHelper {
                     fos.write(bf, 0, current);
                 }
             }
+            return true;
         } catch (MalformedURLException e) {
             LogUtils.logE(e.getMessage());
+            return false;
         } catch (IOException e) {
             LogUtils.logE(e.getMessage());
+            return false;
         } catch (Exception e) {
             LogUtils.logE(e.getMessage());
+            return false;
         } finally {
             try {
                 if (bis != null) {
