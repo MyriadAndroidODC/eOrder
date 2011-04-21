@@ -70,7 +70,7 @@ public class DiningService extends Service {
                 	int commandType = executeParamIntent.getIntExtra(SERVICE_COMMAND_KEY, COMMAND_BLANK);
                     executeCommand(commandType, executeParamIntent);
                 } catch (Exception e) {
-                    LogUtils.logD(e.getMessage());
+                    LogUtils.logE(e.getMessage());
                 }
                 return null;
             }
@@ -145,7 +145,7 @@ public class DiningService extends Service {
                 opSymbol = opSymbol ? syncDishCategory() : false;
                 opSymbol = opSymbol ? syncDishesAndImages() : false;
             } catch (Exception e) {
-                LogUtils.logD("Synchronize other information error! \n" + e.getMessage());
+                LogUtils.logE("Synchronize other information error! \n" + e.getMessage());
                 opSymbol = false;
             }
             sendMsg(null, opSymbol == true ? EXECUTE_OTHER_SUCCESS : EXECUTE_ERROR);
@@ -227,7 +227,7 @@ public class DiningService extends Service {
             submitStr.append("]}");
             ServiceHelper.submitOrderToServer(submitStr.toString());
         } catch (Exception e) {
-            LogUtils.logD("Submit order error! \n" + e.getMessage());
+            LogUtils.logE("Submit order error! \n" + e.getMessage());
             return false;
         }
         return true;
@@ -250,11 +250,11 @@ public class DiningService extends Service {
             return false;
         } else {
             // synchronize the image and update the local file path
-            boolean result = ServiceHelper.syncDishImage(dishList);
+            ServiceHelper.syncDishImage(dishList);
             for (Dish dish : dishList) {
                 dbHelper.addDish(dish);
             }
-            return result;
+            return true;
         }
     }
 
