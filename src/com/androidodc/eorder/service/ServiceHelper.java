@@ -205,19 +205,14 @@ public class ServiceHelper {
         return null;
     }
 
-    public static ArrayList<Order> getTableOrders(long tableId) {
+    public static Order getTableLatestOrder(long tableId) {
         String reqUrl = getRequestUrl(null, ORDER_PAGE);
         String respStr = RequestHelper.doRequestPost(reqUrl, null);
         try {
             ArrayList<Order> orderList = ResponseParser.parseOrders(respStr);
-            if (orderList != null) {
-                ArrayList<Order> result = new ArrayList<Order>();
-                for (Order order : orderList) {
-                    if (tableId == order.getTableId()) {
-                        result.add(order);
-                    }
-                }
-                return result;
+            if (orderList != null && orderList.size() > 0) {
+                // The newest order is at the last position
+                return orderList.get(orderList.size() - 1);
             }
         } catch (JSONException e) {
             LogUtils.logE(e.getMessage());
