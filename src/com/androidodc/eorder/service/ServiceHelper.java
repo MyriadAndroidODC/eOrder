@@ -34,6 +34,7 @@ public class ServiceHelper {
     private static final String STATUS_SUCCESS = "success";
 
     private static final String ORDER_QUERY_KEY = "status";
+    // un-pay orders
     private static final String ORDER_STATUS_FREE = "0";
 //    private static final String ORDER_ITEM_QUERY_KEY = "order_id";
 
@@ -200,6 +201,28 @@ public class ServiceHelper {
             }
         } else {
             LogUtils.logE("SD Card not mount!");
+        }
+        return null;
+    }
+
+    public static ArrayList<Order> getTableOrders(long tableId) {
+        String reqUrl = getRequestUrl(null, ORDER_PAGE);
+        String respStr = RequestHelper.doRequestPost(reqUrl, null);
+        try {
+            ArrayList<Order> orderList = ResponseParser.parseOrders(respStr);
+            if (orderList != null) {
+                ArrayList<Order> result = new ArrayList<Order>();
+                for (Order order : orderList) {
+                    if (tableId == order.getTableId()) {
+                        result.add(order);
+                    }
+                }
+                return result;
+            }
+        } catch (JSONException e) {
+            LogUtils.logE(e.getMessage());
+        } catch (Exception e) {
+            LogUtils.logE(e.getMessage());
         }
         return null;
     }

@@ -39,7 +39,7 @@ public class DiningService extends Service {
     public static final int COMMAND_BLANK = 0;
     public static final int COMMAND_SYNC_DINING_TABLE = 1;
     public static final int COMMAND_SYNC_ORDER = 2;
-    public static final int COMMAND_SYNC_OTHER = 3; //Except order and dining table information
+    public static final int COMMAND_SYNC_SERVER = 3; //Except order and dining table information
     public static final int COMMAND_SUBMIT_ORDER = 4;
 
     public static final int EXECUTE_NONE = 0;
@@ -138,7 +138,7 @@ public class DiningService extends Service {
                 sendMsg(SYNC_HISTORY_ORDER, EXECUTE_ERROR);
             }
 
-        } else if (commandType == COMMAND_SYNC_OTHER) {
+        } else if (commandType == COMMAND_SYNC_SERVER) {
             try {
                 dbHelper.deleteAllTableDatas();
                 opSymbol = syncCategories();
