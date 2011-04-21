@@ -70,7 +70,7 @@ public class RequestHelper {
                 LogUtils.logD("Http response error when do get operation!");
             }
         } catch (Exception e) {
-            LogUtils.logD(e.getMessage());
+            LogUtils.logE(e.getMessage());
         }
         return null;
     }
@@ -102,7 +102,7 @@ public class RequestHelper {
                 return null;
             }
         } catch (Exception e) {
-            LogUtils.logD(e.getMessage());
+            LogUtils.logE(e.getMessage());
             return null;
         }
     }
@@ -117,8 +117,9 @@ public class RequestHelper {
 
         try {
             fos = new FileOutputStream(filePath);
-            String completePath = null;
-            if (params != null) {
+
+            String completePath = path;
+            if(params != null && !params.isEmpty()){
                 StringBuilder sb = new StringBuilder();
                 sb.append(path).append('?');
                 
@@ -151,11 +152,11 @@ public class RequestHelper {
                 }
             }
         } catch (MalformedURLException e) {
-            LogUtils.logD(e.getMessage());
+            LogUtils.logE(e.getMessage());
         } catch (IOException e) {
-            LogUtils.logD(e.getMessage());
+            LogUtils.logE(e.getMessage());
         } catch (Exception e) {
-            LogUtils.logD(e.getMessage());
+            LogUtils.logE(e.getMessage());
         } finally {
             try {
                 if (bis != null) {
@@ -171,7 +172,7 @@ public class RequestHelper {
                     connect.disconnect();
                 }
             } catch (IOException e) {
-                LogUtils.logD(e.getMessage());
+                LogUtils.logE(e.getMessage());
             }
         }
     }

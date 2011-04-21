@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 public class ServiceHelper {
     // TODO these urls should be added in a single file and supply UI for user to config
+    public static final String IMAGE_STORAGE_DEFAULT_DIR = Environment.DIRECTORY_PICTURES + "/eOrder";
     private static final String DEFAULT_URL = "http://10.15.5.125:8080/";
     private static final String DEFAULT_APP = "eOrder";
     private static final String CATEGORY_PAGE = "categories.jsp";
@@ -54,9 +55,9 @@ public class ServiceHelper {
         return true;
     }
 
-    public static boolean syncDishImage(ArrayList<Dish> dishList) {
+    public static void syncDishImage(ArrayList<Dish> dishList) {
         if (dishList == null) {
-            return true;
+            return;
         }
         for (Dish dish : dishList) {
             String imgUrl = getRequestUrl(null, dish.getImageServer());
@@ -65,7 +66,6 @@ public class ServiceHelper {
             RequestHelper.getFileFromServer(imgUrl, null, filePath);
             dish.setImageLocal(filePath);
         }
-        return true;
     }
 
     public static ArrayList<DiningTable> getDiningTables() {
@@ -74,9 +74,9 @@ public class ServiceHelper {
         try {
            return ResponseParser.parseDiningTables(respStr);
         } catch (JSONException e) {
-            LogUtils.logD(e.getMessage());
+            LogUtils.logE(e.getMessage());
         } catch (Exception e) {
-            LogUtils.logD(e.getMessage());
+            LogUtils.logE(e.getMessage());
         }
         return null;
     }
@@ -87,9 +87,9 @@ public class ServiceHelper {
         try {
             return ResponseParser.parseCategories(respStr);
         } catch (JSONException e) {
-            LogUtils.logD(e.getMessage());
+            LogUtils.logE(e.getMessage());
         } catch (Exception e) {
-            LogUtils.logD(e.getMessage());
+            LogUtils.logE(e.getMessage());
         }
         return null;
     }
@@ -100,9 +100,9 @@ public class ServiceHelper {
         try {
             return ResponseParser.parseDishes(respStr);
         } catch (JSONException e) {
-            LogUtils.logD(e.getMessage());
+            LogUtils.logE(e.getMessage());
         } catch (Exception e) {
-            LogUtils.logD(e.getMessage());
+            LogUtils.logE(e.getMessage());
         }
         return null;
     }
@@ -113,9 +113,9 @@ public class ServiceHelper {
         try {
             return ResponseParser.parseDishCategory(respStr);
         } catch (JSONException e) {
-            LogUtils.logD(e.getMessage());
+            LogUtils.logE(e.getMessage());
         } catch (Exception e) {
-            LogUtils.logD(e.getMessage());
+            LogUtils.logE(e.getMessage());
         }
         return null;
     }
@@ -128,9 +128,9 @@ public class ServiceHelper {
         try {
             return ResponseParser.parseOrders(respStr);
         } catch (JSONException e) {
-            LogUtils.logD(e.getMessage());
+            LogUtils.logE(e.getMessage());
         } catch (Exception e) {
-            LogUtils.logD(e.getMessage());
+            LogUtils.logE(e.getMessage());
         }
         return null;
     }
@@ -141,9 +141,9 @@ public class ServiceHelper {
         try {
             return ResponseParser.parseOrders(respStr);
         } catch (JSONException e) {
-            LogUtils.logD(e.getMessage());
+            LogUtils.logE(e.getMessage());
         } catch (Exception e) {
-            LogUtils.logD(e.getMessage());
+            LogUtils.logE(e.getMessage());
         }
         return null;
     }
@@ -154,9 +154,9 @@ public class ServiceHelper {
         try {
             return ResponseParser.parseOrderDetail(respStr);
         } catch (JSONException e) {
-            LogUtils.logD(e.getMessage());
+            LogUtils.logE(e.getMessage());
         } catch (Exception e) {
-            LogUtils.logD(e.getMessage());
+            LogUtils.logE(e.getMessage());
         }
         return null;
     }
@@ -167,9 +167,9 @@ public class ServiceHelper {
         try {
             return ResponseParser.parseOrderDetail(respStr);
         } catch (JSONException e) {
-            LogUtils.logD(e.getMessage());
+            LogUtils.logE(e.getMessage());
         } catch (Exception e) {
-            LogUtils.logD(e.getMessage());
+            LogUtils.logE(e.getMessage());
         }
         return null;
     }
@@ -180,9 +180,9 @@ public class ServiceHelper {
         try {
             return ResponseParser.parseConfigs(respStr);
         } catch (JSONException e) {
-            LogUtils.logD(e.getMessage());
+            LogUtils.logE(e.getMessage());
         } catch (Exception e) {
-            LogUtils.logD(e.getMessage());
+            LogUtils.logE(e.getMessage());
         }
         return null;
     }
@@ -193,13 +193,12 @@ public class ServiceHelper {
                 return null;
             }
             if (dir == null || dir.equals("")) {
-                dir = "";
+                return Environment.getExternalStorageDirectory() + ('/' + IMAGE_STORAGE_DEFAULT_DIR + '/' + fileName);
             } else {
-                dir = dir + '/';
+                return Environment.getExternalStorageDirectory() + ('/' + dir + '/' + fileName);
             }
-            return Environment.getExternalStorageDirectory() + "/" + dir + fileName;
         } else {
-            LogUtils.logD("SD Card not mount!");
+            LogUtils.logE("SD Card not mount!");
         }
         return null;
     }
