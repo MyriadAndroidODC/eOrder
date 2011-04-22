@@ -71,18 +71,31 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
     @Override
     public void onResume() {
         super.onResume();
-        asyncInitUi();
+        asyncInitGallery();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        LinearLayout galleryFrame = (LinearLayout) findViewById(R.id.gallery_frame);
+        galleryFrame.removeAllViews();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onStop();
         clearDishImageCache();
     }
 
-    // TODO To avoid waiting period before the view display, activity should build the view frame first,
-    // when fetch all data, and then refresh the view again.
-    private void asyncInitUi() {
+
+    private void initMainUi() {
+        setTitle(R.string.dish_title);
+        setContentView(R.layout.main_list_activity);
+        Button orderListButton = (Button) findViewById(R.id.orderedlist_button);
+        orderListButton.setOnClickListener(this);
+    }
+
+    private void asyncInitGallery() {
         new AsyncTask<Void, Void, Void>() {
 
             @Override
@@ -95,9 +108,10 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
 
             @Override
             protected void onPostExecute(Void result) {
-                initUi();
+                initMainUi();
+                initGallery();
             }
-        }.execute(null);
+        }.execute();
     }
 
     private void getAllDishesImage() {
@@ -118,17 +132,11 @@ public class MainListActivity extends Activity implements OnClickListener, OnIte
     }
 
     /**
-     * Initial all UI manually.
+     * Initial the gallery manually.
      */
-    private void initUi() {
-        // Set the title bar
-        setTitle(R.string.dish_title);
+    private void initGallery() {
 
-        setContentView(R.layout.main_list_activity);
         LinearLayout galleryFrame = (LinearLayout) findViewById(R.id.gallery_frame);
-        Button orderListButton = (Button) findViewById(R.id.orderedlist_button);
-        orderListButton.setOnClickListener(this);
-
         // Inflate the main page from XML
         LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
         int categoryNum = mCategoryList.size();
