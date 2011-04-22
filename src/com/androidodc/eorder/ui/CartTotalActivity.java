@@ -231,12 +231,12 @@ public class CartTotalActivity extends Activity implements OnClickListener {
                 viewHolder.dishAmount = (TextView) convertView.findViewById(R.id.count);
                 viewHolder.increaseButton = (Button) convertView.findViewById(R.id.add_copy);
                 viewHolder.decreaseButton = (Button) convertView.findViewById(R.id.descend_copy);
+                convertView.setTag(viewHolder);
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
 
             setDishDetails(viewHolder, position);
-            convertView.setTag(viewHolder);
 
             return convertView;
         }
