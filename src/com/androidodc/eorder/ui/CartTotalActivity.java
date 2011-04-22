@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidodc.eorder.database.DatabaseHelper;
 import com.androidodc.eorder.datatypes.Category;
@@ -33,34 +34,29 @@ import java.util.List;
 
 public class CartTotalActivity extends Activity implements OnClickListener {
 
-    private DatabaseHelper mDbHelper = DatabaseHelper.getInstance();
+    private DatabaseHelper mDbHelper = null;
 
-    private OrderManager mOrderManager = OrderManager.getInstance();
+    private OrderManager mOrderManager = null;
 
-    private List<DishDetail> mDishesDetail = new ArrayList<DishDetail>();
+    private List<DishDetail> mDishesDetail = null;
 
-    private Long mTableId = mOrderManager.getTableId();
+    private long mTableId = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cart_total_activity);
 
-        update();
-    }
+        mOrderManager = OrderManager.getInstance();
+        mDbHelper = DatabaseHelper.getInstance();
+        mTableId = mOrderManager.getTableId();
+        mDishesDetail = new ArrayList<DishDetail>();
 
-    private void update() {
         initData();
         initUI();
     }
 
-    private void clearData() {
-        mDishesDetail.clear();
-    }
-
     private void initData() {
-        clearData();
-
         ArrayList<Category> allCategorys = (ArrayList<Category>) mDbHelper.getAllCategorys();
         for (int i = 0; i < allCategorys.size(); i++) {
             Category c = allCategorys.get(i);
@@ -175,6 +171,11 @@ public class CartTotalActivity extends Activity implements OnClickListener {
 
     public void onClick(View view) {
         if (view.getId() == R.id.ok) {
+            if (mOrderManager.getTotalPrice() == 0) {
+                Toast.makeText(CartTotalActivity.this, R.string.submit_no_dish,
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
             new AlertDialog.Builder(this)
                     .setMessage(getString(R.string.submit_warning))
                     .setCancelable(false)
@@ -200,6 +201,15 @@ public class CartTotalActivity extends Activity implements OnClickListener {
     }
 
     private class DishListAdapter extends ArrayAdapter<DishDetail> {
+        final class ViewHolder {
+            ImageView dishImage;
+            TextView dishName;
+            TextView dishPrice;
+            TextView dishAmount;
+            Button increaseButton;
+            Button decreaseButton;
+        }
+
         protected LayoutInflater mInflater;
         private int mResource = 0;
 
@@ -211,29 +221,45 @@ public class CartTotalActivity extends Activity implements OnClickListener {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            View view;
+            ViewHolder viewHolder;
             if (convertView == null) {
-                view = mInflater.inflate(mResource, parent, false);
+                convertView = mInflater.inflate(mResource, parent, false);
+                viewHolder = new ViewHolder();
+                viewHolder.dishImage = (ImageView) convertView.findViewById(R.id.dish_image);
+                viewHolder.dishName = (TextView) convertView.findViewById(R.id.dish_name);
+                viewHolder.dishPrice = (TextView) convertView.findViewById(R.id.dish_price);
+                viewHolder.dishAmount = (TextView) convertView.findViewById(R.id.count);
+                viewHolder.increaseButton = (Button) convertView.findViewById(R.id.add_copy);
+                viewHolder.decreaseButton = (Button) convertView.findViewById(R.id.descend_copy);
             } else {
-                view = convertView;
+                viewHolder = (ViewHolder) convertView.getTag();
             }
 
+            setDishDetails(viewHolder, position);
+            convertView.setTag(viewHolder);
+
+            return convertView;
+        }
+
+        private void setDishDetails(final ViewHolder viewHolder, int position) {
             final DishDetail current = getItem(position);
 
-            ImageView image = (ImageView) view.findViewById(R.id.dish_image);
-            image.setImageBitmap(ImageHelper.getImage(current.getDishImage()));
-
-            TextView name = (TextView) view.findViewById(R.id.dish_name);
-            name.setText(current.getDishName());
-
-            TextView price = (TextView) view.findViewById(R.id.dish_price);
-            price.setText(String.valueOf(current.getDishPrice()));
-
-            final TextView amount = (TextView) view.findViewById(R.id.count);
-            amount.setText(String.valueOf(current.getDishCount()));
-
-            Button rm = (Button) view.findViewById(R.id.descend_copy);
-            rm.setOnClickListener(new OnClickListener() {
+            viewHolder.dishImage.setImageBitmap(ImageHelper.getImage(current.getDishImage()));
+            viewHolder.dishName.setText(current.getDishName());
+            viewHolder.dishPrice.setText(String.valueOf(current.getDishPrice()));
+            viewHolder.dishAmount.setText(String.valueOf(current.getDishCount()));
+            viewHolder.increaseButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int count = current.getDishCount() + 1;
+                    current.setDishCount(count);
+                    mOrderManager.setDishCopy(current.getId(), count);
+                    viewHolder.dishAmount.setText(String.valueOf(current.getDishCount()));
+                    showDishCount();
+                    showTotalPrice(mOrderManager.getTotalPrice());
+                }
+            });
+            viewHolder.decreaseButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int count = current.getDishCount() - 1;
@@ -242,26 +268,11 @@ public class CartTotalActivity extends Activity implements OnClickListener {
                     }
                     current.setDishCount(count);
                     mOrderManager.setDishCopy(current.getId(), count);
-                    amount.setText(String.valueOf(current.getDishCount()));
+                    viewHolder.dishAmount.setText(String.valueOf(current.getDishCount()));
                     showDishCount();
                     showTotalPrice(mOrderManager.getTotalPrice());
                 }
             });
-
-            Button add = (Button) view.findViewById(R.id.add_copy);
-            add.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int count = current.getDishCount() + 1;
-                    current.setDishCount(count);
-                    mOrderManager.setDishCopy(current.getId(), count);
-                    amount.setText(String.valueOf(current.getDishCount()));
-                    showDishCount();
-                    showTotalPrice(mOrderManager.getTotalPrice());
-                }
-            });
-
-            return view;
         }
     }
 

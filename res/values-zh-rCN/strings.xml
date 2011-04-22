@@ -34,4 +34,5 @@
     <string name="submit_warning">您确定要提交订单？</string>
     <string name="submit_yes">是</string>
     <string name="submit_no">否</string>
+    <string name="submit_no_dish">菜单为空</string>
 </resources>
