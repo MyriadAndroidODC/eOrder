@@ -40,4 +40,5 @@
     <string name="submit_warning">Are you sure you want to submit the order?</string>
     <string name="submit_yes">Yes</string>
     <string name="submit_no">No</string>
+    <string name="submit_no_dish">No Dish</string>
 </resources>

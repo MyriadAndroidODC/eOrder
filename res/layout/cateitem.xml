@@ -4,24 +4,19 @@
     android:layout_height="match_parent"
     android:gravity="center_vertical">
 
-    <LinearLayout
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:paddingLeft="10dp">
-
-        <ImageView
-            android:id="@+id/dish_image"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp" />
-
-    </LinearLayout>
+    <ImageView
+        android:id="@+id/dish_image"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginLeft="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp" />
 
     <TextView
         android:id="@+id/dish_name"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="60dp"
         android:textSize="16sp" />
 
     <TextView
@@ -30,30 +25,25 @@
         android:layout_height="wrap_content"
         android:textSize="16sp" />
 
-    <LinearLayout
-        android:layout_width="150dp"
+    <Button android:text=" - "
+        android:id="@+id/descend_copy"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="40dp"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/count"
+        android:layout_width="20dp"
         android:layout_height="wrap_content"
-        android:paddingRight="10dp"
-        android:gravity="right">
+        android:textSize="16sp"
+        android:gravity="center"/>
 
-        <Button android:text=" - "
-            android:id="@+id/descend_copy"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:textSize="16sp" />
+    <Button android:text=" + "
+        android:id="@+id/add_copy"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginRight="10dp"
+        android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/count"
-            android:layout_width="20dp"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:gravity="center"/>
-
-        <Button android:text=" + "
-            android:id="@+id/add_copy"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:textSize="16sp" />
-
-    </LinearLayout>
 </LinearLayout>
