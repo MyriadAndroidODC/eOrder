@@ -25,7 +25,9 @@ public class DiningService extends Service {
     public static final String SYNC_DINING_TABLE = "com.androidodc.intent.SYNC_TABLES_STATUS"; //For the receiver to handle the dining table status
     public static final String SYNC_HISTORY_ORDER = "com.androidodc.intent.SYNC_HISTORY_ORDER"; //For the receiver to handle the history orders
     public static final String SUBMIT_ORDER = "com.androidodc.intent.SUBMIT_ORDER"; //For the receiver to get the submit result.
-
+    public static final String SYNC_SERVER_DATA = "com.androidodc.intent.SYNC_SERVER_DATA";
+    public static final String SYNC_TABLE_LASTEST_ORDER = "com.androidodc.intent.TABLE_LASTEST_ORDER";
+    
     public static final String BROADCAST_RESULT_KEY = "broadcast_result"; //broadcast parameter key for return the operation status
     public static final String BROADCAST_RESOURCE_KEY = "broadcast_resource"; //broadcast parameter key for return the result object to receiver
     public static final String DINING_TABLE_KEY = "dining_tables"; //Service operation key to return the dining table objects. 
@@ -35,13 +37,15 @@ public class DiningService extends Service {
     public static final String SUBMIT_ORDER_KEY = "submit_order"; //Service operation key to get the submit orders.
     public static final String SUBMIT_ORDER_DETAIL_KEY = "submit_order_detail"; //Service operation key to get the submit orders details.
     public static final String PARAM_INTENT_KEY = "param_intent"; //Service operation key to transfer the intent to asynctask.
-
+    public static final String CURRENT_TABLE_ID = "current_table_id";
+    
     public static final int COMMAND_BLANK = 0;
     public static final int COMMAND_SYNC_DINING_TABLE = 1;
     public static final int COMMAND_SYNC_ORDER = 2;
-    public static final int COMMAND_SYNC_OTHER = 3; //Except order and dining table information
+    public static final int COMMAND_SYNC_SERVER = 3; //Except order and dining table information
     public static final int COMMAND_SUBMIT_ORDER = 4;
-
+    public static final int COMMAND_TABLE_LASTEST_ORDER = 5;
+    
     public static final int EXECUTE_NONE = 0;
     public static final int EXECUTE_DINING_TABLE_SUCCESS = 1;
     public static final int EXECUTE_ORDER_SUCCESS = 2;
@@ -84,9 +88,9 @@ public class DiningService extends Service {
             ArrayList<DiningTable> diningTableList = ServiceHelper.getDiningTables();
             if (diningTableList != null) {
                 diningTableMap.put(DINING_TABLE_KEY, diningTableList);
-                sendDiningTableMsg(SYNC_DINING_TABLE, EXECUTE_DINING_TABLE_SUCCESS, diningTableMap);
+                sendMsg(SYNC_DINING_TABLE, EXECUTE_DINING_TABLE_SUCCESS, diningTableMap, COMMAND_SYNC_DINING_TABLE);
             } else {
-                sendMsg(SYNC_DINING_TABLE, EXECUTE_ERROR);
+                sendMsg(SYNC_DINING_TABLE, EXECUTE_ERROR, null, COMMAND_BLANK);
             }
         } else if (commandType == COMMAND_SYNC_ORDER) {
             ArrayList<Order> orderList = ServiceHelper.getFreeOrders();
@@ -133,12 +137,11 @@ public class DiningService extends Service {
 
                 HashMap<String, ArrayList<Order>> orderMap = new HashMap<String, ArrayList<Order>>();
                 orderMap.put(ORDER_KEY, orderList);
-                sendHistoryOrdersMsg(SYNC_HISTORY_ORDER, EXECUTE_ORDER_SUCCESS, orderMap);
+                sendMsg(SYNC_HISTORY_ORDER, EXECUTE_ORDER_SUCCESS, orderMap, COMMAND_SYNC_ORDER);
             } else {
-                sendMsg(SYNC_HISTORY_ORDER, EXECUTE_ERROR);
+                sendMsg(SYNC_HISTORY_ORDER, EXECUTE_ERROR, null, COMMAND_BLANK);
             }
-
-        } else if (commandType == COMMAND_SYNC_OTHER) {
+        } else if (commandType == COMMAND_SYNC_SERVER) {
             try {
                 dbHelper.deleteAllTableDatas();
                 opSymbol = syncCategories();
@@ -148,21 +151,25 @@ public class DiningService extends Service {
                 LogUtils.logE("Synchronize other information error! \n" + e.getMessage());
                 opSymbol = false;
             }
-            sendMsg(null, opSymbol == true ? EXECUTE_OTHER_SUCCESS : EXECUTE_ERROR);
+            sendMsg(SYNC_SERVER_DATA, opSymbol == true ? EXECUTE_OTHER_SUCCESS : EXECUTE_ERROR, null, COMMAND_BLANK);
         } else if (commandType == COMMAND_SUBMIT_ORDER) {
             Order order = (Order) intent.getSerializableExtra(SUBMIT_ORDER_KEY);
             @SuppressWarnings("unchecked")
             ArrayList<OrderDetail> orderDetailList = (ArrayList<OrderDetail>) intent
                     .getSerializableExtra(SUBMIT_ORDER_DETAIL_KEY);
             opSymbol = submitOrder(order, orderDetailList);
-            sendMsg(SUBMIT_ORDER, opSymbol == true ? EXECUTE_SUBMIT_ORDER_SUCCESS : EXECUTE_ERROR);
+            sendMsg(SUBMIT_ORDER, opSymbol == true ? EXECUTE_SUBMIT_ORDER_SUCCESS : EXECUTE_ERROR, null, COMMAND_BLANK);
+        } else if (commandType == COMMAND_TABLE_LASTEST_ORDER) {
+            // TODO this branch is for future function request
+            long tableId = intent.getLongExtra(CURRENT_TABLE_ID, 0L);
+            Order order = ServiceHelper.getTableLatestOrder(tableId);
+            sendMsg(SYNC_TABLE_LASTEST_ORDER, EXECUTE_NONE, order, COMMAND_TABLE_LASTEST_ORDER);
         } else {
-            sendMsg(null, EXECUTE_NONE);
+            sendMsg(null, EXECUTE_NONE, null, COMMAND_BLANK);
         }
     }
 
-    private void sendDiningTableMsg(String broadcastHandle, int executeResult,
-            HashMap<String, ArrayList<DiningTable>> data) {
+    private void sendMsg(String broadcastHandle, int executeResult, Object data, int commandType) {
         if (broadcastHandle == null) {
             return;
         }
@@ -171,39 +178,19 @@ public class DiningService extends Service {
 
         Bundle msgBundle = new Bundle();
         msgBundle.putInt(BROADCAST_RESULT_KEY, executeResult);
-        msgBundle.putSerializable(BROADCAST_RESOURCE_KEY, data);
-        intent.putExtras(msgBundle);
-
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        this.sendBroadcast(intent);
-    }
-
-    private void sendHistoryOrdersMsg(String broadcastHandle, int executeResult,
-            HashMap<String, ArrayList<Order>> data) {
-        if (broadcastHandle == null) {
-            return;
+        if (data != null) {
+            if (data instanceof HashMap) {
+                msgBundle.putSerializable(BROADCAST_RESOURCE_KEY, (HashMap) data);
+            } else {
+                if (commandType == COMMAND_TABLE_LASTEST_ORDER) {
+                    HashMap<String, Order> map = new HashMap<String, Order>();
+                    map.put(ORDER_KEY, (Order) data);
+                    msgBundle.putSerializable(BROADCAST_RESOURCE_KEY, map);
+                } else {
+                    // TODO some action do not need send broadcast msg
+                }
+            }
         }
-
-        Intent intent = new Intent(broadcastHandle);
-
-        Bundle msgBundle = new Bundle();
-        msgBundle.putInt(BROADCAST_RESULT_KEY, executeResult);
-        msgBundle.putSerializable(BROADCAST_RESOURCE_KEY, data);
-        intent.putExtras(msgBundle);
-
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        this.sendBroadcast(intent);
-    }
-
-    private void sendMsg(String broadcastHandle, int executeResult) {
-        if (broadcastHandle == null) {
-            return;
-        }
-
-        Intent intent = new Intent(broadcastHandle);
-
-        Bundle msgBundle = new Bundle();
-        msgBundle.putInt(BROADCAST_RESULT_KEY, executeResult);
         intent.putExtras(msgBundle);
 
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

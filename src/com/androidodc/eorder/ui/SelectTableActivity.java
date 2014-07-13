@@ -124,7 +124,7 @@ public class SelectTableActivity extends Activity {
     /* The operation will last long, and no answer from server. */
     private void syncServerData() {
         Intent service = new Intent(SelectTableActivity.this, DiningService.class);
-        service.putExtra(DiningService.SERVICE_COMMAND_KEY, DiningService.COMMAND_SYNC_OTHER);
+        service.putExtra(DiningService.SERVICE_COMMAND_KEY, DiningService.COMMAND_SYNC_SERVER);
         startService(service);
     }
 
